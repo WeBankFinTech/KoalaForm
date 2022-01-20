@@ -1,0 +1,36 @@
+:root {
+    --ant-koala-max-width: 1200px;
+    --ant-koala-from-item-width: 20%;
+    --ant-koala-from-item-min-width: 200px;
+    --ant-koala-action-margin: 5px;
+}
+
+.ant-koala-page {
+    max-width: var(--ant-koala-max-width);
+    overflow: auto;
+}
+
+.ant-koala-form-query {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ant-koala-form-query .ant-form-item {
+    min-width: var(--ant-koala-from-item-min-width);
+    width: var(--ant-koala-from-item-width);
+}
+
+.ant-koala-form-query .ant-form-item-action {
+    width: auto;
+}
+
+.ant-koala-form .action-margin {
+    margin: 0 var(--ant-koala-action-margin);
+}
+
+.ant-koala-form .ant-input-number,
+.ant-koala-form .ant-select-selector,
+.ant-koala-form .ant-calendar-picker,
+.ant-koala-form .ant-time-picker {
+    width: 100%;
+}
