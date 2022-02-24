@@ -1,0 +1,35 @@
+:root {
+    --fesd-koala-min-width: 1200px;
+    --fesd-koala-from-item-width: 20%;
+    --fesd-koala-from-item-min-width: 200px;
+    --fesd-koala-action-margin: 2px;
+}
+
+.fesd-koala-page {
+    min-width: var(--fesd-koala-min-width);
+    overflow: auto;
+}
+
+.fesd-koala-form {
+    padding: 0;
+}
+
+.fesd-koala-form-query {
+}
+
+.fesd-koala-form .fesd-koala-form-label {
+    padding-left: 10px;
+}
+
+.fesd-koala-form .action-margin {
+    margin: 0 var(--fesd-koala-action-margin);
+}
+
+.fesd-koala-form .fes-input-number, .fesd-koala-form .fes-select-selector, .fesd-koala-form .fes-calendar-picker {
+    width: 100%;
+}
+
+.fesd-koala-pagination .fes-pagination {
+    margin-top: 15px;
+    justify-content: end;
+}
