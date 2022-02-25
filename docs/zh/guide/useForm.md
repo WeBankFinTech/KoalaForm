@@ -3,7 +3,13 @@ sidebarDepth: 3
 ---
 # useForm
 
-用于最基础的纯表单场景
+用于最基础的纯表单场景，你可以通过字段定义解析出表单的字段，通过render也可以直接渲染表单，支持：
+- 自定义字段渲染
+- 按类型自动映射字段的表单组件
+- 字段校验规则
+- 枚举类型解析
+- 初始化/设置值
+
 
 <ExampleDoc>
 <UseForm>
@@ -25,18 +31,18 @@ sidebarDepth: 3
 
 - **type**
 
-用于判断当前表单Meta的解析，类型：ACTION_TYPES，可取值为：`query` `insert` `update` `delete` `view`
+用于判断当前表单Field的解析，类型：ACTION_TYPES，可取值为：`query` `insert` `update` `delete` `view`
 ## 返回结果
 - **formRef**
 
 Form组件的实例，一般Form组件都会包含validate、resetFields方法，实际要看依赖的组件库。
 - **model**
 
-双向绑定的model对象，其属性都是Meta定义解析的字段，可以通过setFields来进行赋值。
+双向绑定的model对象，其属性都是Field定义解析的字段，可以通过setFields来进行赋值。
 
 - **rulesRef**
 
-根据Meta解析的字段校验规则。
+根据Field解析的字段校验规则。
 
 - **setFields**
 
@@ -91,7 +97,7 @@ render表单的渲染方法，在vue文件的template中可以借助KoalaForm组
 - rulesRef：字段校验规则
 - props：Field.props
 - disabled：是否可用
-- options：Field.optionsKey或者Meta.optionsRef解析的枚举数组
+- options：Field.optionsKey或者Field.optionsRef解析的枚举数组
 
 :::tip
 关于form-item相关的slots解析优先级如下：

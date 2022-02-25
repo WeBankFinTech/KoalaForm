@@ -29,7 +29,7 @@ sidebarDepth: 3
 
 - **type**
 
-用于判断当前表单Meta的解析，类型：ACTION_TYPES，可取值为：`query` `insert` `update` `delete` `view`
+用于判断当前表单Field的解析，类型：ACTION_TYPES，可取值为：`query` `insert` `update` `delete` `view`
 
 ## 返回结果
 - **form**

@@ -9,18 +9,18 @@ import { ACTION_TYPES } from './const';
 
 export default function usePage(fields: Array<Field>, config: Config) {
     const needActionsCol = config.update?.open || config.view?.open || config.delete?.open;
-    let newMetaList = [...fields];
+    let newFieldList = [...fields];
     if (needActionsCol) { // 自动插入actions
         let notFound = true;
         travelFields(fields, 'table', field => {
             if (field.name === 'actions') notFound = false
         })
         if (notFound) {
-            newMetaList = [...fields, { name: 'actions', label: '操作', table: true }];
+            newFieldList = [...fields, { name: 'actions', label: '操作', table: true }];
         }
     }
 
-    const query = useQuery(newMetaList, config);
+    const query = useQuery(newFieldList, config);
 
     const actions: {
         insert?: any;

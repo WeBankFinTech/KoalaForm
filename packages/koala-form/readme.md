@@ -33,11 +33,11 @@ usePreset(fesdPreset);
 </template>
 
 <script>
-import { KoalaForm, defineMetaList, defineConfig } from '@koala-form/core';
+import { KoalaForm, defineFields, defineConfig } from '@koala-form/core';
 import { BASE_URL } from './const';
 
 const commonStatus = { query: true, table: true, insert: true, update: true, delete: true, view: true };
-const metaList = defineMetaList([
+const metaList = defineFields([
     { key: 'id', label: 'ID', status: { ...commonStatus, query: false, insert: false, update: 'disabled' } },
     { key: 'name', label: '姓名', status: commonStatus, required: true },
     { key: 'age', label: '年龄', type: 'number', status: commonStatus },
