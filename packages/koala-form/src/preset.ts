@@ -150,7 +150,7 @@ export class Preset {
         openUpdateModal?(data?: Record<string, any>): Promise<void>;
         openViewModal?(data?: Record<string, any>): Promise<void>;
         openDeleteModal?(data?: Record<string, any>): Promise<void>;
-    }): VNodeChild {
+    }, extendSlot?: Slot): VNodeChild {
         return null;
     }
     modalRender?(

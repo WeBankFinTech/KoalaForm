@@ -3,7 +3,12 @@ sidebarDepth: 3
 ---
 # useTable
 
-用于最纯表格展示场景
+用于最纯表格展示场景，你可以通过字段定义解析出列表的column，使用render函数可以直接渲染表格，还支持：
+- 自定义字段值的渲染
+- 自定义表头字段的渲染
+- 自定义操作列
+- 单枚举、多枚举类型自动映射（比如性别、爱好字段）
+- 日期时间自动格式化（比如出生日期）
 
 <ExampleDoc>
 <UseTable>
@@ -16,6 +21,7 @@ sidebarDepth: 3
 
 </template>
 </ExampleDoc>
+
 
 ## 方法参数
 

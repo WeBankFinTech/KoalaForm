@@ -4,8 +4,12 @@
   "description": "vue form helper",
   "main": "dist/index.js",
   "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "author": "aringlai",
   "license": "MIT",
+  "files": [
+    "dist/"
+  ],
   "peerDependencies": {
     "vue": "^3.0.7"
   },

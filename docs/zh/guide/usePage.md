@@ -35,3 +35,10 @@ sidebarDepth: 3
 - **render**
 
 render由所有actions的render和`preset.pageRender`一起渲染。
+
+
+## Render slots
+usePage由useQuery和useModal组成，所以支持他们的slot，另外还提供了下面这些：
+| slot name    | 说明                    | 参数               |
+| ------------ | ----------------------- | ----------------- |
+| `table_actions_extend`  | table操作列表的按钮扩展 | `{ record }` |

@@ -69,6 +69,8 @@ const defaultAction: ModuleField = {
     insert: { status: false, span: 24 },
     update: { status: false, span: 24 },
     view: { status: false, span: 24 },
+    table: {status: false},
+    delete: {status: false},
 }
 
 const defaultField: Field = {
@@ -98,6 +100,7 @@ export function mergeField(field: Field, type: keyof ModuleField): BaseField {
     } else if (newField[type]) {
         merge(baseField, newField[type])
     }
+    console.log(baseField);
     return baseField;
 }
 

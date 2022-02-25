@@ -33,7 +33,7 @@ export function useUser() {
         {
             name: 'actions',
             label: '操作',
-            table: { props: { width: 220 } }
+            table: { status: true, props: { width: 280 } }
         },
     ]);
 

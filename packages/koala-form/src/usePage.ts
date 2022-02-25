@@ -48,7 +48,12 @@ export default function usePage(fields: Array<Field>, config: Config) {
             if (slots.table_actions && isFunction(slots.table_actions)) {
                 return slots.table_actions(params);
             } else {
-                return _preset.tableActionsRender?.(params) as VNode[];
+                const extendSlot = () => {
+                    if (slots.table_actions_extend && isFunction(slots.table_actions_extend)) {
+                        return slots.table_actions_extend(params) as VNode[]
+                    } else return []
+                }
+                return _preset.tableActionsRender?.(params, extendSlot) as VNode[];
             }
         };
 

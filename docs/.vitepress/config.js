@@ -35,7 +35,7 @@ export default {
           alias: {
               '@koala-form/core': path.resolve('packages/koala-form/src/index.ts'),
               '@koala-form/preset-antd': path.resolve('packages/koala-form-preset-antd'),
-              '@koala-form/preset-fesd': path.resolve('packages/koala-form-preset-fesd'),
+              '@koala-form/preset-fesd': path.resolve('packages/preset-fesd/src'),
           },
       },
         json: {

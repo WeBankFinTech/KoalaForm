@@ -6,15 +6,19 @@
         <template #table_name_header="{ column }">
             <a>{{ column?.props?.label }}</a>
         </template>
+        <template #table_actions>
+            <FButton type="link" @click="handleSave">自定义操作</FButton>
+        </template>
     </KoalaForm>
 </template>
 
 <script>
 import { useTable, KoalaForm } from '@koala-form/core';
 import { useUser } from './user';
+import { FButton } from '@fesjs/fes-design'
 
 export default {
-    components: { KoalaForm },
+    components: { KoalaForm, FButton },
     setup() {
         const { fields, config, mockUser } = useUser();
         const { setTableValue, setPagerValue, render } = useTable(fields, config.uniqueKey);

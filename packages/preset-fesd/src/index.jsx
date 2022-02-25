@@ -298,7 +298,7 @@ export default definePreset({
             </>
         );
     },
-    tableActionsRender({ openUpdateModal, openViewModal, openDeleteModal, record }) {
+    tableActionsRender({ openUpdateModal, openViewModal, openDeleteModal, record }, extendSlot) {
         return (
             <>
                 {openUpdateModal && (
@@ -316,6 +316,7 @@ export default definePreset({
                         删除
                     </FButton>
                 )}
+                { extendSlot() }
             </>
         );
     },
