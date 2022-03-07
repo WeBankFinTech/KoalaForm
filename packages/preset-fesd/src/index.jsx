@@ -109,13 +109,7 @@ export default definePreset({
                 body = <FInputNumber {...prop} v-model={model[field.name]} />;
                 break;
             case 'select':
-                body = (
-                    <FSelect {...prop} v-model={model[field.name]}>
-                        {opts?.map((item) => (
-                            <FOption key={item.value} value={item.value} label={item.label} />
-                        ))}
-                    </FSelect>
-                );
+                body = <FSelect {...prop} v-model={model[field.name]} />;
                 break;
             case 'switch':
                 body = <FSwitch {...prop} v-model={model[field.name]} />;
@@ -131,7 +125,7 @@ export default definePreset({
                 break;
             case 'checkbox':
                 body = (
-                    <FCheckboxGroup {...prop} v-model={model[field.name]}>
+                    <FCheckboxGroup {...prop} v-model={model[field.name]} options={[]}>
                         {opts?.map((item) => (
                             <FCheckbox key={item.value} value={item.value} label={item.label} />
                         ))}
@@ -140,7 +134,7 @@ export default definePreset({
                 break;
             case 'radio':
                 body = (
-                    <FRadioGroup {...prop} v-model={model[field.name]}>
+                    <FRadioGroup {...prop} v-model={model[field.name]} options={[]}>
                         {opts?.map((item) => (
                             <FRadio key={item.value} value={item.value} label={item.label} />
                         ))}
@@ -174,8 +168,8 @@ export default definePreset({
                 ref={formRef}
                 model={model}
                 rules={rulesRef}
-            > 
-            <FGrid wrap> {defaultSlot?.()} </FGrid>
+            >
+                <FGrid wrap> {defaultSlot?.()} </FGrid>
             </FForm>
         );
     },
@@ -316,7 +310,7 @@ export default definePreset({
                         删除
                     </FButton>
                 )}
-                { extendSlot() }
+                {extendSlot()}
             </>
         );
     },
