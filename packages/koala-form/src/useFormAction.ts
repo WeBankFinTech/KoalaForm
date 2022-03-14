@@ -35,9 +35,9 @@ export default function useFormAction(fields: Array<Field>, config: Config, type
                     pageSize: extendRef.pagerModel.pageSize,
                 };
             }
-            
+
             if (isFunction(_preset.formatToReqParams)) {
-                travelFields(fields, type, field => _preset.formatToReqParams?.(params, field) )
+                travelFields(fields, type, (field) => _preset.formatToReqParams?.(params, field));
             }
 
             if (cfg.before) {
@@ -47,7 +47,7 @@ export default function useFormAction(fields: Array<Field>, config: Config, type
                 method: cfg.method,
             });
             resp = await cfg.success?.(resp);
-            respModel.value = resp;
+            respModel.value = resp || true;
             cfg.successTip && _preset.message?.success?.(`${ACTION[type].label}成功`, 3);
             return resp;
         } catch (error: any) {

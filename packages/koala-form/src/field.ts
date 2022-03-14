@@ -29,31 +29,31 @@ export interface BaseField {
     /** 映射组件的属性 */
     props?: Record<string, any> | Function | boolean;
     /** 用于获取options枚举项的名字 */
-    enumsName?: string,
+    enumsName?: string;
     /** 动态的options */
-    options?: Ref<Array<any>> | Array<any> | boolean
+    options?: Ref<Array<any>> | Array<any> | boolean;
     /** 栅格占比 */
-    span?: number 
-}
- 
-export interface ModuleIgnore {
-    queryIgnore?: (keyof BaseField)[]
-    tableIgnore?: (keyof BaseField)[]
-    insertIgnore?: (keyof BaseField)[]
-    updateIgnore?: (keyof BaseField)[]
-    deleteIgnore?: (keyof BaseField)[]
-    viewIgnore?: (keyof BaseField)[]
-}
-export interface ModuleField {
-    query?: BaseField | boolean
-    table?: BaseField | boolean
-    insert?: BaseField | boolean
-    update?: BaseField | boolean
-    delete?: BaseField | boolean
-    view?: BaseField | boolean
+    span?: number;
 }
 
-export interface Field extends BaseField, ModuleField , ModuleIgnore {}
+export interface ModuleIgnore {
+    queryIgnore?: (keyof BaseField)[];
+    tableIgnore?: (keyof BaseField)[];
+    insertIgnore?: (keyof BaseField)[];
+    updateIgnore?: (keyof BaseField)[];
+    deleteIgnore?: (keyof BaseField)[];
+    viewIgnore?: (keyof BaseField)[];
+}
+export interface ModuleField {
+    query?: BaseField | boolean;
+    table?: BaseField | boolean;
+    insert?: BaseField | boolean;
+    update?: BaseField | boolean;
+    delete?: BaseField | boolean;
+    view?: BaseField | boolean;
+}
+
+export interface Field extends BaseField, ModuleField, ModuleIgnore {}
 
 const defaultIgnore: ModuleIgnore = {
     queryIgnore: ['required', 'rules'],
@@ -62,16 +62,16 @@ const defaultIgnore: ModuleIgnore = {
     updateIgnore: [],
     deleteIgnore: ['required', 'rules'],
     viewIgnore: ['required', 'rules'],
-}
+};
 
 const defaultAction: ModuleField = {
     query: { status: false, span: 6 },
     insert: { status: false, span: 24 },
     update: { status: false, span: 24 },
     view: { status: false, span: 24 },
-    table: {status: false},
-    delete: {status: false},
-}
+    table: { status: false },
+    delete: { status: false },
+};
 
 const defaultField: Field = {
     name: '',
@@ -86,39 +86,37 @@ export function mergeField(field: Field, type: keyof ModuleField): BaseField {
     const baseField: Field = { ...(defaultAction[type] as BaseField) };
     const newField = merge({}, defaultField, field);
     // 读取基础属性，并根据忽略规则移除移除属性
-    Object.keys(newField).forEach(key => {
+    Object.keys(newField).forEach((key) => {
         if (newField[`${type}Ignore`]?.includes(key as keyof BaseField)) {
-            return
+            return;
         }
         if (actionsKeys.includes(key) || ignoreKeys.includes(key)) {
             return;
         }
         baseField[key] = newField[key];
-    })
+    });
     if (isBoolean(newField[type])) {
         baseField.status = newField[type] as boolean;
     } else if (newField[type]) {
-        merge(baseField, newField[type])
+        merge(baseField, newField[type]);
     }
-    console.log(baseField);
     return baseField;
 }
 
-
-export function getFieldProp(prop: any, ...args:any[]) {
+export function getFieldProp(prop: any, ...args: any[]) {
     if (isFunction(prop)) {
-        return prop(...args)
+        return prop(...args);
     }
     if (prop === false) {
         return;
     }
-    return prop
+    return prop;
 }
 
 export function travelFields(fields: Field[], type: keyof ModuleField, cb: (field: BaseField) => void) {
-    fields.forEach(field => {
-        cb && cb(mergeField(field, type))
-    })
+    fields.forEach((field) => {
+        cb && cb(mergeField(field, type));
+    });
 }
 
 export function defineFields(fields: Field[]): Field[] {

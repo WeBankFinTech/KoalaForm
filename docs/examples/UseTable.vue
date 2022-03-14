@@ -15,13 +15,13 @@
 <script>
 import { useTable, KoalaForm } from '@koala-form/core';
 import { useUser } from './user';
-import { FButton } from '@fesjs/fes-design'
+import { FButton } from '@fesjs/fes-design';
 
 export default {
     components: { KoalaForm, FButton },
     setup() {
         const { fields, config, mockUser } = useUser();
-        const { setTableValue, setPagerValue, render } = useTable(fields, config.uniqueKey);
+        const { setTableValue, setPagerValue, render, setPagerProps } = useTable(fields, config.uniqueKey);
         setTableValue([mockUser]);
 
         setPagerValue({
@@ -31,6 +31,10 @@ export default {
             onChange(current) {
                 setPagerValue({ current });
             },
+        });
+
+        setPagerProps({
+            showSizeChanger: true,
         });
 
         return {

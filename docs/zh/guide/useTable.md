@@ -45,9 +45,19 @@ table的列定义，具体根据`preset.defineTableColumn`的实现返回，一�
 
 分页组件的model对象
 
+- **tableProps**
+
+table组件属性
+
+- **pagerProps**
+
+分页组件属性
+
 - **setTableValue**
 
 设置tableModel的值
+
+
 ```js
 // 传入数组设置
 setTableValue([{id: 1}, {id: 2}])
@@ -70,6 +80,14 @@ setPagerValue({
     },
 })
 ```
+
+- **setTableProps**
+
+设置tableProps的值
+
+- **setPagerProps**
+
+设置pagerProps的值
 
 - **render**,
 

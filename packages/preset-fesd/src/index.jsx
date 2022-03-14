@@ -244,11 +244,12 @@ export default definePreset({
             ...field.props,
         };
     },
-    tableRender(slots, { tableModel, columns, pagerModel, rowKey }) {
+    tableRender(slots, { tableModel, columns, pagerModel, rowKey, pagerProps, tableProps }) {
         return (
             <>
                 <FTable
                     // columns={columns}
+                    {...tableProps}
                     rowKey={rowKey}
                     data={tableModel.value}
                     v-slots={slots}
@@ -283,6 +284,7 @@ export default definePreset({
                 </FTable>
                 <div class="fesd-koala-pagination">
                     <FPagination
+                        {...pagerProps}
                         v-model={[pagerModel.current, 'currentPage']}
                         pageSize={pagerModel.pageSize}
                         totalCount={pagerModel.total}

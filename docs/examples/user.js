@@ -10,16 +10,38 @@ export function useUser() {
     const fields = defineFields([
         { name: 'id', label: 'ID', required: true, status: true, insert: false, update: { status: 'disabled' } },
         { name: 'name', label: '姓名', required: true, status: true },
-        { name: 'age', label: '年龄', type: 'number', required: true, rules: { message: '年龄必须大于1', min: 1, type: 'number' }, status: true, insert: { span: 12 }},
-        { name: 'sex', label: '性别', type: 'select', enumsName: 'sex', status: true, insert: { span: 12 }},
+        {
+            name: 'age',
+            label: '年龄',
+            type: 'number',
+            required: true,
+            rules: { message: '年龄必须大于1', min: 1, type: 'number' },
+            status: true,
+            insert: { span: 12 },
+        },
+        { name: 'sex', label: '性别', type: 'select', enumsName: 'sex', status: true, insert: { span: 12 } },
         { name: 'awaken', label: '霸气觉醒', type: 'switch', status: true, query: false },
         { name: 'reward', label: '赏金', type: 'radio', enumsName: 'reward', status: true },
         { name: 'hobby', label: '爱好', type: 'checkbox', options: hobbyOptions, status: true },
         { name: 'birthday', label: '出生日期', type: 'date', status: true, table: { props: { width: 120 } } },
         { name: 'birthdayTime', label: '出生时间', type: 'time', status: true },
         { name: 'dateTime', label: '出海时间', type: 'dateTime', status: true, table: { props: { width: 120 } } },
-        { name: 'dateRange', label: '训练期', type: 'dates', status: true, query: { span: 6 }, table: { props: { width: 160 } } },
-        { name: 'dateTimeRange', label: '具体训练期', type: 'dateTimes', status: true, query: false, table: { props: { width: 220 } } },
+        {
+            name: 'dateRange',
+            label: '训练期',
+            type: 'dates',
+            status: true,
+            query: { span: 6 },
+            table: { props: { width: 160 } },
+        },
+        {
+            name: 'dateTimeRange',
+            label: '具体训练期',
+            type: 'dateTimes',
+            status: true,
+            query: false,
+            table: { props: { width: 220 } },
+        },
         {
             name: 'desc',
             label: '简介',
@@ -28,12 +50,12 @@ export function useUser() {
             rules: { message: '最大不能超过100个字', max: 100 },
             status: true,
             table: false,
-            query: false
+            query: false,
         },
         {
             name: 'actions',
             label: '操作',
-            table: { status: true, props: { width: 280 } }
+            table: { status: true, props: { width: 280 } },
         },
     ]);
 

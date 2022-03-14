@@ -62,7 +62,7 @@ export class Preset {
      * @param field 字段定义
      * @param defaultSlot FormItem内容的slot
      */
-    formItemRender?(defaultSlot?: Slot, field?: BaseField, type?: string ): VNodeChild {
+    formItemRender?(defaultSlot?: Slot, field?: BaseField, type?: string): VNodeChild {
         return null;
     }
     /**
@@ -139,18 +139,23 @@ export class Preset {
         opt: {
             columns: any[];
             tableModel: Ref<Record<string, any>[]>;
+            tableProps: Record<string, any>;
+            pagerProps: Record<string, any>;
             pagerModel: Pager;
             rowKey?: string;
         },
     ): VNodeChild {
         return null;
     }
-    tableActionsRender?(params: {
-        record: Record<string, any>;
-        openUpdateModal?(data?: Record<string, any>): Promise<void>;
-        openViewModal?(data?: Record<string, any>): Promise<void>;
-        openDeleteModal?(data?: Record<string, any>): Promise<void>;
-    }, extendSlot?: Slot): VNodeChild {
+    tableActionsRender?(
+        params: {
+            record: Record<string, any>;
+            openUpdateModal?(data?: Record<string, any>): Promise<void>;
+            openViewModal?(data?: Record<string, any>): Promise<void>;
+            openDeleteModal?(data?: Record<string, any>): Promise<void>;
+        },
+        extendSlot?: Slot,
+    ): VNodeChild {
         return null;
     }
     modalRender?(

@@ -1,6 +1,6 @@
 {
   "name": "@koala-form/core",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "vue form helper",
   "main": "dist/index.js",
   "module": "dist/index.js",
