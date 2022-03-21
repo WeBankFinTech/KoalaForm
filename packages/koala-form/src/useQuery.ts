@@ -11,6 +11,10 @@ export default function useQuery(fields: Array<Field>, config: Config) {
     table.pagerModel.onChange = (current) => {
         query.handle(undefined, current);
     };
+    table.pagerModel.onPageSizeChange = (size) => {
+        table.pagerModel.pageSize = size;
+        query.handle(undefined, 1);
+    };
     query.extendRef.pagerModel = table.pagerModel;
 
     watch(query.respModel, (resp) => {

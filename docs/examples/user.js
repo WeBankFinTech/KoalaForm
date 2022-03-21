@@ -66,6 +66,7 @@ export function useUser() {
             api: `${BASE_URL}user.json`,
             async before(params) {
                 params.userId = 'aringlai';
+                console.log(params);
                 return params;
             },
         },

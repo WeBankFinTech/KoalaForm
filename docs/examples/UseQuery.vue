@@ -11,6 +11,7 @@ export default {
     setup() {
         const { fields, config } = useUser();
         const { query, table, render } = useQuery(fields, config);
+        table.setPagerProps({ showSizeChanger: true });
         return {
             render,
         };

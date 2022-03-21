@@ -10,11 +10,12 @@ import { ACTION_TYPES } from './const';
 export default function usePage(fields: Array<Field>, config: Config) {
     const needActionsCol = config.update?.open || config.view?.open || config.delete?.open;
     let newFieldList = [...fields];
-    if (needActionsCol) { // 自动插入actions
+    if (needActionsCol) {
+        // 自动插入actions
         let notFound = true;
-        travelFields(fields, 'table', field => {
-            if (field.name === 'actions') notFound = false
-        })
+        travelFields(fields, 'table', (field) => {
+            if (field.name === 'actions') notFound = false;
+        });
         if (notFound) {
             newFieldList = [...fields, { name: 'actions', label: '操作', table: true }];
         }
@@ -50,9 +51,9 @@ export default function usePage(fields: Array<Field>, config: Config) {
             } else {
                 const extendSlot = () => {
                     if (slots.table_actions_extend && isFunction(slots.table_actions_extend)) {
-                        return slots.table_actions_extend(params) as VNode[]
-                    } else return []
-                }
+                        return slots.table_actions_extend(params) as VNode[];
+                    } else return [];
+                };
                 return _preset.tableActionsRender?.(params, extendSlot) as VNode[];
             }
         };
@@ -70,6 +71,7 @@ export default function usePage(fields: Array<Field>, config: Config) {
     };
 
     return {
+        query,
         actions,
         render,
     };

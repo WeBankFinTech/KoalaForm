@@ -289,6 +289,7 @@ export default definePreset({
                         pageSize={pagerModel.pageSize}
                         totalCount={pagerModel.total}
                         onChange={pagerModel.onChange}
+                        onPageSizeChange={pagerModel.onPageSizeChange}
                     ></FPagination>
                 </div>
             </>

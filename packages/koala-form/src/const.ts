@@ -33,6 +33,7 @@ export interface Pager {
     pageSize: number;
     total: number;
     onChange?(current: number): void;
+    onPageSizeChange?(size: number): void;
 }
 
 export const DEFAULT_PAGER: Pager = {

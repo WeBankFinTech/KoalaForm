@@ -32,9 +32,9 @@
 <script>
 import { useForm, defineFields, KoalaForm } from '@koala-form/core';
 const fields = defineFields([
-    { name: 'id', label: 'id',  insert: true, update: true },
-    { name: 'name', label: '姓名',  insert: true },
-    { name: 'age', label: '年龄', type: 'number',  insert: true },
+    { name: 'id', label: 'id', insert: true, update: true },
+    { name: 'name', label: '姓名', insert: true },
+    { name: 'age', label: '年龄', type: 'number', insert: true },
     { name: 'sex', label: '性别', insert: true },
 ]);
 
