@@ -7,6 +7,8 @@ import UseFormAction from './UseFormAction.vue';
 import UseModal from './UseModal.vue';
 import UseQuery from './UseQuery.vue';
 import UsePage from './UsePage.vue';
+import MultipleTable from './MultipleTable.vue';
+import KoalaFormDemo from './KoalaFormDemo.vue';
 
 export default {
     User,
@@ -17,4 +19,6 @@ export default {
     UseQuery,
     UseModal,
     UsePage,
+    MultipleTable,
+    KoalaFormDemo
 };

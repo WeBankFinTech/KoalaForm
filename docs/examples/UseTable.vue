@@ -7,7 +7,7 @@
             <a>{{ column?.props?.label }}</a>
         </template>
         <template #table_actions>
-            <FButton type="link" @click="handleSave">自定义操作</FButton>
+            <FButton type="link">自定义操作</FButton>
         </template>
     </KoalaForm>
 </template>

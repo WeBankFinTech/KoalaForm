@@ -23,40 +23,35 @@ sidebarDepth: 3
 </ExampleDoc>
 
 
-## 方法参数
+## 方法定义
+### useTable.d.ts
+<<< @/../packages/koala-form/dist/useTable.d.ts
 
-- **fields**
+### 参数说明
 
-表单所有字段的定义，类型：`Array<Field>`
+| 属性         | 说明                    | 类型              | 默认值                |
+| ------------ | ----------------------- | ----------------- | --------------------- |
+| fields | 表单所有字段的定义 | `Array<Field>` |
+| uniqueKey | 列表行唯一标识字段名| `string` | 'id'
 
-- **uniqueKey**
+### 返回说明
 
-列表行唯一标识字段名，类型：`string`，默认值：**`'id'`**
+| 属性         | 说明                    | 类型              | 默认值                |
+| ------------ | ----------------------- | ----------------- | --------------------- |
+| columns | table的列定义，具体根据`preset.defineTableColumn`的实现返回，一般可以直接用于table组件的columns属性 | `Array`
+| tableModel | 双向绑定的model对象，表格的数据 | `Ref<Array>`
+| pagerModel | 分页组件的model对象| `reactive proxy`
+| tableProps | table组件属性| `reactive proxy`
+| pagerProps | 分页组件属性| `reactive proxy`
+| tableRef | table组件引用 | `Ref`
+| pagerRef | 分页组件引用 | `Ref`
+| setTableValue | 设置tableModel的值| `Function`
+| setPagerValue | 设置pagerModel的值| `Function`
+| setTableProps | 设置tableProps的值| `Function`
+| setPagerProps | 设置pagerProps的值| `Function`
+| render | render列表的渲染方法，在vue文件的template中可以借助KoalaForm组件渲染，接受Slots作为参数 | `Function`
 
-## 返回结果
-- **columns**
-
-table的列定义，具体根据`preset.defineTableColumn`的实现返回，一般可以直接用于table组件的columns属性
-- **tableModel**
-
-双向绑定的model对象，表格的数据
-
-- **pagerModel**
-
-分页组件的model对象
-
-- **tableProps**
-
-table组件属性
-
-- **pagerProps**
-
-分页组件属性
-
-- **setTableValue**
-
-设置tableModel的值
-
+- **setTableValue示例**
 
 ```js
 // 传入数组设置
@@ -66,9 +61,7 @@ setTableValue([{id: 1}, {id: 2}])
 setTableValue({id: 1}, 1)
 ```
 
-- **setPagerValue**
-
-设置pagerModel的值
+- **setPagerValue示例**
 
 ```js
 setPagerValue({
@@ -80,21 +73,8 @@ setPagerValue({
     },
 })
 ```
-
-- **setTableProps**
-
-设置tableProps的值
-
-- **setPagerProps**
-
-设置pagerProps的值
-
-- **render**,
-
-render列表的渲染方法，在vue文件的template中可以借助KoalaForm组件渲染，接受Slots作为参数
-
 ## Render slots
-render方法实际是依赖`preset.tableRender`的实现，特殊情况下，需要支持自定义扩展字段，而render函数的参数slots提供了支持，slots会透传给`preset.tableRender`，怎么支持看具体实现，这些建议的slot如下：
+render方法实际是依赖`preset.tableRender`的实现；在特殊情况下，我们需要支持自定义扩展字段，而render函数的参数slots提供了支持，slots会透传给`preset.tableRender`，怎么支持看具体preset实现，这些建议的slot如下：
 
 | slot name    | 说明                    | 参数               |
 | ------------ | ----------------------- | ----------------- |
@@ -117,3 +97,16 @@ render方法实际是依赖`preset.tableRender`的实现，特殊情况下，需
 </template>
 
 ```
+
+## 更多实例
+
+### 列表多选
+<ExampleDoc>
+<MultipleTable>
+</MultipleTable>
+<template #code>
+
+<<< @/examples/MultipleTable.vue
+
+</template>
+</ExampleDoc>

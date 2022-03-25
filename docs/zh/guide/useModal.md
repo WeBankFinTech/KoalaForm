@@ -30,6 +30,10 @@ modal常见于新增、修改表单，基于useFormAction添加了modal的逻辑
 
 用于判断当前表单Field的解析，类型：ACTION_TYPES，可取值为：`query` `insert` `update` `delete` `view`
 
+- **modalProps**
+
+modal组件的属性响应式对象
+
 - **handleQuery**
 
 用于表单提交成功时，需要刷新列表数据的回调
@@ -66,6 +70,10 @@ const modalModel = reactive({
 - **render(slots: Slots): VNodeChild**
 
 render列表的渲染方法，在vue文件的template中可以借助KoalaForm组件渲染，接受Slots作为参数
+
+- **setModalProps**
+
+设置modalProps的值
 
 ## Render slots
 render方表单渲染是调用`form.render`，而modal是靠`preset.modalRender`的实现。

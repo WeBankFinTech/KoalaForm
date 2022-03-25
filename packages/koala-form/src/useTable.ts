@@ -5,6 +5,8 @@ import { getOptions } from './utils';
 import { DEFAULT_PAGER, Pager } from './const';
 
 export default function useTable(fields: Array<Field>, uniqueKey = 'id') {
+    const tableRef: Ref = ref(null);
+    const pagerRef: Ref = ref(null);
     const tableModel: Ref<Record<string, any>[]> = ref([]);
     const pagerModel: Pager = reactive(DEFAULT_PAGER);
     const tableProps: Record<string, any> = reactive({});
@@ -13,7 +15,7 @@ export default function useTable(fields: Array<Field>, uniqueKey = 'id') {
     const { defineTableColumn, tableRender } = _preset;
 
     travelFields(fields, 'table', (field) => {
-        if (field.status) {
+        if (field.status && field.status !== 'hidden') {
             const column = defineTableColumn?.(field, getOptions(_preset, field));
             column && columns.push(column);
         }
@@ -51,6 +53,8 @@ export default function useTable(fields: Array<Field>, uniqueKey = 'id') {
             pagerModel,
             pagerProps,
             rowKey: uniqueKey,
+            pagerRef,
+            tableRef,
         });
     };
 
@@ -60,6 +64,8 @@ export default function useTable(fields: Array<Field>, uniqueKey = 'id') {
         tableProps,
         pagerModel,
         pagerProps,
+        tableRef,
+        pagerRef,
         render,
         setTableValue,
         setPagerValue,

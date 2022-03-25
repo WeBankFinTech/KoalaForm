@@ -46,9 +46,11 @@ export default function usePage(fields: Array<Field>, config: Config) {
                 openDeleteModal: actions.delete?.open,
                 record,
             };
+            // table的操作列name === 'actions'时，定制全部行操作
             if (slots.table_actions && isFunction(slots.table_actions)) {
                 return slots.table_actions(params);
             } else {
+                // 列表操作列的其他扩展按钮
                 const extendSlot = () => {
                     if (slots.table_actions_extend && isFunction(slots.table_actions_extend)) {
                         return slots.table_actions_extend(params) as VNode[];

@@ -1,10 +1,9 @@
-import { reactive, Slots, VNodeChild, VNode, ref, Ref } from 'vue';
-import { BaseField, Field, travelFields } from './field';
+import { reactive, Slots, VNodeChild, VNode, ref, Ref, Slot } from 'vue';
+import { BaseField, Field, travelFields, getFieldProp } from './field';
 import { _preset } from './preset';
 import { ACTION_TYPES } from './const';
 import { isUndefined, merge } from 'lodash-es';
 import { getOptions, isFunction } from './utils';
-import { getFieldProp } from '.';
 
 function mergeRule(field: BaseField) {
     const _rules = getFieldProp(field.rules)
@@ -33,6 +32,7 @@ function mergeRule(field: BaseField) {
 // 2. name=type_字段名，slot指向的是formItem内容，会用在对应的表单上，如type=‘query’，会用在查询的表单上
 export default function useForm(fields: Array<Field> = [], type: ACTION_TYPES) {
     const model: Record<string, any> = reactive({});
+    const formProps: Record<string, any> = reactive({});
     const rulesRef: Record<string, any> = reactive({});
     const formRef: Ref<any> = ref(null);
     let initForm: Record<string, any> = {};
@@ -93,7 +93,9 @@ export default function useForm(fields: Array<Field> = [], type: ACTION_TYPES) {
     const render = (slots: Slots): VNodeChild => {
         const slot = () => {
             let vNodes = formItemRender(slots) as VNode[];
-            if (slots.extend_items) {
+            if (slots[`${type}_extend_items`]) {
+                vNodes = vNodes.concat((slots[`${type}_extend_items`] as Slot)({ model, type }));
+            } else if (slots.extend_items) {
                 vNodes = vNodes.concat(slots.extend_items({ model, type }));
             }
             return vNodes;
@@ -103,6 +105,7 @@ export default function useForm(fields: Array<Field> = [], type: ACTION_TYPES) {
             rulesRef,
             model,
             type,
+            props: formProps,
         });
     };
 
@@ -128,17 +131,24 @@ export default function useForm(fields: Array<Field> = [], type: ACTION_TYPES) {
         return _preset.formValidate?.(formRef, nameList);
     };
 
+    const setFormProps = (value: Record<string, any>) => {
+        if (!value) return;
+        Object.assign(formProps, value);
+    }
+
     initFields(model);
 
     return {
         model,
         formRef,
         rulesRef,
+        formProps,
         render,
         formItemRender,
         initFields,
         resetFields,
         validate,
         setFields,
+        setFormProps,
     };
 }

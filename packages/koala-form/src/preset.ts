@@ -77,6 +77,7 @@ export class Preset {
             formRef?: Ref<any>;
             rulesRef?: Record<string, any>;
             type: ACTION_TYPES;
+            props: Record<string, any>;
         },
     ): VNodeChild {
         return null;
@@ -143,6 +144,8 @@ export class Preset {
             pagerProps: Record<string, any>;
             pagerModel: Pager;
             rowKey?: string;
+            tableRef: Ref;
+            pagerRef: Ref;
         },
     ): VNodeChild {
         return null;
@@ -162,6 +165,7 @@ export class Preset {
         defaultSlot: Slot,
         params: {
             modalModel: Record<string, any>;
+            modalProps: Record<string, any>;
             onOk: Function;
             onCancel: Function;
         },

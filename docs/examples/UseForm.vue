@@ -23,8 +23,9 @@ export default {
     components: { KoalaForm, Table },
     setup() {
         const { fields, mockUser } = useUser();
-        const { model, initFields, render, resetFields, validate } = useForm(fields, 'insert');
+        const { model, initFields, render, resetFields, validate, setFormProps } = useForm(fields, 'insert');
         initFields(mockUser);
+        setFormProps({labelWidth: 100})
 
         const handleSave = () => {
             validate()

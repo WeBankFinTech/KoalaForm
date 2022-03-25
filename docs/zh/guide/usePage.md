@@ -41,4 +41,13 @@ render由所有actions的render和`preset.pageRender`一起渲染。
 usePage由useQuery和useModal组成，所以支持他们的slot，另外还提供了下面这些：
 | slot name    | 说明                    | 参数               |
 | ------------ | ----------------------- | ----------------- |
-| `table_actions_extend`  | table操作列表的按钮扩展 | `{ record }` |
+| `table_actions`  | table操作列自定义，在useTable对应`table_[name]`, 其中name === 'actions' | `{record， openUpdateModal, openViewModal, openDeleteModal }` |
+| `table_actions_extend`  | 在更新、删除、详情按钮的基础上，扩展其他按钮 | `{ record, openUpdateModal, openViewModal, openDeleteModal}` |
+
+::: tip
+在完整的表单页面中，才会集成列的更新、删除、详情等操作，所以在usePage处理才有意义。
+
+当useTable中操作列的name === 'actions'时，这些slots才会启用。
+
+table_actions的优先级大于table_actions_extend。
+:::

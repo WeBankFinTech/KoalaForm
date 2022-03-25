@@ -8,7 +8,7 @@ export function useUser() {
     const hobbyOptions = ref([]);
 
     const fields = defineFields([
-        { name: 'id', label: 'ID', required: true, status: true, insert: false, update: { status: 'disabled' } },
+        { name: 'id', label: 'ID', required: true, status: 'hidden', },
         { name: 'name', label: '姓名', required: true, status: true },
         {
             name: 'age',

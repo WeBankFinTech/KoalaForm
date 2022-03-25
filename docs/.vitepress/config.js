@@ -103,6 +103,7 @@ function getGuideSidebar() {
           { text: 'useModal', link: '/zh/guide/useModal' },
           { text: 'useQuery', link: '/zh/guide/useQuery' },
           { text: 'usePage', link: '/zh/guide/usePage' },
+          { text: 'KoalaForm组件', link: '/zh/guide/koalaForm' },
         ]
       },
       {

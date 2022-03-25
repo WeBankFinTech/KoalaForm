@@ -156,7 +156,7 @@ export default definePreset({
             </FGridItem>
         );
     },
-    formRender(defaultSlot, { model, formRef, rulesRef, type } = { type: 'query' }) {
+    formRender(defaultSlot, { model, formRef, rulesRef, type, props } = { type: 'query' }) {
         return (
             <FForm
                 labelPosition="right"
@@ -168,6 +168,7 @@ export default definePreset({
                 ref={formRef}
                 model={model}
                 rules={rulesRef}
+                {...props}
             >
                 <FGrid wrap> {defaultSlot?.()} </FGrid>
             </FForm>
@@ -244,15 +245,16 @@ export default definePreset({
             ...field.props,
         };
     },
-    tableRender(slots, { tableModel, columns, pagerModel, rowKey, pagerProps, tableProps }) {
+    tableRender(slots, { tableModel, columns, pagerModel, rowKey, pagerProps, tableProps, pagerRef, tableRef }) {
         return (
             <>
                 <FTable
                     // columns={columns}
-                    {...tableProps}
+                    ref={tableRef}
                     rowKey={rowKey}
                     data={tableModel.value}
                     v-slots={slots}
+                    {...tableProps}
                 >
                     {columns.map((col) => {
                         const colSlot = {
@@ -284,12 +286,13 @@ export default definePreset({
                 </FTable>
                 <div class="fesd-koala-pagination">
                     <FPagination
-                        {...pagerProps}
+                        ref={pagerRef}
                         v-model={[pagerModel.current, 'currentPage']}
                         pageSize={pagerModel.pageSize}
                         totalCount={pagerModel.total}
                         onChange={pagerModel.onChange}
                         onPageSizeChange={pagerModel.onPageSizeChange}
+                        {...pagerProps}
                     ></FPagination>
                 </div>
             </>
@@ -317,7 +320,7 @@ export default definePreset({
             </>
         );
     },
-    modalRender(defaultSlot, { modalModel, onOk, onCancel }) {
+    modalRender(defaultSlot, { modalModel, onOk, onCancel, modalProps }) {
         return (
             <FModal
                 show={modalModel.visible}
@@ -327,6 +330,7 @@ export default definePreset({
                 cancelText={modalModel.cancelText || undefined}
                 onOk={() => onOk()}
                 onCancel={() => onCancel()}
+                {...modalProps}
             >
                 {defaultSlot()}
             </FModal>

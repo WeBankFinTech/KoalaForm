@@ -14,7 +14,9 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
         okText: '',
         cancelText: '',
     });
-    const { form, reset, handle, respModel } = useFormAction(fields, config, type);
+
+    const modalProps: Record<string, any> = reactive({});
+    const { form, reset, handle, respModel, render: formActionRender  } = useFormAction(fields, config, type);
 
     const open = async (data?: Record<string, any>) => {
         const model = merge({}, data);
@@ -54,6 +56,11 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
         }
     };
 
+    const setModalProps = (value: Record<string, any>) => {
+        if (!value) return;
+        Object.assign(modalProps, value);
+    }
+
     watch(respModel, (resp) => {
         if (resp) {
             handleCancel();
@@ -63,10 +70,11 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
 
     const render = (slots: Slots): VNodeChild => {
         const slot = () => {
-            return form.render(slots) as VNode[];
+            return formActionRender(slots) as VNode[];
         };
         return modalRender?.(slot, {
             modalModel,
+            modalProps,
             onOk: handleOk,
             onCancel: handleCancel,
         });
@@ -75,6 +83,8 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
     return {
         form,
         modalModel,
+        modalProps,
+        setModalProps,
         handleCancel,
         handleOk,
         open,

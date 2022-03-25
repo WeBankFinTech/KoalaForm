@@ -12,10 +12,8 @@
 
 <script>
 import { ref } from 'vue'
-import { Card } from 'ant-design-vue';
 
 export default {
-    components: { Card },
     setup() {
         const showCode = ref(false)
         return {

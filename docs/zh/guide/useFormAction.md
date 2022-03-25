@@ -101,6 +101,7 @@ render列表的渲染方法，在vue文件的template中可以借助KoalaForm组
 render方表单渲染是调用`form.render`，而动作按钮时靠`preset.[type]ActionRender`的实现，一般建议实现调用handle和resetFields的按钮，并且提供可扩展的slots添加其他按钮，通过参数extendSlot传递给`preset.[type]ActionRender`。
 | slot name    | 说明                    | 参数               |
 | ------------ | ----------------------- | ----------------- |
+| `[type]_action`  | 自定义操作 | `{ handle, reset,  }` |
 | `[type]_action_extend`  | `preset.[type]ActionRender`自定义扩展的内容 | `{ handle, reset,  }` |
 
 ```vue

@@ -63,6 +63,14 @@ const fields = defineFields([
 - actions 仅仅在table中可见
 
 
+## 方法
+- **defineFields(fields: Field[]): Field[]**
+
+定义字段
+
+- **travelFields(fields: Field[], type: string, cb: (field: BaseField)**
+
+根据类型遍历字段
 
 ## 例子
 拿我们上手的例子来看看

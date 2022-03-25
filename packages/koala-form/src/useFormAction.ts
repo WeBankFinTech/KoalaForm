@@ -74,40 +74,50 @@ export default function useFormAction(fields: Array<Field>, config: Config, type
             handle();
         }
     });
-
     /**
      * - slots.[type]Action 自定义动作
      * - slots.[type]ActionExtend 基于preset的自定义动作的扩展
      * @param slots
      * @returns
      */
-    const render = (slots: Slots): VNodeChild => {
-        const formItems = () => {
-            // 合并formItems slot
-            let vNodes: VNode[] = [];
-            if (slots.formItems) {
-                vNodes = vNodes.concat(slots.formItems() as VNode[]);
+    const render = (slots: Slots): VNodeChild => {        
+        const params = { handle, reset, extendRef };
+        const newSlots = {...slots }
+        const typeActionsSlot = slots[`${type}_action`] as Slot; // 覆盖preset的typeActionRender
+        const typeActionsExtendSlot = slots[`${type}_action_extend`] as Slot; // 在typeActionRender中扩展
+        const typeActionRender = _preset[`${type}ActionRender` as keyof Preset] as Function;
+        const extendItems = slots.extend_items as Slot;
+        const typeExtendItems = slots[`${type}_extend_items`] as Slot;
+
+        if (isFunction(typeActionsExtendSlot)) {
+            newSlots[`${type}_extend_items`] = () => {
+                let vNodes: VNode[] = [];
+                if (isFunction(typeExtendItems)) {
+                    vNodes = vNodes.concat(typeExtendItems({model: form.model}))
+                } else if (isFunction(extendItems)) {
+                    vNodes = vNodes.concat(extendItems({model: form.model, type}))
+                }
+                if (isFunction(typeActionRender)) {
+                    vNodes = vNodes.concat(typeActionRender({ ...params, extendSlot: () => typeActionsExtendSlot(params) }));
+                }
+                return vNodes;
             }
-            const actionRender = _preset[`${type}ActionRender` as keyof Preset] as Function;
-            const actionsSlot = slots[`${type}_action`] as Slot;
-            const params = {
-                handle,
-                reset,
-                extendRef,
-            };
-            if (isFunction(actionsSlot)) {
-                vNodes = vNodes.concat(actionsSlot(params));
-            } else if (isFunction(actionRender)) {
-                vNodes = vNodes.concat(
-                    actionRender({
-                        ...params,
-                        extendSlot: () => slots[`${type}_action_extend`]?.(params),
-                    }),
-                );
+        }
+
+        if (isFunction(typeActionsSlot)) { // 覆盖所有preset的actions实现
+            newSlots.extend_items = () => {
+                let vNodes: VNode[] = [];
+                if (isFunction(typeExtendItems)) {
+                    vNodes = vNodes.concat(typeExtendItems({model: form.model}))
+                } else if (isFunction(extendItems)) {
+                    vNodes = vNodes.concat(extendItems({model: form.model, type}))
+                }
+                vNodes = vNodes.concat(typeActionsSlot(params));
+                return vNodes;
             }
-            return vNodes;
-        };
-        return form.render({ ...slots, extend_items: formItems });
+            delete newSlots[`${type}_extend_items`]
+        }
+        return form.render(newSlots);
     };
 
     return {

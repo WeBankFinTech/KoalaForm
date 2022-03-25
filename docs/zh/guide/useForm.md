@@ -23,51 +23,44 @@ sidebarDepth: 3
 </template>
 </ExampleDoc>
 
-## 方法参数
+## 方法定义
+### useForm.d.ts
+<<< @/../packages/koala-form/dist/useForm.d.ts
 
-- **fields**
+### 参数说明
 
-表单所有字段的定义，类型：`Array<Field>`
+| 属性         | 说明                    | 类型              | 默认值                |
+| ------------ | ----------------------- | ----------------- | --------------------- |
+| fields | 表单所有字段的定义 | `Array<Field>` |
+| type | 用于判断当前表单Field的解析 | `ACTION_TYPES`，可取值为： `query` `insert` `update` `delete` `view` |
 
-- **type**
+### 返回说明
 
-用于判断当前表单Field的解析，类型：ACTION_TYPES，可取值为：`query` `insert` `update` `delete` `view`
-## 返回结果
-- **formRef**
+| 属性         | 说明                    | 类型              | 默认值                |
+| ------------ | ----------------------- | ----------------- | --------------------- |
+| formRef | Form组件的实例，一般Form组件都会包含validate、resetFields方法，实际要看依赖的组件库。| `Ref`
+| model | 双向绑定的model对象，其属性都是Field定义解析的字段，可以通过setFields来进行赋值。| `reactive proxy`
+| rulesRef | 根据Field解析的字段校验规则。| `reactive proxy`
+| formProps | form组件属性响应式对象，用setFormProps设置| `reactive proxy`
+| setFields | 设置model的值 | `Function`
+| initFields | 设置初始化的数据，并且初始化model| `Function`
+| resetFields | 用上一次initFields的值，重置model | `Function`
+| validate | 根据表单组件的规则校验字段| `Function`
+| setFormProps | 设置formProps的值| `Function`
+| formItemRender | render表单项的渲染方法，在vue文件的template中可以借助KoalaForm组件渲染，接受Slots作为参数，可以自己写Form去包裹| `Function`
+| render | render表单的渲染方法，在vue文件的template中可以借助KoalaForm组件渲染，接受Slots作为参数 | `Function`
 
-Form组件的实例，一般Form组件都会包含validate、resetFields方法，实际要看依赖的组件库。
-- **model**
 
-双向绑定的model对象，其属性都是Field定义解析的字段，可以通过setFields来进行赋值。
+- **resetFields示例**
 
-- **rulesRef**
-
-根据Field解析的字段校验规则。
-
-- **setFields**
-
-设置model的值
-
-- **initFields**
-
-设置初始化的数据，并且初始化model
-
-- **resetFields**
-
-用上一次initFields的值，重置model
 ```js
 initFields({ name: '蒙奇·D·路飞', age: 16 });
 setFields({ age: 18 });
 resetFields(); // model.age => 16
 ```
 
-- **validate**
+- **formItemRender示例**
 
-根据表单组件的规则校验字段
-
-- **formItemRender**,
-
-render表单项的渲染方法，在vue文件的template中可以借助KoalaForm组件渲染，接受Slots作为参数，可以自己写Form去包裹
 ```vue
 <template>
     <Form>
@@ -75,10 +68,6 @@ render表单项的渲染方法，在vue文件的template中可以借助KoalaForm
     </Form>
 </template>
 ```
-
-- **render**,
-
-render表单的渲染方法，在vue文件的template中可以借助KoalaForm组件渲染，接受Slots作为参数
 
 ## Render slots
 `preset.formItemFieldRender`虽然提供了常见字段类型的render，但是特殊情况下，需要支持自定义扩展字段，而render函数的参数slots提供了支持。
@@ -90,6 +79,7 @@ render表单的渲染方法，在vue文件的template中可以借助KoalaForm组
 | `[type]_formItem_[key]`  | 字段的的FormItem，全部表单都生效 | `{ type, model, rulesRef, props, disabled, options }` |
 | `[type]_[key]`  | 字段的的FormItem，指定类型表单都生效 | `{ type, model, rulesRef, props, disabled, options }` |
 | `extend_items`  | 在Form内扩展FormItem | `{ type, model }` |
+| `[type]_extend_items`  | 在Form内扩展指定类型的FormItem，可覆盖`extend_items` | `{ model }` |
 
 **参数**
 - type：操作表单类型，ACTION_TYPES
@@ -97,14 +87,14 @@ render表单的渲染方法，在vue文件的template中可以借助KoalaForm组
 - rulesRef：字段校验规则
 - props：Field.props
 - disabled：是否可用
-- options：Field.optionsKey或者Field.optionsRef解析的枚举数组
+- options：Field.enumsName或者Field.options解析的枚举数组
 
 :::tip
 关于form-item相关的slots解析优先级如下：
 
 `[type]_[key]` > `[type]_formItem_[key]` > `[key]` > `formItem_[key]` > `preset.formItemFieldRender`
 
-如果没有字段没有对应的slot，那么`preset.formItemFieldRender`就会根据Meat.type来渲染。
+如果没有字段没有对应的slot，那么`preset.formItemFieldRender`就会根据Field.type来渲染。
 
 :::
 

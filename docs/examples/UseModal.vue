@@ -13,7 +13,10 @@ export default {
     components: { KoalaForm },
     setup() {
         const { fields, config, mockUser } = useUser();
-        const { render, open } = useModal(fields, config, 'update');
+        const { render, open, setModalProps } = useModal(fields, config, 'update');
+        setModalProps({
+            title: '我是setModalProps设置的标题'
+        })
         return {
             render,
             open() {
