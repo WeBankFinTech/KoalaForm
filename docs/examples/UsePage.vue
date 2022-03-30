@@ -1,7 +1,7 @@
 <template>
     <KoalaForm :render="render">
         <template #table_actions_extend>
-            <FButton type="link" @click="handleSave">审核</FButton>
+            <FButton type="link">审核</FButton>
         </template>
     </KoalaForm>
 </template>

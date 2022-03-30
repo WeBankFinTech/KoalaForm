@@ -10,7 +10,7 @@ const BASE_URL = process.env.NODE_ENV === 'production' ? '/s/koala-form/' : '/';
 
 export default {
     lang: 'zh-CN',
-    title: '🐨 Koala Form',
+    title: 'Koala Form',
     base: BASE_URL,
     description: 'Koala Form',
     vite: {
@@ -75,7 +75,8 @@ export default {
         ],
         sidebar: {
             '/config/': getConfigSidebar(),
-            '/zh/guide/': getGuideSidebar()
+            '/zh/guide/': getGuideSidebar(),
+            '/zh/preset/': getGuideSidebar()
         }
     }
 };
@@ -107,9 +108,9 @@ function getGuideSidebar() {
         ]
       },
       {
-        text: '进阶',
+        text: 'Preset进阶',
         children: [
-          { text: 'Preset', link: '/zh/guide/preset' }
+          { text: 'Preset', link: '/zh/preset/index' }
         ]
       }
     ]

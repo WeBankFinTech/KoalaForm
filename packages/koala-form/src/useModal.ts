@@ -8,6 +8,7 @@ import { merge, isFunction } from 'lodash-es';
 
 export default function useModal(fields: Array<Field>, config: Config, type: ACTION_TYPES, handleQuery?: Function) {
     const { formatToEdit, confirm, modalRender } = _preset;
+    let hasFirstRender = false; // 是否已经首次渲染过
     const modalModel = reactive({
         visible: false,
         title: '',
@@ -16,12 +17,12 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
     });
 
     const modalProps: Record<string, any> = reactive({});
-    const { form, reset, handle, respModel, render: formActionRender  } = useFormAction(fields, config, type);
+    const { form, reset, handle, respModel, render: formActionRender } = useFormAction(fields, config, type);
 
     const open = async (data?: Record<string, any>) => {
         const model = merge({}, data);
         if (isFunction(formatToEdit)) {
-            travelFields(fields, type, field => formatToEdit(model, field))
+            travelFields(fields, type, (field) => formatToEdit(model, field));
         }
         switch (type) {
             case 'insert':
@@ -59,7 +60,7 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
     const setModalProps = (value: Record<string, any>) => {
         if (!value) return;
         Object.assign(modalProps, value);
-    }
+    };
 
     watch(respModel, (resp) => {
         if (resp) {
@@ -69,8 +70,15 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
     });
 
     const render = (slots: Slots): VNodeChild => {
+        if (!hasFirstRender && !modalModel.visible) return [];
+        hasFirstRender = true;
         const slot = () => {
-            return formActionRender(slots) as VNode[];
+            const newSlots = { ...slots };
+            if (!newSlots.extend_items) {
+                // 避免使用preset的actions渲染
+                newSlots.extend_items = () => [];
+            }
+            return formActionRender(newSlots) as VNode[];
         };
         return modalRender?.(slot, {
             modalModel,

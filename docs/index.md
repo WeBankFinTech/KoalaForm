@@ -1,9 +1,9 @@
 ---
 home: true
 navbar: false
-# heroImage: /logo.png
+heroImage: /logo.png
 heroAlt: Koala Form
-heroText: 🐨 Koala Form
+# heroText: 🐨 Koala Form
 tagline: 低代码表单解决方案，让你跟考拉一样“懒”
 actionText: Get Started
 actionLink: /zh/guide/

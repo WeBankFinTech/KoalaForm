@@ -15,8 +15,8 @@ export default {
         const { fields, config, mockUser } = useUser();
         const { render, open, setModalProps } = useModal(fields, config, 'update');
         setModalProps({
-            title: '我是setModalProps设置的标题'
-        })
+            title: '我是setModalProps设置的标题',
+        });
         return {
             render,
             open() {

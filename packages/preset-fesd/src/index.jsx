@@ -4,13 +4,11 @@ import {
     FTable,
     FInput,
     FSelect,
-    FOption,
     FDatePicker,
     FRadio,
     FCheckbox,
     FForm,
     FFormItem,
-    FConfigProvider,
     FModal,
     FMessage,
     FTableColumn,
@@ -337,11 +335,7 @@ export default definePreset({
         );
     },
     pageRender(defaultSlot) {
-        return (
-            <FConfigProvider>
-                <div class="fesd-koala-page">{defaultSlot()}</div>
-            </FConfigProvider>
-        );
+        return <div class="fesd-koala-page">{defaultSlot()}</div>;
     },
     message: FMessage,
     confirm(params) {

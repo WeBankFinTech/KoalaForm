@@ -117,6 +117,17 @@ export default function useFormAction(fields: Array<Field>, config: Config, type
             }
             delete newSlots[`${type}_extend_items`]
         }
+
+        if (!newSlots.extend_items) {
+            newSlots.extend_items = () => {
+                let vNodes: VNode[] = [];
+                if (isFunction(typeActionRender)) {
+                    vNodes = vNodes.concat(typeActionRender({ ...params}));
+                }
+                return vNodes;
+            }
+        }
+
         return form.render(newSlots);
     };
 
