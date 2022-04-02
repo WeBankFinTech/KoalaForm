@@ -58,8 +58,10 @@ export default {
         },
     },
     themeConfig: {
+        logo: '/logo.png',
         nav: [
             { text: '教程', link: '/zh/guide/', activeMatch: '^/zh/guide' },
+            { text: '精彩示例', link: '/zh/demos/', activeMatch: '^/zh/demos' },
             {
               text: '集成Preset',
               link: '/preset',
@@ -76,12 +78,19 @@ export default {
         sidebar: {
             '/config/': getConfigSidebar(),
             '/zh/guide/': getGuideSidebar(),
-            '/zh/preset/': getGuideSidebar()
+            '/zh/preset/': getGuideSidebar(),
+            '/zh/demos/': getDemosSidebar(),
         }
     }
 };
 
 
+function getDemosSidebar() {
+  return [
+    { text: '示例说明', link: '/zh/demos/' },
+    { text: '示例1', link: '/zh/demos/demo1' }
+  ]
+}
 
 function getGuideSidebar() {
     return [

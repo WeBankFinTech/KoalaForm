@@ -1,8 +1,8 @@
-<!-- <p align="center">
-  <a href="https://fes-design-4gvn317r3b6bfe17-1254145788.ap-shanghai.app.tcloudbase.com/">
-    <img width="362" src="./docs/public/images/fes-logo.svg">
+<p align="center">
+  <!-- <a href="https://fes-design-4gvn317r3b6bfe17-1254145788.ap-shanghai.app.tcloudbase.com/"> -->
+    <img width="362" src="./docs/public/logo.png">
   </a>
-</p> -->
+</p>
 
 <h1 align="center">Koala-Form</h1>
 

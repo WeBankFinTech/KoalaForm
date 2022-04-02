@@ -3,10 +3,15 @@ home: true
 navbar: false
 heroImage: /logo.png
 heroAlt: Koala Form
-# heroText: 🐨 Koala Form
+heroText: Koala Form
 tagline: 低代码表单解决方案，让你跟考拉一样“懒”
 actionText: Get Started
 actionLink: /zh/guide/
+head:
+  - - link
+    - rel: shortcut icon
+      type: image/png
+      href: /logo.png
 features:
   - title: Low Code
     details: 减少你80%重复的工作量，提升你的生产效率

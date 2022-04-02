@@ -9,7 +9,7 @@
     "dist/"
   ],
   "peerDependencies": {
-    "@fesjs/fes-design": "^0.3.3"
+    "@fesjs/fes-design": "^0.4.0"
   },
   "dependencies": {
     "@koala-form/core": "^1.0.0",
