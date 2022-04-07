@@ -9,6 +9,7 @@ import UseQuery from './UseQuery.vue';
 import UsePage from './UsePage.vue';
 import MultipleTable from './MultipleTable.vue';
 import KoalaFormDemo from './KoalaFormDemo.vue';
+import ComplexPage from './ComplexPage.vue';
 
 export default {
     User,
@@ -20,5 +21,6 @@ export default {
     UseModal,
     UsePage,
     MultipleTable,
-    KoalaFormDemo
+    KoalaFormDemo,
+    ComplexPage,
 };
