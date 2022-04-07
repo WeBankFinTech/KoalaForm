@@ -8,7 +8,7 @@ export function useUser() {
     const hobbyOptions = ref([]);
 
     const fields = defineFields([
-        { name: 'id', label: 'ID', required: true, status: 'hidden', },
+        { name: 'id', label: 'ID', required: true, status: 'hidden' },
         { name: 'name', label: '姓名', required: true, status: true },
         {
             name: 'age',
@@ -45,8 +45,8 @@ export function useUser() {
         {
             name: 'desc',
             label: '简介',
-            type: 'text',
             props: { type: 'textarea' },
+            update: { type: 'text' },
             rules: { message: '最大不能超过100个字', max: 100 },
             status: true,
             table: false,

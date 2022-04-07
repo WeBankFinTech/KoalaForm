@@ -75,6 +75,7 @@ const defaultAction: ModuleField = {
 
 const defaultField: Field = {
     name: '',
+    type: 'input',
     required: false,
     ...defaultIgnore,
 };

@@ -139,6 +139,9 @@ export default definePreset({
                     </FRadioGroup>
                 );
                 break;
+            case 'text':
+                body = model[field.name];
+                break;
             default:
                 body = <FInput {...prop} v-model={model[field.name]} />;
         }

@@ -19,6 +19,14 @@
 | span | form-item栅格占比，共24，query模块默认6，也就是一行可以放4个查询条件 | `number` |
 
 
+::: tip
+`FIELD_STATUS_TYPE` 用于判断渲染对应的表单控件，可取值有
+
+ `text` `input` `number` `select` `date` `dateTime` `dates` `dateTimes` `radio` `checkbox` `switch` `time`
+ 
+其他类型组件的扩展支持，依赖于preset的实现
+:::
+
 ## 模块属性
 
 默认继承所有基础属性
