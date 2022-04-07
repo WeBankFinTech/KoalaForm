@@ -19,6 +19,7 @@ import {
     FTimePicker,
     FGrid,
     FGridItem,
+    FDrawer,
 } from '@fesjs/fes-design';
 import { definePreset } from '@koala-form/core';
 import { unref } from 'vue';
@@ -372,6 +373,23 @@ export default definePreset({
             >
                 {defaultSlot()}
             </FModal>
+        );
+    },
+    drawerRender(defaultSlot, { modalModel, onOk, onCancel, modalProps }) {
+        return (
+            <FDrawer
+                show={modalModel.visible}
+                title={modalModel.title}
+                displayDirective="if"
+                okText={modalModel.okText || undefined}
+                cancelText={modalModel.cancelText || undefined}
+                onOk={() => onOk()}
+                onCancel={() => onCancel()}
+                footer={true}
+                {...modalProps}
+            >
+                {defaultSlot()}
+            </FDrawer>
         );
     },
     pageRender(defaultSlot) {

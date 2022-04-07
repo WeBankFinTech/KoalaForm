@@ -3,7 +3,7 @@ import { Config } from './config';
 import { Field } from './field';
 import { Slots, VNodeChild, VNode, ref, Slot, onMounted, Ref, reactive } from 'vue';
 import { _preset, Preset } from './preset';
-import { ACTION, ACTION_TYPES, Pager } from './const';
+import { ACTION_TYPES, Pager } from './const';
 import { isFunction } from './utils';
 import { merge, isUndefined } from 'lodash-es';
 import { travelFields } from '.';
@@ -48,7 +48,7 @@ export default function useFormAction(fields: Array<Field>, config: Config, type
             });
             resp = await cfg.success?.(resp);
             respModel.value = resp || true;
-            cfg.successTip && _preset.message?.success?.(`${ACTION[type].label}成功`, 3);
+            cfg.successTip && _preset.message?.success?.(`${cfg.btn?.text}成功`, 3);
             return resp;
         } catch (error: any) {
             await cfg.error?.(error);

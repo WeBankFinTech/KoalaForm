@@ -6,6 +6,7 @@
 | ------------ | ----------------------- | ----------------- | --------------------- 
 | name | 表单名字| `string` |
 | uniqueKey | 列表中每行数据唯一值的字段名 | `string` | `id`
+| modalMode | 新增/更新弹框模式 | `modal` `drawer` | `modal`
 | query  | query 动作的配置 | `QueryActionConfig` |
 | insert | insert动作的配置 | `InsertActionConfig` |
 | update | update动作的配置 | `UpdateActionConfig` |

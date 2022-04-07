@@ -176,6 +176,18 @@ export class Preset {
         console.warn('preset.modalRender未提供实现！');
         return null;
     }
+    drawerRender?(
+        defaultSlot: Slot,
+        params: {
+            modalModel: Record<string, any>;
+            modalProps: Record<string, any>;
+            onOk: Function;
+            onCancel: Function;
+        },
+    ): VNodeChild {
+        console.warn('preset.drawerRender未提供实现！');
+        return null;
+    }
     pageRender?(defaultSlot: Slot): VNodeChild {
         return defaultSlot?.();
     }

@@ -2,12 +2,12 @@ import { Config } from './config';
 import { Field, travelFields } from './field';
 import useFormAction from './useFormAction';
 import { VNodeChild, Slots, reactive, VNode, watch } from 'vue';
-import { ACTION_TYPES, ACTION } from './const';
+import { ACTION_TYPES } from './const';
 import { _preset } from './preset';
 import { merge, isFunction } from 'lodash-es';
 
 export default function useModal(fields: Array<Field>, config: Config, type: ACTION_TYPES, handleQuery?: Function) {
-    const { formatToEdit, confirm, modalRender } = _preset;
+    const { formatToEdit, confirm, modalRender, drawerRender } = _preset;
     let hasFirstRender = false; // 是否已经首次渲染过
     const modalModel = reactive({
         visible: false,
@@ -32,7 +32,7 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
                 form.initFields(model);
                 break;
         }
-        modalModel.title = `${config.name || ''}${ACTION[type].label}`;
+        modalModel.title = `${config.name || ''}${config[type]?.btn?.text}`;
         modalModel.visible = true;
         if (type === 'delete') {
             confirm?.({
@@ -80,12 +80,18 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
             }
             return formActionRender(newSlots) as VNode[];
         };
-        return modalRender?.(slot, {
+        const param = {
             modalModel,
             modalProps,
             onOk: handleOk,
             onCancel: handleCancel,
-        });
+        };
+        switch (config.modalMode) {
+            case 'drawer':
+                return drawerRender?.(slot, param);
+            default:
+                return modalRender?.(slot, param);
+        }
     };
 
     return {

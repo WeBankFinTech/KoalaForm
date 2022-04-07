@@ -48,6 +48,8 @@ export interface Config {
     /** 表单名称 */
     name: string;
     uniqueKey?: string;
+    /** 弹框模式 */
+    modalMode: 'modal' | 'drawer';
     query?: QueryActionConfig;
     insert?: InsertActionConfig;
     update?: UpdateActionConfig;
@@ -58,6 +60,7 @@ export interface Config {
 const globalConfig: Config = {
     name: '',
     uniqueKey: 'id',
+    modalMode: 'modal',
     query: {
         api: '',
         method: 'GET',

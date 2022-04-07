@@ -15,7 +15,8 @@ export default {
     components: { KoalaForm, FButton },
     setup() {
         const { fields, config } = useUser();
-        // config.insert.btn.type = 'success';
+        // 弹框模式改为抽屉模式
+        config.modalMode = 'drawer';
         const { render, actions } = usePage(fields, config);
         return {
             render,
