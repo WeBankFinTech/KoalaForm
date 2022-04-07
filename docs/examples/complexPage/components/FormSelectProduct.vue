@@ -1,3 +1,5 @@
+<!-- complexPage/components/FormSelectProduct.vue -->
+
 <template>
     <FSpin :show="productLoading">
         <FFormItem label="产品:" prop="productId">

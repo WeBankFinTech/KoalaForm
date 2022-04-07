@@ -21,8 +21,11 @@
             ></FormSelectProduct>
         </template>
         <template #extend_items>
-            <FFormItem>
-                <FButton type="primary" class="btn-search" @click="handleQuery"> <SearchOutlined />查询 </FButton>
+            <FFormItem label=" ">
+                <FButton type="primary" @click="handleQuery"> <SearchOutlined />查询 </FButton>
+                <FButton type="primary" style="margin-left: 10px" @click="handleClickAdd">
+                    <PlusOutlined />新增
+                </FButton>
             </FFormItem>
         </template>
     </KoalaForm>
@@ -30,7 +33,7 @@
 
 <script>
 import { defineComponent, nextTick } from 'vue';
-import { SearchOutlined } from '@fesjs/fes-design/icon';
+import { SearchOutlined, PlusOutlined } from '@fesjs/fes-design/icon';
 import { useForm, KoalaForm } from '@koala-form/core';
 import { useFields } from './use/useFields';
 import { KOALA_FORM_ACTION, KOALA_FORM_PROPS } from './constants';
@@ -40,11 +43,12 @@ import FormSelectProduct from './components/FormSelectProduct.vue';
 export default defineComponent({
     components: {
         SearchOutlined,
+        PlusOutlined,
         KoalaForm,
         FormSelectDepartment,
         FormSelectProduct,
     },
-    emits: ['clickQuery'],
+    emits: ['clickQuery', 'clickAdd'],
     setup(props, { emit }) {
         const { fields, getDefaultFields } = useFields();
         // form 表单
@@ -64,6 +68,10 @@ export default defineComponent({
             emit('clickQuery', { ...queryFormModel });
         }
 
+        function handleClickAdd() {
+            emit('clickAdd');
+        }
+
         async function handleDeptChange() {
             await nextTick();
             // 部门变更后，产品清空
@@ -73,14 +81,9 @@ export default defineComponent({
         return {
             queryFormRender,
             handleQuery,
+            handleClickAdd,
             handleDeptChange,
         };
     },
 });
 </script>
-
-<style lang="less" scoped>
-.btn-search {
-    margin-left: 115px;
-}
-</style>
