@@ -2,7 +2,13 @@ import { merge } from 'lodash-es';
 import { Pager } from './const';
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
+interface BtnProps extends Record<string, any> {
+    show?: Boolean;
+    text?: String;
+}
 interface ActionConfig {
+    /** 按钮属性 */
+    btn?: BtnProps;
     api?: string;
     open?: boolean;
     successTip?: boolean;
@@ -17,6 +23,7 @@ interface QueryActionConfig extends ActionConfig {
     queryAfterReset?: boolean;
     /** 开启首次自动调用 */
     firstAutoQuery?: boolean;
+    resetBtn?: BtnProps;
     success?(res: Record<string, any>): Promise<{ tableModel: Record<string, any>[]; pagerModel: Pager }>;
 }
 
@@ -27,10 +34,14 @@ interface DeleteActionConfig extends ActionConfig {
 
 interface InsertActionConfig extends ActionConfig {
     queryAfterSuccess?: boolean;
+    saveBtn?: BtnProps;
+    resetBtn?: BtnProps;
 }
 
 interface UpdateActionConfig extends ActionConfig {
     queryAfterSuccess?: boolean;
+    saveBtn?: BtnProps;
+    resetBtn?: BtnProps;
 }
 
 export interface Config {
@@ -50,6 +61,14 @@ const globalConfig: Config = {
     query: {
         api: '',
         method: 'GET',
+        btn: {
+            text: '查询',
+            show: true,
+        },
+        resetBtn: {
+            text: '重置',
+            show: true,
+        },
         queryAfterReset: true,
         firstAutoQuery: true,
         before: async (params) => params,
@@ -65,6 +84,18 @@ const globalConfig: Config = {
         queryAfterSuccess: true,
         method: 'POST',
         validMessage: '请检查表单字段',
+        btn: {
+            text: '新增',
+            show: true,
+        },
+        saveBtn: {
+            text: '保存',
+            show: true,
+        },
+        resetBtn: {
+            text: '重置',
+            show: true,
+        },
     },
     update: {
         open: true,
@@ -72,6 +103,18 @@ const globalConfig: Config = {
         queryAfterSuccess: true,
         method: 'PUT',
         validMessage: '请检查表单字段',
+        btn: {
+            text: '更新',
+            show: true,
+        },
+        saveBtn: {
+            text: '保存',
+            show: true,
+        },
+        resetBtn: {
+            text: '重置',
+            show: true,
+        },
     },
     delete: {
         open: true,
@@ -81,10 +124,18 @@ const globalConfig: Config = {
         getMessage() {
             return `确定删除该记录？`;
         },
+        btn: {
+            text: '删除',
+            show: true,
+        },
     },
     view: {
         open: true,
         method: 'GET',
+        btn: {
+            text: '详情',
+            show: true,
+        },
     },
 };
 

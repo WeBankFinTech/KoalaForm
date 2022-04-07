@@ -3,6 +3,7 @@ import { BaseField } from './field';
 import { Slots, Slot, VNodeChild, Ref } from 'vue';
 import { merge } from 'lodash';
 import { ACTION_TYPES, Pager } from './const';
+import { Config } from './config';
 export class Preset {
     constructor(preset?: Preset) {
         merge(this, preset);
@@ -109,21 +110,22 @@ export class Preset {
         extendRef?: {
             openInsertModal?: Function;
         };
+        config: Config;
         /** 操作扩展slot */
         extendSlot?: Slot;
     }): VNodeChild {
         return params.extendSlot?.();
     }
-    insertActionRender?(params: { handle: Function; reset: Function; extendRef?: Record<string, any>; extendSlot?: Slot }): VNodeChild {
+    insertActionRender?(params: { handle: Function; reset: Function; extendRef?: Record<string, any>; config: Config; extendSlot?: Slot }): VNodeChild {
         return params.extendSlot?.();
     }
-    updateActionRender?(params: { handle: Function; reset: Function; extendRef?: Record<string, any>; extendSlot?: Slot }): VNodeChild {
+    updateActionRender?(params: { handle: Function; reset: Function; extendRef?: Record<string, any>; config: Config; extendSlot?: Slot }): VNodeChild {
         return params.extendSlot?.();
     }
-    deleteActionRender?(params: { handle: Function; reset: Function; extendRef?: Record<string, any>; extendSlot?: Slot }): VNodeChild {
+    deleteActionRender?(params: { handle: Function; reset: Function; extendRef?: Record<string, any>; config: Config; extendSlot?: Slot }): VNodeChild {
         return params.extendSlot?.();
     }
-    viewActionRender?(params: { handle: Function; reset: Function; extendRef?: Record<string, any>; extendSlot?: Slot }): VNodeChild {
+    viewActionRender?(params: { handle: Function; reset: Function; extendRef?: Record<string, any>; config: Config; extendSlot?: Slot }): VNodeChild {
         return params.extendSlot?.();
     }
     /**
@@ -156,6 +158,7 @@ export class Preset {
             openUpdateModal?(data?: Record<string, any>): Promise<void>;
             openViewModal?(data?: Record<string, any>): Promise<void>;
             openDeleteModal?(data?: Record<string, any>): Promise<void>;
+            config?: Config;
         },
         extendSlot?: Slot,
     ): VNodeChild {

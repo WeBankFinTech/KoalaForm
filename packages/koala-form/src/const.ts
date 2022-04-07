@@ -34,10 +34,12 @@ export interface Pager {
     total: number;
     onChange?(current: number): void;
     onPageSizeChange?(size: number): void;
+    show: Boolean;
 }
 
 export const DEFAULT_PAGER: Pager = {
     pageSize: 10,
     current: 1,
     total: 0,
+    show: true,
 };

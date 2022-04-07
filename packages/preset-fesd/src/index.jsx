@@ -178,34 +178,66 @@ export default definePreset({
     formValidate(formRef) {
         return formRef.value?.validate();
     },
-    queryActionRender({ handle, reset, extendSlot, extendRef }) {
+    queryActionRender({ handle, reset, extendSlot, extendRef, config }) {
+        const queryBtn = config.query.btn || {};
+        const resetBtn = config.query.resetBtn || {};
+        const insertBtn = config.insert.btn || {};
         return (
             <FFormItem class="fesd-form-item-action">
-                <FButton type="primary" class="action-margin" onClick={() => handle()}>
-                    查询
-                </FButton>
+                {queryBtn.show && (
+                    <FButton type="primary" class="action-margin" onClick={() => handle()} {...queryBtn}>
+                        {queryBtn.text}
+                    </FButton>
+                )}
                 {extendRef?.openInsertModal && (
-                    <FButton type="primary" class="action-margin" onClick={() => extendRef.openInsertModal?.()}>
-                        新增
+                    <FButton type="primary" class="action-margin" onClick={() => extendRef.openInsertModal?.()} {...insertBtn}>
+                        {insertBtn.text}
                     </FButton>
                 )}
                 {extendSlot?.()}
-                <FButton onClick={() => reset()} class="action-margin">
-                    重置
-                </FButton>
+                {resetBtn.show && (
+                    <FButton onClick={() => reset()} class="action-margin" {...resetBtn}>
+                        {resetBtn.text}
+                    </FButton>
+                )}
             </FFormItem>
         );
     },
-    insertActionRender({ handle, reset, extendSlot }) {
+    insertActionRender({ handle, reset, extendSlot, config }) {
+        const saveBtn = config.insert.saveBtn || {};
+        const resetBtn = config.insert.resetBtn || {};
         return (
             <FFormItem class="fesd-form-item-action" label=" ">
-                <FButton type="primary" class="action-margin" onClick={() => handle()}>
-                    保存
-                </FButton>
+                {saveBtn.show && (
+                    <FButton type="primary" class="action-margin" onClick={() => handle()} {...saveBtn}>
+                        {saveBtn.text}
+                    </FButton>
+                )}
                 {extendSlot?.()}
-                <FButton onClick={() => reset()} class="action-margin">
-                    重置
-                </FButton>
+                {resetBtn.show && (
+                    <FButton onClick={() => reset()} class="action-margin" onClick={() => handle()} {...resetBtn}>
+                        {resetBtn.text}
+                    </FButton>
+                )}
+            </FFormItem>
+        );
+    },
+    updateActionRender({ handle, reset, extendSlot, config }) {
+        const saveBtn = config.update.saveBtn || {};
+        const resetBtn = config.update.resetBtn || {};
+        return (
+            <FFormItem class="fesd-form-item-action" label=" ">
+                {saveBtn.show && (
+                    <FButton type="primary" class="action-margin" onClick={() => handle()} {...saveBtn}>
+                        {saveBtn.text}
+                    </FButton>
+                )}
+                {extendSlot?.()}
+                {resetBtn.show && (
+                    <FButton onClick={() => reset()} class="action-margin" onClick={() => handle()} {...resetBtn}>
+                        {resetBtn.text}
+                    </FButton>
+                )}
             </FFormItem>
         );
     },
@@ -282,36 +314,41 @@ export default definePreset({
                         return <FTableColumn {...col} ellipsis v-slots={colSlot}></FTableColumn>;
                     })}
                 </FTable>
-                <div class="fesd-koala-pagination">
-                    <FPagination
-                        ref={pagerRef}
-                        v-model={[pagerModel.current, 'currentPage']}
-                        pageSize={pagerModel.pageSize}
-                        totalCount={pagerModel.total}
-                        onChange={pagerModel.onChange}
-                        onPageSizeChange={pagerModel.onPageSizeChange}
-                        {...pagerProps}
-                    ></FPagination>
-                </div>
+                {pagerModel.show && (
+                    <div class="fesd-koala-pagination">
+                        <FPagination
+                            ref={pagerRef}
+                            v-model={[pagerModel.current, 'currentPage']}
+                            pageSize={pagerModel.pageSize}
+                            totalCount={pagerModel.total}
+                            onChange={pagerModel.onChange}
+                            onPageSizeChange={pagerModel.onPageSizeChange}
+                            {...pagerProps}
+                        ></FPagination>
+                    </div>
+                )}
             </>
         );
     },
-    tableActionsRender({ openUpdateModal, openViewModal, openDeleteModal, record }, extendSlot) {
+    tableActionsRender({ openUpdateModal, openViewModal, openDeleteModal, record, config }, extendSlot) {
+        const updateBtn = config?.update.btn || {};
+        const deleteBtn = config?.delete.btn || {};
+        const viewBtn = config?.view.btn || {};
         return (
             <>
                 {openUpdateModal && (
-                    <FButton type="link" onClick={() => openUpdateModal(record?.row)}>
-                        更新
+                    <FButton type="link" onClick={() => openUpdateModal(record?.row)} {...updateBtn}>
+                        {updateBtn.text}
                     </FButton>
                 )}
                 {openViewModal && (
-                    <FButton type="link" onClick={() => openViewModal(record?.row)}>
-                        详情
+                    <FButton type="link" onClick={() => openViewModal(record?.row)} {...viewBtn}>
+                        {viewBtn.text}
                     </FButton>
                 )}
                 {openDeleteModal && (
-                    <FButton type="link" onClick={() => openDeleteModal(record?.row)}>
-                        删除
+                    <FButton type="link" onClick={() => openDeleteModal(record?.row)} {...deleteBtn}>
+                        {deleteBtn.text}
                     </FButton>
                 )}
                 {extendSlot()}

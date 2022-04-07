@@ -15,6 +15,7 @@ export default {
     components: { KoalaForm, FButton },
     setup() {
         const { fields, config } = useUser();
+        // config.insert.btn.type = 'success';
         const { render, actions } = usePage(fields, config);
         return {
             render,

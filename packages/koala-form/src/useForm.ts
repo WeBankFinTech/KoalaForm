@@ -6,7 +6,7 @@ import { isUndefined, merge } from 'lodash-es';
 import { getOptions, isFunction } from './utils';
 
 function mergeRule(field: BaseField) {
-    const _rules = getFieldProp(field.rules)
+    const _rules = getFieldProp(field.rules);
     if (field.required || _rules) {
         const rules = !_rules ? [] : Array.isArray(_rules) ? [..._rules] : [_rules];
         if (rules.includes((rule: { required: boolean }) => rule.required)) {
@@ -38,15 +38,15 @@ export default function useForm(fields: Array<Field> = [], type: ACTION_TYPES) {
     let initForm: Record<string, any> = {};
 
     // 规则和字段解析
-    travelFields(fields, type, field => {
+    travelFields(fields, type, (field) => {
         if (!field.status) return;
         model[field.name || ''] = null;
         rulesRef[field.name || ''] = mergeRule(field);
-    })
+    });
 
     const formItemRender = (slots: Slots): VNodeChild => {
         const formItems: VNodeChild = [];
-        travelFields(fields, type, field => {
+        travelFields(fields, type, (field) => {
             // 不在model的字段或者hidden字段跳过
             if (!Object.prototype.hasOwnProperty.call(model, field.name || '') || field.status === 'hidden' || !field.status) {
                 return;
@@ -63,13 +63,13 @@ export default function useForm(fields: Array<Field> = [], type: ACTION_TYPES) {
             const typeSlotKey = `${type}_${field.name}`;
             const formSlotKey = `formItem_${field.name}`;
             const typeFormItemSlotKey = `${type}_formItem_${field.name}`;
-    
+
             // 内部解析
             let slot: any = () => {
                 const vNode = _preset.formItemFieldRender?.(field, slotParams) as VNode;
                 return [vNode];
             };
-    
+
             if (isFunction(slots?.[typeSlotKey])) {
                 // 按类型的slot
                 slot = slots[typeSlotKey];
@@ -86,7 +86,7 @@ export default function useForm(fields: Array<Field> = [], type: ACTION_TYPES) {
                 return;
             }
             formItems.push(_preset.formItemRender?.(() => slot?.(slotParams), field, type));
-        })
+        });
         return formItems;
     };
 
@@ -134,7 +134,7 @@ export default function useForm(fields: Array<Field> = [], type: ACTION_TYPES) {
     const setFormProps = (value: Record<string, any>) => {
         if (!value) return;
         Object.assign(formProps, value);
-    }
+    };
 
     initFields(model);
 

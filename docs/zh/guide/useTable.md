@@ -72,6 +72,8 @@ setPagerValue({
         setPagerValue({ current });
     },
 })
+
+setPagerValue({ show: false }) // 隐藏分页
 ```
 ## Render slots
 render方法实际是依赖`preset.tableRender`的实现；在特殊情况下，我们需要支持自定义扩展字段，而render函数的参数slots提供了支持，slots会透传给`preset.tableRender`，怎么支持看具体preset实现，这些建议的slot如下：

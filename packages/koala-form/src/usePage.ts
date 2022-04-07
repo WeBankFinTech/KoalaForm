@@ -45,6 +45,7 @@ export default function usePage(fields: Array<Field>, config: Config) {
                 openViewModal: actions.view?.open,
                 openDeleteModal: actions.delete?.open,
                 record,
+                config,
             };
             // table的操作列name === 'actions'时，定制全部行操作
             if (slots.table_actions && isFunction(slots.table_actions)) {
