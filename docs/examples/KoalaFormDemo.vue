@@ -1,38 +1,38 @@
 <template>
     <KoalaForm :fields="fields" :config="config">
-        <template #id="{model}">
-            <a>id slot：{{model.id}}</a>
+        <template #id="{ model }">
+            <a>id slot：{{ model.id }}</a>
         </template>
-        <template #query_id="{model}">
-            <FInput v-model="model.id" placeholder="query_id slot"/>
+        <template #query_id="{ model }">
+            <FInput v-model="model.id" placeholder="query_id slot" />
         </template>
 
-        <template #formItem_name="{model}">
+        <template #formItem_name="{ model }">
             <FFormItem label="formItem_name slot：">
-                <FInput v-model="model.name" placeholder="formItem_name slot"/>
+                <FInput v-model="model.name" placeholder="formItem_name slot" />
             </FFormItem>
         </template>
 
-        <template #insert_formItem_name="{model}">
+        <template #insert_formItem_name="{ model }">
             <FFormItem label="insert_formItem_name slot：">
-                <FInput v-model="model.name" placeholder="insert_formItem_name slot"/>
+                <FInput v-model="model.name" placeholder="insert_formItem_name slot" />
             </FFormItem>
         </template>
 
-        <template #extend_items="{model}">
+        <template #extend_items="{ model }">
             <FFormItem label="extend_items slot：">
-                <FInput v-model="model.extend" placeholder="extend_items slot"/>
+                <FInput v-model="model.extend" placeholder="extend_items slot" />
             </FFormItem>
         </template>
 
-        <template #insert_extend_items="{model}">
+        <template #insert_extend_items="{ model }">
             <FFormItem label="insert_extend_items slot：">
-                <FInput v-model="model.extend" placeholder="insert_extend_items slot"/>
+                <FInput v-model="model.extend" placeholder="insert_extend_items slot" />
             </FFormItem>
         </template>
 
         <template #table_id="{ cellValue }">
-            <a>table_id slot：{{cellValue}}</a>
+            <a>table_id slot：{{ cellValue }}</a>
         </template>
 
         <template #table_id_header>
@@ -60,7 +60,6 @@
         <!-- <template #table_actions>
             <FButton type="link">table_actions slot</FButton>
         </template> -->
-
     </KoalaForm>
 </template>
 

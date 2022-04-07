@@ -172,6 +172,7 @@ export class Preset {
             onOk: Function;
             onCancel: Function;
         },
+        footerSlot?: Slot,
     ): VNodeChild {
         console.warn('preset.modalRender未提供实现！');
         return null;
@@ -184,6 +185,7 @@ export class Preset {
             onOk: Function;
             onCancel: Function;
         },
+        footerSlot?: Slot,
     ): VNodeChild {
         console.warn('preset.drawerRender未提供实现！');
         return null;

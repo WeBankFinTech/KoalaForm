@@ -1,7 +1,7 @@
 import { Config } from './config';
 import { Field, travelFields } from './field';
 import useFormAction from './useFormAction';
-import { VNodeChild, Slots, reactive, VNode, watch } from 'vue';
+import { VNodeChild, Slots, reactive, VNode, watch, Slot } from 'vue';
 import { ACTION_TYPES } from './const';
 import { _preset } from './preset';
 import { merge, isFunction } from 'lodash-es';
@@ -78,19 +78,22 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
                 // 避免使用preset的actions渲染
                 newSlots.extend_items = () => [];
             }
+            delete newSlots[`${type}_action`];
             return formActionRender(newSlots) as VNode[];
         };
+        const typeActionSlot = slots[`${type}_action`] as Slot;
         const param = {
             modalModel,
             modalProps,
             onOk: handleOk,
             onCancel: handleCancel,
         };
+        const footerSlot = isFunction(typeActionSlot) ? () => typeActionSlot(param) : undefined;
         switch (config.modalMode) {
             case 'drawer':
-                return drawerRender?.(slot, param);
+                return drawerRender?.(slot, param, footerSlot);
             default:
-                return modalRender?.(slot, param);
+                return modalRender?.(slot, param, footerSlot);
         }
     };
 

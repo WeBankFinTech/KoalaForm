@@ -359,7 +359,11 @@ export default definePreset({
             </>
         );
     },
-    modalRender(defaultSlot, { modalModel, onOk, onCancel, modalProps }) {
+    modalRender(defaultSlot, { modalModel, onOk, onCancel, modalProps }, footerSlot) {
+        const slots = {
+            default: defaultSlot,
+            footer: footerSlot,
+        };
         return (
             <FModal
                 show={modalModel.visible}
@@ -369,13 +373,17 @@ export default definePreset({
                 cancelText={modalModel.cancelText || undefined}
                 onOk={() => onOk()}
                 onCancel={() => onCancel()}
+                v-slots={slots}
                 {...modalProps}
-            >
-                {defaultSlot()}
-            </FModal>
+            />
         );
     },
-    drawerRender(defaultSlot, { modalModel, onOk, onCancel, modalProps }) {
+    drawerRender(defaultSlot, { modalModel, onOk, onCancel, modalProps }, footerSlot) {
+        const slots = {
+            default: defaultSlot,
+            footer: footerSlot,
+        };
+        debugger;
         return (
             <FDrawer
                 show={modalModel.visible}
@@ -386,10 +394,9 @@ export default definePreset({
                 onOk={() => onOk()}
                 onCancel={() => onCancel()}
                 footer={true}
+                v-slots={slots}
                 {...modalProps}
-            >
-                {defaultSlot()}
-            </FDrawer>
+            />
         );
     },
     pageRender(defaultSlot) {
