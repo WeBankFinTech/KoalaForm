@@ -1,9 +1,10 @@
 import { reactive, Slots, VNodeChild, VNode, ref, Ref, Slot } from 'vue';
 import { BaseField, Field, travelFields, getFieldProp } from './field';
-import { _preset } from './preset';
+import { _preset as preset } from './preset';
 import { ACTION_TYPES } from './const';
 import { isUndefined, merge } from 'lodash-es';
 import { getOptions, isFunction } from './utils';
+import { KoalaFormRender, ReactiveModel, UseFormResult } from './type';
 
 function mergeRule(field: BaseField) {
     const _rules = getFieldProp(field.rules);
@@ -30,21 +31,21 @@ function mergeRule(field: BaseField) {
 // 1. name=字段名，slot指向的是formItem内容，会用在所有匹配的表单上
 // 3. name=formItem_字段名，name=type_formItem_字段名，slot指向的是formItem
 // 2. name=type_字段名，slot指向的是formItem内容，会用在对应的表单上，如type=‘query’，会用在查询的表单上
-export default function useForm(fields: Array<Field> = [], type: ACTION_TYPES) {
-    const model: Record<string, any> = reactive({});
-    const formProps: Record<string, any> = reactive({});
-    const rulesRef: Record<string, any> = reactive({});
+export default function useForm(fields: Array<Field> = [], type: ACTION_TYPES): UseFormResult {
+    const model: ReactiveModel = reactive({});
+    const formProps: ReactiveModel = reactive({});
+    const rules: ReactiveModel = reactive({});
     const formRef: Ref<any> = ref(null);
-    let initForm: Record<string, any> = {};
+    let initForm: ReactiveModel = {};
 
     // 规则和字段解析
     travelFields(fields, type, (field) => {
         if (!field.status) return;
         model[field.name || ''] = null;
-        rulesRef[field.name || ''] = mergeRule(field);
+        rules[field.name || ''] = mergeRule(field);
     });
 
-    const formItemRender = (slots: Slots): VNodeChild => {
+    const formItemRender: KoalaFormRender = (slots) => {
         const formItems: VNodeChild = [];
         travelFields(fields, type, (field) => {
             // 不在model的字段或者hidden字段跳过
@@ -52,12 +53,13 @@ export default function useForm(fields: Array<Field> = [], type: ACTION_TYPES) {
                 return;
             }
             const slotParams = {
+                field,
                 type,
                 model,
-                rulesRef,
+                rules,
                 props: getFieldProp(field.props),
                 disabled: type === 'view' ? true : field.status === 'disabled',
-                options: getOptions(_preset, field),
+                options: getOptions(preset, field),
             };
             const slotKey = `${field.name}`;
             const typeSlotKey = `${type}_${field.name}`;
@@ -66,7 +68,7 @@ export default function useForm(fields: Array<Field> = [], type: ACTION_TYPES) {
 
             // 内部解析
             let slot: any = () => {
-                const vNode = _preset.formItemFieldRender?.(field, slotParams) as VNode;
+                const vNode = preset.formItemFieldRender?.(slotParams) as VNode;
                 return [vNode];
             };
 
@@ -85,12 +87,12 @@ export default function useForm(fields: Array<Field> = [], type: ACTION_TYPES) {
                 formItems.push(slots[formSlotKey]?.(slotParams));
                 return;
             }
-            formItems.push(_preset.formItemRender?.(() => slot?.(slotParams), field, type));
+            formItems.push(preset.formItemRender?.(() => slot?.(slotParams), field, type));
         });
         return formItems;
     };
 
-    const render = (slots: Slots): VNodeChild => {
+    const render: KoalaFormRender = (slots) => {
         const slot = () => {
             let vNodes = formItemRender(slots) as VNode[];
             if (slots[`${type}_extend_items`]) {
@@ -100,9 +102,9 @@ export default function useForm(fields: Array<Field> = [], type: ACTION_TYPES) {
             }
             return vNodes;
         };
-        return _preset.formRender?.(slot, {
+        return preset.formRender?.(slot, {
             formRef,
-            rulesRef,
+            rulesRef: {},
             model,
             type,
             props: formProps,
@@ -123,12 +125,12 @@ export default function useForm(fields: Array<Field> = [], type: ACTION_TYPES) {
     };
 
     const resetFields = () => {
-        _preset.formReset?.(formRef);
+        preset.formReset?.(formRef);
         setFields(initForm || {});
     };
 
     const validate = async (nameList?: string[]) => {
-        return _preset.formValidate?.(formRef, nameList);
+        return preset.formValidate?.(formRef, nameList);
     };
 
     const setFormProps = (value: Record<string, any>) => {
@@ -140,8 +142,8 @@ export default function useForm(fields: Array<Field> = [], type: ACTION_TYPES) {
 
     return {
         model,
+        rules,
         formRef,
-        rulesRef,
         formProps,
         render,
         formItemRender,

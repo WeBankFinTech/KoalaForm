@@ -94,7 +94,7 @@ export default definePreset({
                 break;
         }
     },
-    formItemFieldRender(field, { model, disabled, props, options } = {}) {
+    formItemFieldRender({ model, disabled, props, options, field }) {
         if (!model || !field) return;
         let body;
         const opts = unref(options);
@@ -150,9 +150,10 @@ export default definePreset({
     },
     formItemRender(defaultSlot, field, type) {
         if (!field || typeof defaultSlot !== 'function') return;
+        const label = field.label ? field.label + ':' : undefined;
         return (
             <FGridItem span={field.span || 24}>
-                <FFormItem label={field.label + ':'} prop={field.name}>
+                <FFormItem label={label} prop={field.name}>
                     {defaultSlot()}
                 </FFormItem>
             </FGridItem>

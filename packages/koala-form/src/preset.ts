@@ -4,6 +4,7 @@ import { Slots, Slot, VNodeChild, Ref } from 'vue';
 import { merge } from 'lodash';
 import { ACTION_TYPES, Pager } from './const';
 import { Config } from './config';
+import { ReactiveModel, PresetRender } from './type';
 export class Preset {
     constructor(preset?: Preset) {
         merge(this, preset);
@@ -46,18 +47,14 @@ export class Preset {
      * @param field 字段定义
      * @param opt
      */
-    formItemFieldRender?(
-        field?: BaseField,
-        opt?: {
-            model?: Record<string, any>;
-            type?: string;
-            disabled?: boolean;
-            props?: any;
-            options?: any;
-        },
-    ): VNodeChild {
-        return null;
-    }
+    formItemFieldRender: PresetRender<{
+        field: BaseField;
+        model: ReactiveModel;
+        type?: string;
+        props?: any;
+        options?: any;
+        disabled?: boolean;
+    }> = (opt) => null;
     /**
      * FormItem渲染
      * @param field 字段定义

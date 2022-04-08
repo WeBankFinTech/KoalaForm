@@ -44,7 +44,6 @@ defineConfig({
 继承`ActionConfig`
 | 属性         | 说明                    | 类型              | 默认值                |
 | ------------ | ----------------------- | ----------------- | --------------------- 
-name | 动作按钮对应的名字 | `string` `VNode` | "查询"
 queryAfterReset | 是否开启重置之后调用查询 | ` boolean`
 firstAutoQuery | 是否开启首次调用 | ` RequestMethod`
 resetBtn | 重置按钮配置 | `BtnProp`
