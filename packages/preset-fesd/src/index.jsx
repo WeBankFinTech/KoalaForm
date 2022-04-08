@@ -383,7 +383,6 @@ export default definePreset({
             default: defaultSlot,
             footer: footerSlot,
         };
-        debugger;
         return (
             <FDrawer
                 show={modalModel.visible}

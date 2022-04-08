@@ -26,10 +26,12 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
         }
         switch (type) {
             case 'insert':
+                form.initFields(model);
+                break;
             case 'update':
             case 'view':
                 reset();
-                form.initFields(model);
+                form.setFields(model);
                 break;
         }
         modalModel.title = `${config.name || ''}${config[type]?.btn?.text}`;

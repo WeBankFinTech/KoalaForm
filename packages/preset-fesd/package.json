@@ -1,6 +1,6 @@
 {
   "name": "@koala-form/preset-fesd",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "koala form preset for fes design",
   "main": "dist/index.js",
   "author": "aringlai",
