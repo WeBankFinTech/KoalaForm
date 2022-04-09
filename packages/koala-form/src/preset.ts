@@ -4,7 +4,7 @@ import { Slots, Slot, VNodeChild, Ref } from 'vue';
 import { merge } from 'lodash';
 import { ACTION_TYPES, Pager } from './const';
 import { Config } from './config';
-import { ReactiveModel, PresetRender } from './type';
+import { ReactiveModel, PresetRenderFunction, TypeActionRenderFunction, BtnProps } from './types';
 export class Preset {
     constructor(preset?: Preset) {
         merge(this, preset);
@@ -42,44 +42,45 @@ export class Preset {
     formatToReqParams?(data: Record<string, any>, field: BaseField): Record<string, any> {
         return data;
     }
+    buttonRender: PresetRenderFunction<BtnProps, { default?: Slot }> = (params, slots) => slots?.default?.(params);
     /**
      * FormItem内容的渲染
-     * @param field 字段定义
-     * @param opt
      */
-    formItemFieldRender: PresetRender<{
+    formItemFieldRender: PresetRenderFunction<{
         field: BaseField;
         model: ReactiveModel;
-        type?: string;
-        props?: any;
-        options?: any;
-        disabled?: boolean;
-    }> = (opt) => null;
+        type: ACTION_TYPES;
+        props: ReactiveModel;
+        options: any;
+        disabled: boolean;
+    }> = () => null;
     /**
      * FormItem渲染
-     * @param field 字段定义
-     * @param defaultSlot FormItem内容的slot
      */
-    formItemRender?(defaultSlot?: Slot, field?: BaseField, type?: string): VNodeChild {
-        return null;
-    }
+    formItemRender: PresetRenderFunction<
+        {
+            field: BaseField;
+            type: ACTION_TYPES;
+        },
+        {
+            default: Slot;
+        }
+    > = () => null;
     /**
      * 表单渲染
-     * @param defaultSlot 表单内容的slot
-     * @param opt
      */
-    formRender?(
-        defaultSlot: Slot,
-        opt?: {
-            model?: Record<string, any>;
-            formRef?: Ref<any>;
-            rulesRef?: Record<string, any>;
+    formRender: PresetRenderFunction<
+        {
+            model: ReactiveModel;
+            formRef: ReactiveModel;
+            rules: ReactiveModel;
             type: ACTION_TYPES;
-            props: Record<string, any>;
+            props: ReactiveModel;
         },
-    ): VNodeChild {
-        return null;
-    }
+        {
+            default: Slot;
+        }
+    > = () => null;
     formReset?(formRef: Ref<any>): void {
         formRef.value?.resetFields();
     }
@@ -96,36 +97,6 @@ export class Preset {
         return Promise.reject('preset.request未提供实现！');
     }
     /**
-     * 查询表单的操作的渲染
-     * @param params
-     */
-    queryActionRender?(params: {
-        /** 执行请求 */
-        handle: Function;
-        /** 重置表单 */
-        reset: Function;
-        extendRef?: {
-            openInsertModal?: Function;
-        };
-        config: Config;
-        /** 操作扩展slot */
-        extendSlot?: Slot;
-    }): VNodeChild {
-        return params.extendSlot?.();
-    }
-    insertActionRender?(params: { handle: Function; reset: Function; extendRef?: Record<string, any>; config: Config; extendSlot?: Slot }): VNodeChild {
-        return params.extendSlot?.();
-    }
-    updateActionRender?(params: { handle: Function; reset: Function; extendRef?: Record<string, any>; config: Config; extendSlot?: Slot }): VNodeChild {
-        return params.extendSlot?.();
-    }
-    deleteActionRender?(params: { handle: Function; reset: Function; extendRef?: Record<string, any>; config: Config; extendSlot?: Slot }): VNodeChild {
-        return params.extendSlot?.();
-    }
-    viewActionRender?(params: { handle: Function; reset: Function; extendRef?: Record<string, any>; config: Config; extendSlot?: Slot }): VNodeChild {
-        return params.extendSlot?.();
-    }
-    /**
      * 定义列表的列定义
      * @param field 字段定义
      * @param options 字段需要匹配的options
@@ -134,62 +105,54 @@ export class Preset {
     defineTableColumn?(field: BaseField, options?: any): Record<string, any> {
         return {};
     }
-    tableRender?(
-        slots: Slots,
-        opt: {
-            columns: any[];
-            tableModel: Ref<Record<string, any>[]>;
-            tableProps: Record<string, any>;
-            pagerProps: Record<string, any>;
-            pagerModel: Pager;
-            rowKey?: string;
-            tableRef: Ref;
-            pagerRef: Ref;
+    tableRender: PresetRenderFunction<{
+        columns: Record<string, any>[];
+        tableDataRef: Ref<Record<string, any>[]>;
+        tableProps: ReactiveModel;
+        pagerProps: ReactiveModel;
+        pagerModel: ReactiveModel<Pager>;
+        rowKey?: string;
+        tableRef: Ref;
+        pagerRef: Ref;
+    }> = () => null;
+    modalRender: PresetRenderFunction<
+        {
+            modalModel: ReactiveModel;
+            modalProps: ReactiveModel;
+            onOk: () => void;
+            onCancel: () => void;
         },
-    ): VNodeChild {
-        return null;
-    }
-    tableActionsRender?(
-        params: {
-            record: Record<string, any>;
-            openUpdateModal?(data?: Record<string, any>): Promise<void>;
-            openViewModal?(data?: Record<string, any>): Promise<void>;
-            openDeleteModal?(data?: Record<string, any>): Promise<void>;
-            config?: Config;
-        },
-        extendSlot?: Slot,
-    ): VNodeChild {
-        return null;
-    }
-    modalRender?(
-        defaultSlot: Slot,
-        params: {
-            modalModel: Record<string, any>;
-            modalProps: Record<string, any>;
-            onOk: Function;
-            onCancel: Function;
-        },
-        footerSlot?: Slot,
-    ): VNodeChild {
+        {
+            default: Slot;
+            footer: Slot;
+        }
+    > = () => {
         console.warn('preset.modalRender未提供实现！');
         return null;
-    }
-    drawerRender?(
-        defaultSlot: Slot,
-        params: {
-            modalModel: Record<string, any>;
-            modalProps: Record<string, any>;
-            onOk: Function;
-            onCancel: Function;
+    };
+    drawerRender: PresetRenderFunction<
+        {
+            modalModel: ReactiveModel;
+            modalProps: ReactiveModel;
+            onOk: () => void;
+            onCancel: () => void;
         },
-        footerSlot?: Slot,
-    ): VNodeChild {
+        {
+            default: Slot;
+            footer: Slot;
+        }
+    > = () => {
         console.warn('preset.drawerRender未提供实现！');
         return null;
-    }
-    pageRender?(defaultSlot: Slot): VNodeChild {
-        return defaultSlot?.();
-    }
+    };
+    pageRender: PresetRenderFunction<
+        Record<string, any>,
+        {
+            default: Slot;
+        }
+    > = (param, slots) => {
+        return slots?.default?.();
+    };
     confirm?(params: { title?: string; content?: string; onOk?: Function; onCancel?: Function }): void {
         console.warn('preset.confirm未提供实现！');
     }

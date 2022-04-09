@@ -1,11 +1,8 @@
 import { merge } from 'lodash-es';
+import { BtnProps } from './types';
 import { Pager } from './const';
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-interface BtnProps extends Record<string, any> {
-    show?: Boolean;
-    text?: String;
-}
 interface ActionConfig {
     /** 按钮属性 */
     btn?: BtnProps;

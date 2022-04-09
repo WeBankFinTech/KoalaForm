@@ -1,5 +1,6 @@
 import { Ref } from 'vue';
 import { merge, isFunction, mergeWith, isBoolean } from 'lodash-es';
+import { Field_TYPE } from '.';
 
 /**
  * 字段状态，
@@ -9,10 +10,6 @@ import { merge, isFunction, mergeWith, isBoolean } from 'lodash-es';
  * - disabled 使用可见，但页面不能点击
  */
 type FIELD_STATUS_TYPE = boolean | 'hidden' | 'disabled';
-
-/** 字段类型 */
-type Field_TYPE = 'text' | 'input' | 'number' | 'select' | 'date' | 'dateTime' | 'dates' | 'dateTimes' | 'radio' | 'checkbox' | 'switch' | 'time';
-
 export interface BaseField {
     /** 字段状态 */
     status?: FIELD_STATUS_TYPE;

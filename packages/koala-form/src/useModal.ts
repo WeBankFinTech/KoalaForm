@@ -1,15 +1,16 @@
 import { Config } from './config';
 import { Field, travelFields } from './field';
 import useFormAction from './useFormAction';
-import { VNodeChild, Slots, reactive, VNode, watch, Slot } from 'vue';
+import { reactive, VNode, watch, Slot } from 'vue';
 import { ACTION_TYPES } from './const';
 import { _preset } from './preset';
 import { merge, isFunction } from 'lodash-es';
+import { ReactiveModel, KoalaFormRenderFunction, UseModalResult } from './types';
 
-export default function useModal(fields: Array<Field>, config: Config, type: ACTION_TYPES, handleQuery?: Function) {
+export default function useModal(fields: Array<Field>, config: Config, type: ACTION_TYPES, handleQuery?: Function): UseModalResult {
     const { formatToEdit, confirm, modalRender, drawerRender } = _preset;
     let hasFirstRender = false; // 是否已经首次渲染过
-    const modalModel = reactive({
+    const modalModel: ReactiveModel = reactive({
         visible: false,
         title: '',
         okText: '',
@@ -17,7 +18,7 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
     });
 
     const modalProps: Record<string, any> = reactive({});
-    const { form, reset, handle, respModel, render: formActionRender } = useFormAction(fields, config, type);
+    const formAction = useFormAction(fields, config, type);
 
     const open = async (data?: Record<string, any>) => {
         const model = merge({}, data);
@@ -26,12 +27,12 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
         }
         switch (type) {
             case 'insert':
-                form.initFields(model);
+                formAction.form.initFields(model);
                 break;
             case 'update':
             case 'view':
-                reset();
-                form.setFields(model);
+                formAction.handleReset();
+                formAction.form.setFields(model);
                 break;
         }
         modalModel.title = `${config.name || ''}${config[type]?.btn?.text}`;
@@ -41,7 +42,7 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
                 title: modalModel.title,
                 content: config[type]?.getMessage?.(model || {}),
                 onOk() {
-                    handle(data);
+                    formAction.handleAction(data);
                 },
             });
         }
@@ -55,58 +56,61 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
         if (type === 'view') {
             handleCancel();
         } else {
-            handle();
+            formAction.handleAction();
         }
     };
 
-    const setModalProps = (value: Record<string, any>) => {
+    const setModalProps = (value?: Record<string, any>) => {
         if (!value) return;
         Object.assign(modalProps, value);
     };
 
-    watch(respModel, (resp) => {
+    watch(formAction.actionRespRef, (resp) => {
         if (resp) {
             handleCancel();
             config[type]?.['queryAfterSuccess'] && handleQuery?.();
         }
     });
 
-    const render = (slots: Slots): VNodeChild => {
+    const render: KoalaFormRenderFunction = (slots) => {
         if (!hasFirstRender && !modalModel.visible) return [];
-        hasFirstRender = true;
-        const slot = () => {
-            const newSlots = { ...slots };
-            if (!newSlots.extend_items) {
-                // 避免使用preset的actions渲染
-                newSlots.extend_items = () => [];
-            }
-            delete newSlots[`${type}_action`];
-            return formActionRender(newSlots) as VNode[];
-        };
         const typeActionSlot = slots[`${type}_action`] as Slot;
+        hasFirstRender = true;
+        const modelSlots = {
+            default() {
+                const newSlots = { ...slots };
+                if (!newSlots.extend_items) {
+                    // 避免使用preset的actions渲染
+                    newSlots.extend_items = () => [];
+                }
+                delete newSlots[`${type}_action`];
+                return formAction.render(newSlots) as VNode[];
+            },
+            footer: isFunction(typeActionSlot) ? () => typeActionSlot(param) : undefined,
+        };
         const param = {
             modalModel,
             modalProps,
             onOk: handleOk,
             onCancel: handleCancel,
         };
-        const footerSlot = isFunction(typeActionSlot) ? () => typeActionSlot(param) : undefined;
         switch (config.modalMode) {
             case 'drawer':
-                return drawerRender?.(slot, param, footerSlot);
+                return drawerRender(param, modelSlots);
             default:
-                return modalRender?.(slot, param, footerSlot);
+                return modalRender(param, modelSlots);
         }
     };
 
     return {
-        form,
+        form: formAction.form,
+        formAction,
         modalModel,
         modalProps,
-        setModalProps,
-        handleCancel,
-        handleOk,
         open,
         render,
+        handleOk,
+        handleCancel,
+        setModalProps,
     };
 }

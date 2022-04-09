@@ -1,95 +1,118 @@
+import { merge, isUndefined } from 'lodash-es';
+import { VNode, ref, Slot, onMounted, Ref } from 'vue';
 import useForm from './useForm';
 import { Config } from './config';
-import { Field } from './field';
-import { Slots, VNodeChild, VNode, ref, Slot, onMounted, Ref, reactive } from 'vue';
-import { _preset, Preset } from './preset';
-import { ACTION_TYPES, Pager } from './const';
 import { isFunction } from './utils';
-import { merge, isUndefined } from 'lodash-es';
-import { travelFields } from '.';
+import { Field, travelFields } from './field';
+import { ACTION_TYPES } from './const';
+import { _preset as preset } from './preset';
+import { HandleActionFunction, KoalaFormRenderFunction, UseFormActionResult, TypeActionRenderFunction } from './types';
+import { BtnProps } from '.';
 
-export default function useFormAction(fields: Array<Field>, config: Config, type: ACTION_TYPES) {
+export default function useFormAction(fields: Array<Field>, config: Config, type: ACTION_TYPES): UseFormActionResult {
     const form = useForm(fields, type);
+    const actionRespRef: Ref<Record<string, any> | null> = ref({});
+    const actionErrorRef: Ref<Record<string, any> | null> = ref(null);
 
-    const respModel: Ref<Record<string, any> | null> = ref({});
-    const errorRef = ref(null);
-    const extendRef: {
-        pagerModel?: Pager;
-        openInsertModal?(data?: Record<string, any>): Promise<void>;
-    } = reactive({});
-
-    const handle = async (extend?: Record<string, any>, currentPage?: number) => {
+    const handleAction: HandleActionFunction = async (extend, currentPage) => {
         const cfg = config[type];
         if (!cfg?.api) {
             throw new Error(`${type} api is need!`);
         }
         try {
-            respModel.value = null;
+            actionRespRef.value = null;
             await form.validate();
             let params: Record<string, any> = {};
             merge(params, form.model, extend || {});
-            if (type === 'query' && extendRef.pagerModel) {
-                extendRef.pagerModel.current = currentPage || 1;
-                params.pager = {
-                    current: extendRef.pagerModel.current,
-                    pageSize: extendRef.pagerModel.pageSize,
-                };
+            if (type === 'query') {
+                // 设置pager
+                params.pager = { current: currentPage || 1 };
             }
 
-            if (isFunction(_preset.formatToReqParams)) {
-                travelFields(fields, type, (field) => _preset.formatToReqParams?.(params, field));
+            if (isFunction(preset.formatToReqParams)) {
+                travelFields(fields, type, (field) => preset.formatToReqParams?.(params, field));
             }
 
             if (cfg.before) {
                 params = await cfg.before(params);
             }
-            let resp = await _preset.request?.(cfg.api, params, {
+            let resp = await preset.request?.(cfg.api, params, {
                 method: cfg.method,
             });
             resp = await cfg.success?.(resp);
-            respModel.value = resp || true;
-            cfg.successTip && _preset.message?.success?.(`${cfg.btn?.text}成功`, 3);
+            actionRespRef.value = resp || true;
+            cfg.successTip && preset.message?.success?.(`${cfg.btn?.text}成功`, 3);
             return resp;
         } catch (error: any) {
             await cfg.error?.(error);
             if (!isUndefined(error.valid) && !error.valid && cfg['validMessage']) {
-                _preset.message?.warning?.(cfg['validMessage'], 3);
+                preset.message?.warning?.(cfg['validMessage'], 3);
                 console.error(error);
                 return;
             }
-            errorRef.value = error;
+            actionErrorRef.value = error;
             throw error;
         }
     };
 
-    const reset = () => {
+    const handleReset = () => {
         form.resetFields();
         if (type === 'query' && config.query?.queryAfterReset) {
-            handle();
+            handleAction();
         }
     };
 
     onMounted(() => {
         if (type === 'query' && config.query?.firstAutoQuery) {
-            handle();
+            handleAction();
         }
     });
+
+    const defaultTypeActionRender: TypeActionRenderFunction = (param, slots) => {
+        const typeConfig = config[type];
+        const actionBtnProps: BtnProps = {
+            type: 'primary',
+            onClick: param.handleAction,
+        };
+        const btn: BtnProps = Object.assign(actionBtnProps, typeConfig?.btn);
+        const saveBtn: BtnProps = Object.assign(actionBtnProps, typeConfig?.['saveBtn']);
+        const resetBtn: BtnProps = Object.assign({ onClick: param.handleReset }, typeConfig?.['resetBtn']);
+
+        const vNodes = [];
+        if (type === 'query' && (typeConfig?.open || btn?.show)) {
+            // 查询按钮
+            vNodes.push(preset.buttonRender(btn));
+        } else if (saveBtn?.show) {
+            // 保存表单按钮
+            vNodes.push(preset.buttonRender(saveBtn));
+        }
+        if (slots?.extendAction) {
+            // 扩展按钮
+            vNodes.push(slots.extendAction());
+        }
+        if (resetBtn.show) {
+            // 重置表单
+            vNodes.push(preset.buttonRender(resetBtn));
+        }
+        return vNodes;
+    };
+
     /**
      * - slots.[type]Action 自定义动作
      * - slots.[type]ActionExtend 基于preset的自定义动作的扩展
      * @param slots
      * @returns
      */
-    const render = (slots: Slots): VNodeChild => {
-        const params = { handle, reset, extendRef, config };
+    const render: KoalaFormRenderFunction = (slots) => {
+        const params = { handleAction, handleReset };
         const newSlots = { ...slots };
         const typeActionsSlot = slots[`${type}_action`] as Slot; // 覆盖preset的typeActionRender
         const typeActionsExtendSlot = slots[`${type}_action_extend`] as Slot; // 在typeActionRender中扩展
-        const typeActionRender = _preset[`${type}ActionRender` as keyof Preset] as Function;
         const extendItems = slots.extend_items as Slot;
         const typeExtendItems = slots[`${type}_extend_items`] as Slot;
 
         if (isFunction(typeActionsExtendSlot)) {
+            // 存在动作类型的扩展按钮自定义Slot时，将自定义的插入到默认渲染按钮中
             newSlots[`${type}_extend_items`] = () => {
                 let vNodes: VNode[] = [];
                 if (isFunction(typeExtendItems)) {
@@ -97,15 +120,14 @@ export default function useFormAction(fields: Array<Field>, config: Config, type
                 } else if (isFunction(extendItems)) {
                     vNodes = vNodes.concat(extendItems({ model: form.model, type }));
                 }
-                if (isFunction(typeActionRender)) {
-                    vNodes = vNodes.concat(typeActionRender({ ...params, extendSlot: () => typeActionsExtendSlot(params) }));
-                }
+                const extendAction = () => typeActionsExtendSlot(params);
+                vNodes = vNodes.concat(defaultTypeActionRender(params, { extendAction }) as VNode);
                 return vNodes;
             };
         }
 
         if (isFunction(typeActionsSlot)) {
-            // 覆盖所有preset的actions实现
+            // 存在动作类型的所有按钮自定义Slot时，将覆盖默认的按钮实现
             newSlots.extend_items = () => {
                 let vNodes: VNode[] = [];
                 if (isFunction(typeExtendItems)) {
@@ -120,25 +142,21 @@ export default function useFormAction(fields: Array<Field>, config: Config, type
         }
 
         if (!newSlots.extend_items) {
-            newSlots.extend_items = () => {
-                let vNodes: VNode[] = [];
-                if (isFunction(typeActionRender)) {
-                    vNodes = vNodes.concat(typeActionRender({ ...params }));
-                }
-                return vNodes;
-            };
+            // 没有扩展表单项时，默认加入动作按钮的渲染
+            newSlots.extend_items = () => defaultTypeActionRender(params) as VNode[];
         }
 
         return form.render(newSlots);
     };
 
     return {
+        respModel: actionRespRef,
+        errorRef: actionErrorRef,
         form,
-        respModel,
-        errorRef,
-        extendRef,
-        handle,
+        actionRespRef,
+        actionErrorRef,
+        handleAction,
+        handleReset,
         render,
-        reset,
     };
 }

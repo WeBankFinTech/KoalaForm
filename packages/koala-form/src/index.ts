@@ -1,6 +1,6 @@
 export * from './field';
 export * from './config';
-export * from './type';
+export * from './types';
 export { default as KoalaForm } from './koalaForm';
 export { default as useForm } from './useForm';
 export { default as useFormAction } from './useFormAction';

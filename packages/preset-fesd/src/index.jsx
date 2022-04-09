@@ -94,6 +94,13 @@ export default definePreset({
                 break;
         }
     },
+    buttonRender(params, slots) {
+        return params.show ? (
+            <FButton class="action-margin" {...params}>
+                {slots?.default ? slots.default() : params.text}
+            </FButton>
+        ) : null;
+    },
     formItemFieldRender({ model, disabled, props, options, field }) {
         if (!model || !field) return;
         let body;
@@ -148,18 +155,18 @@ export default definePreset({
         }
         return body;
     },
-    formItemRender(defaultSlot, field, type) {
-        if (!field || typeof defaultSlot !== 'function') return;
+    formItemRender({ field }, slots) {
+        if (!field) return;
         const label = field.label ? field.label + ':' : undefined;
         return (
             <FGridItem span={field.span || 24}>
                 <FFormItem label={label} prop={field.name}>
-                    {defaultSlot()}
+                    {slots.default()}
                 </FFormItem>
             </FGridItem>
         );
     },
-    formRender(defaultSlot, { model, formRef, rulesRef, type, props } = { type: 'query' }) {
+    formRender({ model, formRef, rules, type, props }, slots) {
         return (
             <FForm
                 labelPosition="right"
@@ -170,10 +177,10 @@ export default definePreset({
                 }}
                 ref={formRef}
                 model={model}
-                rules={rulesRef}
+                rules={rules}
                 {...props}
             >
-                <FGrid wrap> {defaultSlot?.()} </FGrid>
+                <FGrid wrap> {slots.default()} </FGrid>
             </FForm>
         );
     },
@@ -182,69 +189,6 @@ export default definePreset({
     },
     formValidate(formRef) {
         return formRef.value?.validate();
-    },
-    queryActionRender({ handle, reset, extendSlot, extendRef, config }) {
-        const queryBtn = config.query.btn || {};
-        const resetBtn = config.query.resetBtn || {};
-        const insertBtn = config.insert.btn || {};
-        return (
-            <FFormItem class="fesd-form-item-action">
-                {queryBtn.show && (
-                    <FButton type="primary" class="action-margin" onClick={() => handle()} {...queryBtn}>
-                        {queryBtn.text}
-                    </FButton>
-                )}
-                {extendRef?.openInsertModal && (
-                    <FButton type="primary" class="action-margin" onClick={() => extendRef.openInsertModal?.()} {...insertBtn}>
-                        {insertBtn.text}
-                    </FButton>
-                )}
-                {extendSlot?.()}
-                {resetBtn.show && (
-                    <FButton onClick={() => reset()} class="action-margin" {...resetBtn}>
-                        {resetBtn.text}
-                    </FButton>
-                )}
-            </FFormItem>
-        );
-    },
-    insertActionRender({ handle, reset, extendSlot, config }) {
-        const saveBtn = config.insert.saveBtn || {};
-        const resetBtn = config.insert.resetBtn || {};
-        return (
-            <FFormItem class="fesd-form-item-action" label=" ">
-                {saveBtn.show && (
-                    <FButton type="primary" class="action-margin" onClick={() => handle()} {...saveBtn}>
-                        {saveBtn.text}
-                    </FButton>
-                )}
-                {extendSlot?.()}
-                {resetBtn.show && (
-                    <FButton onClick={() => reset()} class="action-margin" onClick={() => handle()} {...resetBtn}>
-                        {resetBtn.text}
-                    </FButton>
-                )}
-            </FFormItem>
-        );
-    },
-    updateActionRender({ handle, reset, extendSlot, config }) {
-        const saveBtn = config.update.saveBtn || {};
-        const resetBtn = config.update.resetBtn || {};
-        return (
-            <FFormItem class="fesd-form-item-action" label=" ">
-                {saveBtn.show && (
-                    <FButton type="primary" class="action-margin" onClick={() => handle()} {...saveBtn}>
-                        {saveBtn.text}
-                    </FButton>
-                )}
-                {extendSlot?.()}
-                {resetBtn.show && (
-                    <FButton onClick={() => reset()} class="action-margin" onClick={() => handle()} {...resetBtn}>
-                        {resetBtn.text}
-                    </FButton>
-                )}
-            </FFormItem>
-        );
     },
     defineTableColumn(field, options) {
         if (!field) return {};
@@ -280,14 +224,14 @@ export default definePreset({
             ...field.props,
         };
     },
-    tableRender(slots, { tableModel, columns, pagerModel, rowKey, pagerProps, tableProps, pagerRef, tableRef }) {
+    tableRender({ tableDataRef, columns, pagerModel, rowKey, pagerProps, tableProps, pagerRef, tableRef }, slots) {
         return (
             <>
                 <FTable
                     // columns={columns}
                     ref={tableRef}
                     rowKey={rowKey}
-                    data={tableModel.value}
+                    data={tableDataRef.value}
                     v-slots={slots}
                     {...tableProps}
                 >
@@ -360,11 +304,7 @@ export default definePreset({
             </>
         );
     },
-    modalRender(defaultSlot, { modalModel, onOk, onCancel, modalProps }, footerSlot) {
-        const slots = {
-            default: defaultSlot,
-            footer: footerSlot,
-        };
+    modalRender({ modalModel, onOk, onCancel, modalProps }, slots) {
         return (
             <FModal
                 show={modalModel.visible}
@@ -379,11 +319,7 @@ export default definePreset({
             />
         );
     },
-    drawerRender(defaultSlot, { modalModel, onOk, onCancel, modalProps }, footerSlot) {
-        const slots = {
-            default: defaultSlot,
-            footer: footerSlot,
-        };
+    drawerRender({ modalModel, onOk, onCancel, modalProps }, slots) {
         return (
             <FDrawer
                 show={modalModel.visible}
@@ -399,8 +335,8 @@ export default definePreset({
             />
         );
     },
-    pageRender(defaultSlot) {
-        return <div class="fesd-koala-page">{defaultSlot()}</div>;
+    pageRender(params, slots) {
+        return <div class="fesd-koala-page">{slots?.default?.()}</div>;
     },
     message: FMessage,
     confirm(params) {
