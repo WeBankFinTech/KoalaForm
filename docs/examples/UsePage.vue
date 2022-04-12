@@ -23,7 +23,7 @@ export default {
         const { fields, config } = useUser();
         // 弹框模式改为抽屉模式
         config.modalMode = 'drawer';
-        const { render, actions } = usePage(fields, config);
+        const { render } = usePage(fields, config);
         return {
             render,
         };

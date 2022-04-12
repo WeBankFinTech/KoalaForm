@@ -37,6 +37,10 @@ export interface BtnProps extends Record<string, any> {
 export interface UseFormResult {
     model: ReactiveModel;
     formRef: Ref<any>;
+    /**
+     * @deprecated 请使用rules, 将在1.2.0版本移除
+     */
+    rulesRef: ReactiveModel;
     rules: ReactiveModel;
     formProps: ReactiveModel;
     render: KoalaFormRenderFunction;
@@ -51,7 +55,7 @@ export interface UseFormResult {
 export interface UseTableResult {
     columns: Record<string, any>[];
     /**
-     * @deprecated 请使用tableDateRef
+     * @deprecated 请使用tableDataRef, 将在1.2.0版本移除
      */
     tableModel: Ref<Record<string, any>[]>;
     tableDataRef: Ref<Record<string, any>[]>;
@@ -69,6 +73,14 @@ export interface UseTableResult {
 
 export interface UseFormActionResult {
     form: UseFormResult;
+    /**
+     * @deprecated 请使用    actionRespRef，将在1.2.0版本移除
+     */
+    respModel: Ref<Record<string, any> | null>;
+    /**
+     * @deprecated 请使用actionErrorRef，将在1.2.0版本移除
+     */
+    errorRef: Ref<Record<string, any> | null>;
     actionRespRef: Ref<Record<string, any> | null>;
     actionErrorRef: Ref<Record<string, any> | null>;
     handleAction: HandleActionFunction;

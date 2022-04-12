@@ -25,7 +25,7 @@ export default {
         const { fields, mockUser } = useUser();
         const { model, initFields, render, resetFields, validate, setFormProps } = useForm(fields, 'insert');
         initFields(mockUser);
-        setFormProps({labelWidth: 100})
+        setFormProps({ labelWidth: 100 });
 
         const handleSave = () => {
             validate()

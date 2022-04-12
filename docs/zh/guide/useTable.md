@@ -24,8 +24,29 @@ sidebarDepth: 3
 
 
 ## 方法定义
-### useTable.d.ts
-<<< @/../packages/koala-form/dist/useTable.d.ts
+### useTable
+```ts
+export interface UseTableResult {
+    columns: Record<string, any>[];
+    /**
+     * @deprecated 请使用tableDataRef, 将在1.2.0版本移除
+     */
+    tableModel: Ref<Record<string, any>[]>;
+    tableDataRef: Ref<Record<string, any>[]>;
+    pagerModel: ReactiveModel<Pager>;
+    tableProps: ReactiveModel;
+    pagerProps: ReactiveModel;
+    tableRef: Ref;
+    pagerRef: Ref;
+    render: KoalaFormRenderFunction;
+    setTableValue: (values?: Record<string, any> | Record<string, any>[] | undefined, index?: number | undefined) => void;
+    setPagerValue: (value?: Pager | undefined) => void;
+    setPagerProps: (props?: Record<string, any> | undefined) => void;
+    setTableProps: (props?: Record<string, any> | undefined) => void;
+}
+
+function useTable(fields: Array<Field>, uniqueKey?: string): UseTableResult;
+```
 
 ### 参数说明
 
@@ -39,10 +60,10 @@ sidebarDepth: 3
 | 属性         | 说明                    | 类型              | 默认值                |
 | ------------ | ----------------------- | ----------------- | --------------------- |
 | columns | table的列定义，具体根据`preset.defineTableColumn`的实现返回，一般可以直接用于table组件的columns属性 | `Array`
-| tableModel | 双向绑定的model对象，表格的数据 | `Ref<Array>`
-| pagerModel | 分页组件的model对象| `reactive proxy`
-| tableProps | table组件属性| `reactive proxy`
-| pagerProps | 分页组件属性| `reactive proxy`
+| tableDataRef | 双向绑定的model对象，表格的数据 | `Ref<Array>`
+| pagerModel | 分页组件的model对象| `ReactiveModel<Pager>`
+| tableProps | table组件属性| `ReactiveModel`
+| pagerProps | 分页组件属性| `ReactiveModel`
 | tableRef | table组件引用 | `Ref`
 | pagerRef | 分页组件引用 | `Ref`
 | setTableValue | 设置tableModel的值| `Function`

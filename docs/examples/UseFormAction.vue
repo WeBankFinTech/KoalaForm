@@ -4,7 +4,7 @@
         <KoalaForm :render="query.render"></KoalaForm>
         <FDivider titlePlacement="left">新增表单</FDivider>
         <KoalaForm :render="insert.render">
-            <template #insert_action_extend>
+            <template #insert_action_extend="{ handleAction, handleReset }">
                 <FButton>返回</FButton>
             </template>
         </KoalaForm>

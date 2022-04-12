@@ -24,9 +24,29 @@ sidebarDepth: 3
 </ExampleDoc>
 
 ## 方法定义
-### useForm.d.ts
-<<< @/../packages/koala-form/dist/useForm.d.ts
+### useForm
+```ts
+export interface UseFormResult {
+    model: ReactiveModel;
+    formRef: Ref<any>;
+    /**
+     * @deprecated 请使用rules, 将在1.2.0版本移除
+     */
+    rulesRef: ReactiveModel;
+    rules: ReactiveModel;
+    formProps: ReactiveModel;
+    render: KoalaFormRenderFunction;
+    formItemRender: KoalaFormRenderFunction;
+    initFields: (fields?: Record<string, any>) => void;
+    resetFields: (fields?: Record<string, any>) => void;
+    validate: (nameList?: string[] | undefined) => Promise<any>;
+    setFields: (value: Record<string, any>) => void;
+    setFormProps: (props: Record<string, any>) => void;
+}
 
+function useForm(fields: Field[] | undefined, type: ACTION_TYPES): UseFormResult;
+
+```
 ### 参数说明
 
 | 属性         | 说明                    | 类型              | 默认值                |
@@ -39,9 +59,9 @@ sidebarDepth: 3
 | 属性         | 说明                    | 类型              | 默认值                |
 | ------------ | ----------------------- | ----------------- | --------------------- |
 | formRef | Form组件的实例，一般Form组件都会包含validate、resetFields方法，实际要看依赖的组件库。| `Ref`
-| model | 双向绑定的model对象，其属性都是Field定义解析的字段，可以通过setFields来进行赋值。| `reactive proxy`
-| rulesRef | 根据Field解析的字段校验规则。| `reactive proxy`
-| formProps | form组件属性响应式对象，用setFormProps设置| `reactive proxy`
+| model | 双向绑定的model对象，其属性都是Field定义解析的字段，可以通过setFields来进行赋值。| `ReactiveModel`
+| rules | 根据Field解析的字段校验规则。| `ReactiveModel`
+| formProps | form组件属性响应式对象，用setFormProps设置| `ReactiveModel`
 | setFields | 设置model的值 | `Function`
 | initFields | 设置初始化的数据，并且初始化model| `Function`
 | resetFields | 用上一次initFields的值，重置model | `Function`

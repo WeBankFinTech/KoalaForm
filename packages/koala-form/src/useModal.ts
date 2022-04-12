@@ -76,6 +76,12 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
         if (!hasFirstRender && !modalModel.visible) return [];
         const typeActionSlot = slots[`${type}_action`] as Slot;
         hasFirstRender = true;
+        const param = {
+            modalModel,
+            modalProps,
+            onOk: handleOk,
+            onCancel: handleCancel,
+        };
         const modelSlots = {
             default() {
                 const newSlots = { ...slots };
@@ -87,12 +93,6 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
                 return formAction.render(newSlots) as VNode[];
             },
             footer: isFunction(typeActionSlot) ? () => typeActionSlot(param) : undefined,
-        };
-        const param = {
-            modalModel,
-            modalProps,
-            onOk: handleOk,
-            onCancel: handleCancel,
         };
         switch (config.modalMode) {
             case 'drawer':
