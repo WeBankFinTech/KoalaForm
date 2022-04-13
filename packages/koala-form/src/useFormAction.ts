@@ -72,7 +72,7 @@ export default function useFormAction(fields: Array<Field>, config: Config, type
         const typeConfig = config[type];
         const actionBtnProps: BtnProps = {
             type: 'primary',
-            onClick: param.handleAction,
+            onClick: () => param.handleAction(),
         };
         const btn: BtnProps = Object.assign(actionBtnProps, typeConfig?.btn);
         const saveBtn: BtnProps = Object.assign(actionBtnProps, typeConfig?.['saveBtn']);
