@@ -15,8 +15,12 @@ export default function useQuery(fields: Array<Field>, config: Config): UseQuery
     const queryConfig = actionConfig.query || {};
     queryConfig.before = async (params) => {
         table.pagerModel.current = params.pager.current;
-        params.pager.size = table.pagerModel.pageSize;
-        return config.query?.before?.(params) || {};
+        params.pager.pageSize = table.pagerModel.pageSize;
+        if (config.query?.before) {
+            return await config.query?.before?.(params);
+        } else {
+            return params;
+        }
     };
     actionConfig.query = queryConfig;
     const queryFormAction = useFormAction(fields, actionConfig, 'query');
