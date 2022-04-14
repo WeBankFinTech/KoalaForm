@@ -32,9 +32,9 @@ sidebarDepth: 3
 | useForm   | `[type]_extend_items`  | 在Form内扩展指定类型的FormItem，可覆盖`extend_items` | `{ model }` |
 | useTable   |`table_[name]`  | table字段key渲染的内容 |  `record: { row, column, rowIndex, columnIndex, cellValue }` |
 | useTable   |`table_[name]_header`  | table表头字段key渲染的内容 | `{ column, columnIndex }` |
-| useFormAction   |`[type]_action_extend`  | `preset.[type]ActionRender`自定义扩展的内容 | `{ handleAction, handleReset  }` |
-| useFormAction   |`[type]_action`  | 自定义操作 | `{ handleAction, handleReset  }` |
-| useModal  |`[type]_action`  | 自定义footer操作按钮 | `{ modalModel, modalProp, onOk, onCancel }` |
+| useFormAction   |`[type]_action_extend`  | `preset.[type]ActionRender`自定义扩展的内容 | `{ formModel, handleAction, handleReset  }` |
+| useFormAction   |`[type]_action`  | 自定义操作 | `{ formModel, handleAction, handleReset  }` |
+| useModal  |`[type]_action`  | 自定义footer操作按钮 | `{ formModel, modalModel, modalProp, onOk, onCancel }` |
 | usePage  |`table_actions`  | table操作列自定义，在useTable对应`table_[name]`, 其中name === 'actions' | `{record， openUpdateModal, openViewModal, openDeleteModal }` |
 | usePage  |`table_actions_extend`  | 在更新、删除、详情按钮的基础上，扩展其他按钮 | `{ record, openUpdateModal, openViewModal, openDeleteModal}` |
 
