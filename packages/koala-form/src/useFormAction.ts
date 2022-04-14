@@ -104,7 +104,7 @@ export default function useFormAction(fields: Array<Field>, config: Config, type
      * @returns
      */
     const render: KoalaFormRenderFunction = (slots) => {
-        const params = { handleAction, handleReset };
+        const params = { handleAction, handleReset, formModel: form.model };
         const newSlots = { ...slots };
         const typeActionsSlot = slots[`${type}_action`] as Slot; // 覆盖preset的typeActionRender
         const typeActionsExtendSlot = slots[`${type}_action_extend`] as Slot; // 在typeActionRender中扩展

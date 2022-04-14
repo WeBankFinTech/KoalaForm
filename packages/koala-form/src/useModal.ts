@@ -79,6 +79,7 @@ export default function useModal(fields: Array<Field>, config: Config, type: ACT
         const param = {
             modalModel,
             modalProps,
+            formModel: formAction.form.model,
             onOk: handleOk,
             onCancel: handleCancel,
         };
