@@ -12,7 +12,7 @@
     "docs:serve": "vitepress serve docs"
   },
   "dependencies": {
-    "@fesjs/fes-design": "0.4.0",
+    "@fesjs/fes-design": "0.4.6",
     "ant-design-vue": "2.2.8",
     "less": "4.1.2",
     "lodash-es": "4.17.15",

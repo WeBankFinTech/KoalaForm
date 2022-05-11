@@ -260,7 +260,7 @@ export default definePreset({
                                 }
                             };
                         }
-                        return <FTableColumn {...col} ellipsis v-slots={colSlot}></FTableColumn>;
+                        return <FTableColumn {...col} v-slots={colSlot}></FTableColumn>;
                     })}
                 </FTable>
                 {pagerModel.show && (

@@ -1185,14 +1185,14 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fesjs/fes-design@0.4.0":
-  version "0.4.0"
-  resolved "http://10.107.103.115:8001/@fesjs/fes-design/download/@fesjs/fes-design-0.4.0.tgz#4096a5ea62a93ae162dc4fa6b61fbbd9431d9abc"
-  integrity sha1-QJal6mKpOuFi3E+mth+72UMdmrw=
+"@fesjs/fes-design@0.4.6":
+  version "0.4.6"
+  resolved "http://10.107.103.115:8001/@fesjs/fes-design/download/@fesjs/fes-design-0.4.6.tgz#c596d3449303eaeb8782ca2135cb610b958b74fb"
+  integrity sha1-xZbTRJMD6uuHgsohNcthC5WLdPs=
   dependencies:
     "@babel/runtime" "^7.16.3"
+    "@floating-ui/dom" "^0.4.2"
     "@juggle/resize-observer" "^3.3.1"
-    "@popperjs/core" "^2.4.0"
     "@types/lodash-es" "^4.17.5"
     "@types/normalize-wheel" "^1.0.0"
     "@vue/shared" "^3.2.19"
@@ -1202,6 +1202,18 @@
     lodash-es "^4.17.21"
     normalize-wheel "^1.0.1"
     stickybits "^3.7.9"
+
+"@floating-ui/core@^0.6.2":
+  version "0.6.2"
+  resolved "http://10.107.103.115:8001/@floating-ui/core/download/@floating-ui/core-0.6.2.tgz#f2813f0e5f3d5ed7af5029e1a082203dadf02b7d"
+  integrity sha1-8oE/Dl89XtevUCnhoIIgPa3wK30=
+
+"@floating-ui/dom@^0.4.2":
+  version "0.4.5"
+  resolved "http://10.107.103.115:8001/@floating-ui/dom/download/@floating-ui/dom-0.4.5.tgz#2e88d16646119cc67d44683f75ee99840475bbfa"
+  integrity sha1-LojRZkYRnMZ9RGg/de6ZhAR1u/o=
+  dependencies:
+    "@floating-ui/core" "^0.6.2"
 
 "@gar/promisify@^1.0.1":
   version "1.1.2"
@@ -2112,11 +2124,6 @@
   integrity sha1-xgITMzNNHs+103CoeYFi3fGughg=
   dependencies:
     "@octokit/openapi-types" "^11.2.0"
-
-"@popperjs/core@^2.4.0":
-  version "2.11.4"
-  resolved "http://10.107.103.115:8001/@popperjs/core/download/@popperjs/core-2.11.4.tgz#d8c7b8db9226d2d7664553a0741ad7d0397ee503"
-  integrity sha1-2Me425Im0tdmRVOgdBrX0Dl+5QM=
 
 "@rollup/plugin-babel@^5.3.0":
   version "5.3.0"
