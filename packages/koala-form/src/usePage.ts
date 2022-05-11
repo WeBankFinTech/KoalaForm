@@ -72,9 +72,6 @@ export default function usePage(fields: Array<Field>, config: Config): UsePageRe
 
     const render = (slots: Slots): VNodeChild => {
         const tableActionsSlot: Slot = (record = {}) => {
-            if (!record.row) {
-                console.warn(`preset.tableRnder slot table_[name] params record.row is empty!`);
-            }
             const params = {
                 openUpdateModal: actions.update?.open,
                 openViewModal: actions.view?.open,
