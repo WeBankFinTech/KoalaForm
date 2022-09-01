@@ -31,6 +31,7 @@ export interface Field {
     name: string;
     label: string;
     type: ValueType;
+    hidden?: Reactive<'if' | 'show'> | When;
     components?: ComponentDesc | ComponentDesc[];
     defaultValue: any;
     rules?: Array<ValidateRule>;
@@ -42,10 +43,12 @@ export interface Field {
 const sex: Field = {
     name: 'sex',
     label: '性别',
+    hidden: whenIf('age <= 0'),
     components: [
         {
             name: 'Select',
             props: { clearable: true },
+            disabled: whenIf('age = 18'),
             events: {
                 onChange: (ctx, value) => console.log(value),
             },
