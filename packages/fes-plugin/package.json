@@ -1,0 +1,20 @@
+{
+  "name": "@koala-form/fes-plugin",
+  "version": "2.0.0",
+  "description": "vue form helper",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "aringlai",
+  "license": "MIT",
+  "files": [
+    "dist/"
+  ],
+  "peerDependencies": {
+    "vue": "^3.0.7",
+    "@fesjs/fes-design": "^0.6.1"
+  },
+  "dependencies": {
+    "@koala-form/core": "^2.0.0"
+  }
+}

@@ -1,0 +1,48 @@
+<mxfile host="65bd71144e">
+    <diagram id="ZHnnz-fFuCg1XqXFPC6J" name="原图图">
+        <mxGraphModel dx="1253" dy="749" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1920" math="0" shadow="0">
+            <root>
+                <mxCell id="8EWd1xhJfRFUhPiCfJxK-0"/>
+                <mxCell id="8EWd1xhJfRFUhPiCfJxK-1" parent="8EWd1xhJfRFUhPiCfJxK-0"/>
+                <mxCell id="DwGz0jpXQfFEOZT0aRM2-9" value="Fields、Actions" style="rounded=1;whiteSpace=wrap;html=1;fontSize=26;fillColor=none;" vertex="1" parent="8EWd1xhJfRFUhPiCfJxK-1">
+                    <mxGeometry x="80" y="210" width="760" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="DwGz0jpXQfFEOZT0aRM2-17" value="Scene Context Reactive" style="rounded=1;whiteSpace=wrap;html=1;fontSize=26;fillColor=none;" vertex="1" parent="8EWd1xhJfRFUhPiCfJxK-1">
+                    <mxGeometry x="80" y="590" width="760" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="DwGz0jpXQfFEOZT0aRM2-20" value="useBaseScene" style="rounded=1;whiteSpace=wrap;html=1;fontSize=26;fillColor=none;" vertex="1" parent="8EWd1xhJfRFUhPiCfJxK-1">
+                    <mxGeometry x="80" y="330" width="200" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="DwGz0jpXQfFEOZT0aRM2-22" value="useFormScene" style="rounded=1;whiteSpace=wrap;html=1;fontSize=26;fillColor=none;" vertex="1" parent="8EWd1xhJfRFUhPiCfJxK-1">
+                    <mxGeometry x="340" y="330" width="220" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="DwGz0jpXQfFEOZT0aRM2-23" value="useTableScene" style="rounded=1;whiteSpace=wrap;html=1;fontSize=26;fillColor=none;" vertex="1" parent="8EWd1xhJfRFUhPiCfJxK-1">
+                    <mxGeometry x="610" y="330" width="230" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="DwGz0jpXQfFEOZT0aRM2-24" value="Plugin1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=26;fillColor=none;" vertex="1" parent="8EWd1xhJfRFUhPiCfJxK-1">
+                    <mxGeometry x="80" y="480" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="DwGz0jpXQfFEOZT0aRM2-25" value="Plugin2" style="rounded=1;whiteSpace=wrap;html=1;fontSize=26;fillColor=none;" vertex="1" parent="8EWd1xhJfRFUhPiCfJxK-1">
+                    <mxGeometry x="310" y="480" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="DwGz0jpXQfFEOZT0aRM2-26" value="Plugin3" style="rounded=1;whiteSpace=wrap;html=1;fontSize=26;fillColor=none;" vertex="1" parent="8EWd1xhJfRFUhPiCfJxK-1">
+                    <mxGeometry x="530" y="480" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="DwGz0jpXQfFEOZT0aRM2-27" value="Plugin..." style="rounded=1;whiteSpace=wrap;html=1;fontSize=26;fillColor=none;" vertex="1" parent="8EWd1xhJfRFUhPiCfJxK-1">
+                    <mxGeometry x="720" y="480" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="DwGz0jpXQfFEOZT0aRM2-28" value="Koala Render" style="rounded=1;whiteSpace=wrap;html=1;fontSize=26;fillColor=none;" vertex="1" parent="8EWd1xhJfRFUhPiCfJxK-1">
+                    <mxGeometry x="80" y="730" width="760" height="90" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="3PXZXapsKX34Jlx88CwA" name="思维导图">
+        <mxGraphModel dx="1148" dy="687" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

@@ -25,8 +25,8 @@ npm i @koala-form/preset-fesd
 实现如下一个用户的表单的CURD操作，通过定义字段名和配置，仅需几十行代码就可以实现完成的一个表单功能。
 
 <ExampleDoc>
-<User>
-</User>
+<Test>
+</Test>
 <template #code>
 
 <<< @/examples/User.vue

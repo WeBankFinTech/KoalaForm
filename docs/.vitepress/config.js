@@ -33,9 +33,8 @@ export default {
               '.vue',
           ],
           alias: {
-              '@koala-form/core': path.resolve('packages/koala-form/src/index.ts'),
-              '@koala-form/preset-antd': path.resolve('packages/koala-form-preset-antd'),
-              '@koala-form/preset-fesd': path.resolve('packages/preset-fesd/src'),
+              '@koala-form/core': path.resolve('packages/core/src/index.ts'),
+              '@koala-form/fes-plugin': path.resolve('packages/fes-plugin/src/index.ts'),
           },
       },
         json: {
@@ -106,6 +105,7 @@ function getGuideSidebar() {
         text: 'API',
         children: [
           { text: 'Field', link: '/zh/guide/field' },
+          { text: 'Action', link: '/zh/guide/action' },
           { text: 'Config', link: '/zh/guide/config' },
           { text: 'useForm', link: '/zh/guide/useForm' },
           { text: 'useTable', link: '/zh/guide/useTable' },
