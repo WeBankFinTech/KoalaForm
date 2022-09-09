@@ -5,6 +5,7 @@ export const componentPlugin: KoalaPlugin = (cxt) => {
     cxt.getComponent = (name) => {
         const comp = fesd[`F${name}`];
         if (isComponent(comp)) return comp;
+        else return name;
     };
 };
 

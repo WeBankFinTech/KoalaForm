@@ -1,4 +1,4 @@
-import { RenderFunction, VNode } from 'vue';
+import { defineComponent, h, mergeProps, onUpdated, RenderFunction, VNode } from 'vue';
 import { Action, Handle, When, whenIf } from '../action';
 import { Reactive } from '../base';
 
@@ -66,3 +66,31 @@ const sex: Field = {
         handles: [],
     },
 };
+
+interface SchemeStatus {
+    component: string;
+    props: Reactive;
+    vModel: Reactive;
+    vShow: Reactive;
+    vIf: Reactive;
+    events: Record<string, Function>;
+    children: SchemeStatus[];
+}
+
+interface SceneContext {
+    scheme: SchemeStatus[];
+}
+
+const render = (schemeList) => {
+    return schemeList.map((scheme) => {
+        h(scheme.component, mergeProps(props), render(scheme.children));
+    });
+};
+
+const Test = defineComponent({
+    setup() {
+        return () => {};
+    },
+});
+
+onUpdated;

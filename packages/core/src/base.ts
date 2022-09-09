@@ -1,9 +1,10 @@
 import { merge } from 'lodash-es';
-import { DefineComponent, getCurrentInstance, Ref, Slots, VNodeChild } from 'vue';
+import { DefineComponent, getCurrentInstance, Ref, Slots, Slot, VNodeChild, Component, vShow } from 'vue';
 import { Action } from './action';
 import { Field } from './field';
-import { useState } from './helper';
+import { mergePlugins, useState } from './helper';
 import { isArray } from 'lodash-es';
+import { renderPlugin } from './plugins';
 
 export declare type Reactive<T = Record<string, any>> = T | Ref<T>;
 
@@ -44,16 +45,33 @@ export function isComponent(component: DefineComponent): boolean {
 
 // 场景
 export type KoalaPlugin<T extends SceneContext = SceneContext, K extends SceneConfig = SceneConfig> = (cxt: T, config: K) => void;
-export interface SceneContext {
-    getState: () => Reactive;
-    setState: (value: unknown) => void;
-    getProps: (name: string, type: string) => Reactive | void;
-    setProps: (values: Record<string, unknown>, type: string) => void;
-    getComponent: (name: keyof typeof ComponentType | String) => DefineComponent<Record<string, any>> | void;
-    renderComponent: (name?: string, props?: Reactive, slots?: Slots) => VNodeChild;
-    renderAction: (action: Action) => VNodeChild;
+
+export interface SchemeStatus {
+    component: string | Component;
+    props: Reactive;
+    vModel: Reactive;
+    vShow: Ref<boolean>;
+    vIf: Ref<boolean>;
+    events: Record<string, (...args: unknown[]) => void>;
+    children: Array<SchemeStatus | string> | Slots;
+}
+
+interface SceneContext {
+    schemes: Array<SchemeStatus>;
+    getComponent: (name: keyof typeof ComponentType | String | Component) => DefineComponent<Record<string, any>> | string;
     render: (slots?: Slots) => VNodeChild;
 }
+
+// export interface SceneContext {
+//     getState: () => Reactive;
+//     setState: (value: unknown) => void;
+//     getProps: (name: string, type: string) => Reactive | void;
+//     setProps: (values: Record<string, unknown>, type: string) => void;
+//     getComponent: (name: keyof typeof ComponentType | String) => DefineComponent<Record<string, any>> | void;
+//     renderComponent: (name?: string, props?: Reactive, slots?: Slots) => VNodeChild;
+//     renderAction: (action: Action) => VNodeChild;
+//     render: (slots?: Slots) => VNodeChild;
+// }
 
 export interface SceneConfig {
     name: string;
@@ -83,16 +101,10 @@ export function setSceneContext<T extends SceneContext>(name: string, ctx: T) {
 }
 
 export function createSceneContext<T extends SceneContext>(name: string): T {
-    const { setState, getState } = useState({});
     const ctx: SceneContext = {
-        getState,
-        setState,
-        getProps: () => undefined,
-        setProps: () => undefined,
-        getComponent: () => undefined,
-        renderComponent: () => [],
+        schemes: [],
+        getComponent: (name) => name as string,
         render: () => [],
-        renderAction: () => [],
     };
     setSceneContext(name, ctx);
     return ctx as unknown as T;
@@ -100,11 +112,8 @@ export function createSceneContext<T extends SceneContext>(name: string): T {
 
 export function useBaseScene<T extends SceneContext, K extends SceneConfig>(config: K): T {
     const ctx = createSceneContext<T>(config.name);
-    const plugins: KoalaPlugin[] = config.plugins || [];
-    if (!isArray(config.plugins) || config.plugins.length === 0) {
-        console.warn('plugins is required！');
-        return ctx;
-    }
+    const plugins: KoalaPlugin[] = mergePlugins([renderPlugin, defaultConfig.componentPlugin], config.plugins || []);
+
     plugins.forEach((plugin) => {
         if (typeof plugin === 'function') {
             plugin(ctx, config);

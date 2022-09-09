@@ -46,7 +46,7 @@ export const useState = (initState: Record<string, unknown> | Ref<Record<string,
 export const mergePlugins = (...args: KoalaPlugin[][]) => {
     const plugins: KoalaPlugin[] = [];
     args.forEach((items) => {
-        plugins.push(...items);
+        if (items) plugins.push(...items);
     });
     const config = getGlobalConfig();
     const list: KoalaPlugin[] = [];
