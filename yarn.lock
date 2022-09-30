@@ -3514,6 +3514,11 @@ dateformat@^3.0.0:
   resolved "http://10.107.103.115:8001/dateformat/download/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
   integrity sha1-puN0maTZqc+F71hyBE1ikByYia4=
 
+dayjs@^1.11.5:
+  version "1.11.5"
+  resolved "http://10.107.103.115:8001/dayjs/download/dayjs-1.11.5.tgz#00e8cc627f231f9499c19b38af49f56dc0ac5e93"
+  integrity sha1-AOjMYn8jH5SZwZs4r0n1bcCsXpM=
+
 debug@4, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1:
   version "4.3.4"
   resolved "http://10.107.103.115:8001/debug/download/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"

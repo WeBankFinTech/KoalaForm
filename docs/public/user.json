@@ -27,9 +27,9 @@
                 "sex": 1
             }
         ],
-        "pager": {
-            "current": 1,
-            "total": 23
+        "page": {
+            "currentPage": 1,
+            "totalCount": 23
         }
     }
 }

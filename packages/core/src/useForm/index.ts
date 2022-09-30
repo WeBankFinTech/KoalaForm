@@ -1,33 +1,16 @@
-import { mergePlugins } from '../helper';
-import { fieldPropsPlugin, renderComponentPlugin, renderActionPlugin } from '../plugins';
-import { KoalaPlugin, useBaseScene } from '../base';
-import { formItemPropsPlugin } from './formItemProps';
-import { formPropsPlugin } from './formProps';
-import { rulePlugin } from './formRule';
-import { formStatePlugin } from './formState';
-import { renderFormPlugin } from './renderForm';
-import { FormSceneConfig } from './base';
+import { KoalaPlugin, mergePlugins, useBaseScene } from '../base';
+import { formRulePlugin } from './formRule';
+import { formSchemePlugin } from './schemePlugin';
+import { FormSceneConfig, FormSceneContext } from './base';
+import { vIfPlugin, vShowPlugin, disabledPlugin, eventsPlugin, slotPlugin } from '../plugins';
 
-export * from './formItemProps';
-export * from './formProps';
 export * from './formRule';
-export * from './formState';
-export * from './renderForm';
+export * from './schemePlugin';
 export * from './base';
 
-const defaultPlugins: KoalaPlugin[] = [
-    'componentPlugin',
-    fieldPropsPlugin,
-    formStatePlugin,
-    formItemPropsPlugin,
-    rulePlugin,
-    formPropsPlugin,
-    renderComponentPlugin,
-    renderActionPlugin,
-    renderFormPlugin,
-] as KoalaPlugin[];
+const defaultPlugins: KoalaPlugin[] = [formSchemePlugin, formRulePlugin, vIfPlugin, vShowPlugin, disabledPlugin, eventsPlugin, slotPlugin] as KoalaPlugin[];
 
-export function useForm(config: FormSceneConfig) {
+export function useForm(config: FormSceneConfig): FormSceneContext {
     const plugins = mergePlugins(defaultPlugins, config.plugins || []);
     return useBaseScene({ ...config, plugins });
 }

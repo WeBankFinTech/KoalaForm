@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "lodash-es": "^4.17.21",
+    "dayjs": "^1.11.5",
     "mitt": "^3.0.0"
   },
   "devDependencies": {

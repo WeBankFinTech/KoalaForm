@@ -1,4 +1,4 @@
-import { watch } from 'vue';
+import { computed, watch } from 'vue';
 import { WhenPlugin } from '../base';
 
 export const whenIf: WhenPlugin<string> = (expression) => {

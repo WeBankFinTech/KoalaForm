@@ -1,166 +1,138 @@
-import {
-    ComponentType,
-    useForm,
-    // setProps,
-    whenEvent,
-    whenLifeCycle,
-    whenIf,
-    useBaseScene,
-    // getState,
-    // resetFields,
-} from '@koala-form/core';
-import { computed, defineComponent, reactive, ref, unref, watch } from 'vue';
+import { ComponentType, useForm, useTable, when, usePager, useTableWithPager, useQueryPage } from '@koala-form/core';
+import { defineComponent, onMounted, ref } from 'vue';
 
-const changeAction = {
-    when: whenEvent('change'),
-    handles: (cxt, ...args) => {
-        console.log(args);
+const options = [
+    { value: '0', label: '女' },
+    { value: '1', label: '男' },
+];
+const tableFields = [
+    { name: 'name', label: '姓名', slotName: 'tableName' },
+    { name: 'age', label: '年龄' },
+];
+
+const formFields = [
+    {
+        name: 'name',
+        label: '姓名:',
+        slotName: 'name',
+        components: {
+            name: ComponentType.Input,
+            disabled: when('age === 3'),
+        },
     },
-};
+    {
+        name: 'age',
+        label: '年龄:',
+        components: {
+            name: ComponentType.InputNumber,
+        },
+        defaultValue: 2,
+    },
+    {
+        name: 'sex',
+        label: '性别:',
+        vIf: when((model) => model.age >= 1),
+        defaultValue: '1',
+        components: {
+            name: ComponentType.Select,
+            props: {
+                options,
+            },
+        },
+    },
+];
 
 export default defineComponent({
     setup() {
-        const options = [
-            { value: '0', label: '女' },
-            { value: '1', label: '男' },
-        ];
-        const saveBtnLabel = ref('保存');
-        // const { render } = useForm({
-        //     ctxName: 'userForm',
-        //     formProps: { labelWidth: '60px', labelPosition: 'right' },
-        //     fields: [
+        // const { render, formRef } = useForm(
+        //     queryFormPreset([
         //         {
         //             name: 'name',
         //             label: '姓名:',
-        //             component: ComponentType.Input,
-        //             required: true,
-        //             actions: { ...changeAction, when: whenEvent('input') },
+        //             slotName: 'name',
+        //             components: {
+        //                 name: ComponentType.Input,
+        //                 disabled: when('age === 3'),
+        //             },
         //         },
         //         {
         //             name: 'age',
         //             label: '年龄:',
-        //             component: ComponentType.InputNumber,
-        //             actions: [
-        //                 changeAction,
-        //                 {
-        //                     when: whenIf('age >= 18'),
-        //                     handles: (cxt, value) => {
-        //                         console.log('成年人');
-        //                     },
-        //                 },
-        //                 {
-        //                     label: '重置',
-        //                     component: ComponentType.Button,
-        //                     when: whenEvent('click'),
-        //                     handles: (cxt) => {
-        //                         console.log(cxt);
-        //                     },
-        //                 },
-        //             ],
+        //             components: {
+        //                 name: ComponentType.InputNumber,
+        //             },
         //             defaultValue: 2,
         //         },
         //         {
         //             name: 'sex',
         //             label: '性别:',
-        //             component: ComponentType.Select,
-        //             actions: {
-        //                 when: whenLifeCycle('mounted'),
-        //                 handles: [
-        //                     (cxt) => {
-        //                         // setProps({ sex: { options } }, 'field', cxt);
-        //                     },
-        //                 ],
+        //             vIf: when((model) => model.age >= 1),
+        //             defaultValue: '1',
+        //             components: {
+        //                 name: ComponentType.Select,
+        //                 props: {
+        //                     options,
+        //                 },
         //             },
         //         },
-        //     ],
-        //     actionsLayout: {
-        //         component: ComponentType.Space,
-        //         props: { justify: 'center' },
-        //     },
-        //     actions: [
-        //         {
-        //             label: saveBtnLabel,
-        //             component: ComponentType.Button,
-        //             props: { type: 'primary' },
-        //             when: whenEvent('click'),
-        //             handles: (cxt) => {
-        //                 console.log(cxt);
-        //             },
-        //         },
-        //         {
-        //             label: '取消',
-        //             component: ComponentType.Button,
-        //             when: whenEvent('click'),
-        //             handles: (cxt) => {
-        //                 console.log(cxt);
-        //             },
-        //         },
+        //     ]),
+        // );
+
+        // const { render: tableRender, model } = useTable({
+        //     fields: [
+        //         { name: 'name', label: '姓名', slotName: 'tableName' },
+        //         { name: 'age', label: '年龄' },
         //     ],
         // });
+        // model.value = [
+        //     { name: 'aring', age: 18 },
+        //     { name: 'aring', age: 20 },
+        //     { name: 'aring', age: 23 },
+        // ];
 
-        // setProps(
+        // const pager = usePager({});
+
+        // const { render, dataSource, pager } = useTableWithPager(
         //     {
-        //         sex: {
-        //             options: [
-        //                 { value: '0', label: '女' },
-        //                 { value: '1', label: '男' },
-        //             ],
-        //         },
+        //         fields: [
+        //             { name: 'name', label: '姓名', slotName: 'tableName' },
+        //             { name: 'age', label: '年龄' },
+        //         ],
         //     },
-        //     'field',
+        //     {},
         // );
 
-        // setProps({ layout: 'inline', inlineItemWidth: '30%' }, 'form', 'userForm');
+        // const list = [];
+        // for (let index = 1; index <= 33; index++) {
+        //     list.push({ name: 'aring', age: index });
+        // }
+        // dataSource.value = list;
+        // pager.model.totalCount = 60;
 
-        // const state = getState('userForm');
-        // console.log(state);
-        // watch(
-        //     state,
-        //     () => {
-        //         console.log(state);
-        //     },
-        //     {
-        //         deep: true,
-        //     },
-        // );
-        const vIf = ref(true);
-        const vShow = ref(true);
-        const model = reactive({
-            name: 'aring',
+        const { render } = useQueryPage({
+            api: '/user.json',
+            table: { fields: tableFields },
+            query: { fields: formFields },
         });
-        const vModel = ref('aring');
-        setTimeout(() => {
-            saveBtnLabel.value = '保存按钮';
-        }, 2000);
 
-        const { render, schemes } = useBaseScene({});
-        schemes.push({
-            component: 'Input',
-            props: {
-                type: 'primary',
-            },
-            vShow,
-            vModel,
-            // vModel: model.name,
-            // events: {
-            //     onClick() {
-            //         vShow.value = false;
-            //         setTimeout(() => {
-            //             vShow.value = true;
-            //         }, 11000);
-            //     },
+        const slots = {
+            // name: (record) => {
+            //     console.log(record, 'name default');
+            //     return 'aring111';
             // },
-            children: ['点击'],
-        });
-        schemes.push({
-            component: 'div',
-            children: [vModel.value],
-        });
-
-        watch(vModel.value, () => {
-            console.log(vModel.value);
-        });
-
-        return render;
+            tableName: (record) => {
+                console.log(record, 'name default');
+                return 'aring222';
+            },
+            tableName__header: (record) => {
+                console.log(record, 'header');
+                return '自定义';
+            },
+        };
+        return () => {
+            // const vnodes = render(slots);
+            // return vnodes.concat(tableRender(slots)).concat(pager.render());
+            return render(slots);
+        };
     },
 });
