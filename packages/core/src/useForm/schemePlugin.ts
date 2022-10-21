@@ -1,12 +1,11 @@
 import { FormSceneConfig, FormSceneContext } from './base';
-import { compileComponents, ComponentType, createScheme, findScheme, getGlobalConfig, getSceneContext, Handle, KoalaPlugin, SchemeChildren, SchemeStatus } from '../base';
+import { compileComponents, ComponentType, createScheme, getGlobalConfig, Handle, KoalaPlugin, SchemeChildren, SchemeStatus, ComponentDesc } from '../base';
 import { mergeRefProps, useState } from '../helper';
 import { ref, unref } from 'vue';
 import { cloneDeep, isArray, isNumber, isUndefined } from 'lodash-es';
-import { ComponentDesc } from '../field';
 import dayjs from 'dayjs';
 
-export const formSchemePlugin: KoalaPlugin<FormSceneContext, FormSceneConfig> = (ctx, { form, fields }) => {
+export const formSchemePlugin: KoalaPlugin<FormSceneContext, FormSceneConfig> = ({ ctx, config: { form, fields } }) => {
     if (!fields) return;
     const { state, setState } = useState({});
     const initModel: Record<string, unknown> = {};
@@ -65,16 +64,16 @@ export const formSchemePlugin: KoalaPlugin<FormSceneContext, FormSceneConfig> = 
     }
 };
 
-export const resetFields = (ctx?: FormSceneContext | string): Handle => {
+export const resetFields = (ctx?: FormSceneContext): Handle => {
     return (thisCtx) => {
-        const _cxt = getSceneContext(ctx || thisCtx) as FormSceneContext;
+        const _cxt = (ctx || thisCtx) as FormSceneContext;
         _cxt?.resetFields();
     };
 };
 
-export const initFields = (values: Record<string, unknown>, ctx?: FormSceneContext | string): Handle => {
+export const initFields = (values: Record<string, unknown>, ctx?: FormSceneContext): Handle => {
     return (thisCtx) => {
-        const _cxt = getSceneContext(ctx || thisCtx) as FormSceneContext;
+        const _cxt = (ctx || thisCtx) as FormSceneContext;
         _cxt?.initFields(values);
     };
 };
@@ -89,7 +88,7 @@ export const initFields = (values: Record<string, unknown>, ctx?: FormSceneConte
  */
 export const getFormatFormData = (extend?: Record<string, unknown>, cxt?: FormSceneContext): Handle => {
     return (thisCxt) => {
-        const _cxt = getSceneContext(cxt || thisCxt);
+        const _cxt = cxt || thisCxt;
         if (!_cxt) return [];
         const model = cloneDeep(unref(_cxt.model) || {});
         const fields = (_cxt?.__config as FormSceneConfig)?.fields || [];
@@ -110,6 +109,7 @@ export const getFormatFormData = (extend?: Record<string, unknown>, cxt?: FormSc
             }
             model[field.name || ''] = value;
         });
+        Object.assign(model, extend || {});
         return [model, _cxt.model];
     };
 };

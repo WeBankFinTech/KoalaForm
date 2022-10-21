@@ -1,15 +1,5 @@
 import { isArray, isObject, mergeWith } from 'lodash-es';
 import { isReactive, isRef, reactive, Ref, unref, watch } from 'vue';
-import { Field } from './field';
-
-export function reactiveFields(fields: Field[]) {
-    const model = {};
-    fields.forEach((field) => {
-        model[field.name] = field.defaultValue || null;
-    });
-
-    return { model: reactive({ ...model }), initModel: model };
-}
 
 export function concatCaseCamel(...args: string[]) {
     return args.map((str, index) => (index === 0 ? str : str.replace(/^[a-z]/, (s) => s.toLocaleUpperCase()))).join('');

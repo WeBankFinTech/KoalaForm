@@ -19,7 +19,9 @@ const parseSlotName = (_slots: Slots, scheme: SchemeStatus, node: ComponentDesc 
     mergeRefProps(scheme, 'slots', slots);
 };
 
-export const slotPlugin: KoalaPlugin = (ctx, config, scheme, node) => {
+export const slotPlugin: KoalaPlugin = ({ ctx }, every) => {
+    if (!every?.scheme || !every?.node) return;
+    const { scheme, node } = every;
     const render = ctx.render;
     ctx.render = (slots) => {
         if (slots && scheme && node?.slotName) {

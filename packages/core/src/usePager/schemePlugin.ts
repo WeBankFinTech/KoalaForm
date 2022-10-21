@@ -1,9 +1,9 @@
 import { PagerSceneConfig, PagerSceneContext } from './base';
-import { compileComponents, ComponentType, createScheme, getGlobalConfig, KoalaPlugin, SchemeChildren, SchemeStatus } from '../base';
+import { ComponentType, createScheme, Handle, KoalaPlugin } from '../base';
 import { mergeRefProps } from '../helper';
 import { computed, reactive, ref } from 'vue';
 
-export const pagerSchemePlugin: KoalaPlugin<PagerSceneContext, PagerSceneConfig> = (ctx, { pager }) => {
+export const pagerSchemePlugin: KoalaPlugin<PagerSceneContext, PagerSceneConfig> = ({ ctx, config: { pager } }) => {
     const state = reactive({
         pageSize: 10,
         currentPage: 1,
@@ -28,4 +28,13 @@ export const pagerSchemePlugin: KoalaPlugin<PagerSceneContext, PagerSceneConfig>
     } else {
         ctx.schemes = [scheme];
     }
+};
+
+export const setPagerCurrent = (current = 1, ctx?: PagerSceneContext): Handle => {
+    return (thisCtx) => {
+        const _cxt = (ctx || thisCtx) as PagerSceneContext;
+        if (_cxt?.model) {
+            _cxt.model.currentPage = current;
+        }
+    };
 };

@@ -1,17 +1,21 @@
-import { Slots } from 'vue';
+import { getCurrentInstance, onMounted, Slots, watch } from 'vue';
 import { ComponentType } from '../base';
-import { mergeWithStrategy } from '../helper';
+import { beforeDoQuery } from '../handles';
+import { mergeRefProps, mergeWithStrategy } from '../helper';
+import { invokeHandles } from '../plugins';
 import { doQueryHandles, queryAction, queryResetAction } from '../preset';
-import { FormSceneConfig, resetFields, useForm } from '../useForm';
-import { PagerSceneConfig, usePager } from '../usePager';
-import { useTable, TableSceneConfig } from '../useTable';
+import { FormSceneConfig, FormSceneContext, resetFields, useForm } from '../useForm';
+import { PagerSceneConfig, PagerSceneContext, usePager } from '../usePager';
+import { setPagerCurrent } from '../usePager/schemePlugin';
+import { useTable, TableSceneConfig, TableSceneContext } from '../useTable';
 
 const getDefaultConfig = () => {
     return {
-        table: { name: 'table', table: { name: ComponentType.Table }, fields: [] },
-        pager: { name: 'pager', pager: { name: ComponentType.Pagination } },
+        hasDefaultAction: true,
+        hasFirstQueryCall: true,
+        table: { table: { name: ComponentType.Table }, fields: [] },
+        pager: { pager: { name: ComponentType.Pagination } },
         query: {
-            name: 'queryForm',
             form: { name: ComponentType.Form, props: { layout: 'inline' } },
             fields: [],
         },
@@ -23,23 +27,35 @@ export function useQueryPage(config: {
     table: TableSceneConfig;
     pager: PagerSceneConfig;
     query: FormSceneConfig;
-    noDefaultAction?: boolean;
+    hasDefaultAction?: boolean;
+    hasFirstQueryCall?: boolean;
     requestConfig?: unknown;
 }) {
-    const mergeConfig: typeof config = getDefaultConfig();
+    const mergeConfig = getDefaultConfig() as unknown as typeof config;
     mergeWithStrategy(mergeConfig, config);
-    if (!config.noDefaultAction) {
-        const queryHandles = doQueryHandles(config.api || '', {
-            pagerCtx: mergeConfig.pager.name,
-            tableCtx: mergeConfig.table.name,
-            requestConfig: config.requestConfig,
+    const { hasDefaultAction, hasFirstQueryCall, table: tableConfig, pager: pagerConfig, query: queryConfig } = mergeConfig;
+    if (hasDefaultAction) {
+        const queryHandles = doQueryHandles(mergeConfig.api || '', {
+            pagerCtx: pagerConfig.ctx,
+            tableCtx: tableConfig.ctx,
+            formCtx: queryConfig.ctx,
+            requestConfig: mergeConfig.requestConfig,
         });
+        // 使用默认的查询和重置按钮
         mergeConfig.query.fields.push({
             components: {
                 name: ComponentType.Space,
-                children: [queryAction(queryHandles), queryResetAction([resetFields(), ...queryHandles])],
+                children: [queryAction(queryHandles), queryResetAction([resetFields(), setPagerCurrent(1, pagerConfig.ctx), ...queryHandles])],
             },
         });
+
+        mergeRefProps(mergeConfig.pager.pager, 'events', {
+            onChange: queryHandles,
+        });
+
+        if (hasFirstQueryCall) {
+            onMounted(() => invokeHandles(mergeConfig.query.ctx, queryHandles));
+        }
     }
 
     const query = useForm(mergeConfig.query);

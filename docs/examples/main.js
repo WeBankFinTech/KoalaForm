@@ -3,6 +3,7 @@ import { setupGlobalConfig } from '@koala-form/core';
 
 setupGlobalConfig({
     request(api, params, config) {
+        console.log('request.params => ', params);
         const paramStr = Object.keys(params)
             .map((key) => `${key}=${params[key] || ''}`)
             .join('&');
@@ -12,8 +13,13 @@ setupGlobalConfig({
                 'content-type': 'application/json',
             },
             method: 'GET',
-        }).then((res) => {
-            return res.json()?.result;
-        });
+        })
+            .then((res) => {
+                return res.json();
+            })
+            .then((data) => {
+                console.log('request.data => ', data);
+                return data?.result;
+            });
     },
 });

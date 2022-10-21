@@ -1,21 +1,45 @@
 import { isFunction, isString, merge } from 'lodash-es';
-import { getCurrentInstance, Ref, Slots, VNodeChild, Component, DefineComponent, ref } from 'vue';
+import mitt, { Emitter } from 'mitt';
+import { Ref, Slots, VNodeChild, Component, DefineComponent, Slot } from 'vue';
 import { travelTree, turnArray } from './helper';
 import { renderPlugin } from './plugins';
 
 export declare type Reactive<T = Record<string, any>> = T | Ref<T>;
 
+interface BaseEvent {
+    ctx: SceneContext;
+    config: SceneConfig;
+    pluginName: string;
+}
+
+type KoalaPluginResult = {
+    // 插件执行前
+    onPluginStart?: (event: BaseEvent) => void;
+    // 插件执行后
+    onPluginEnd?: (event: BaseEvent) => void;
+
+    /** 组件库已加载 */
+    onComponentsLoaded?: (event: BaseEvent) => void;
+
+    [key: string]: (<T extends BaseEvent>(event: T) => void) | undefined;
+};
+
 // 插件定义
 export type KoalaPlugin<T extends SceneContext = SceneContext, K extends SceneConfig = SceneConfig> = (
-    cxt: T,
-    config: K,
-    scheme?: SchemeStatus,
-    node?: ComponentDesc | Field,
-) => void;
+    opt: {
+        ctx: T;
+        config: K;
+        emit: (name: string, event?: any) => void;
+    },
+    every?: {
+        scheme: SchemeStatus;
+        node: ComponentDesc | Field;
+    },
+) => KoalaPluginResult | void;
 
 // 上下文定义相关
 export type ModelRef = { ref: Reactive; name: string };
-export type SchemeChildren = Array<SchemeStatus | string | ModelRef> | string | ModelRef;
+export type SchemeChildren = Array<SchemeStatus | string | ModelRef | Slot> | string | ModelRef | Slot;
 
 export type EnumOption = { label: unknown; value: unknown; [key: string]: unknown };
 export interface SchemeStatus {
@@ -31,14 +55,15 @@ export interface SchemeStatus {
     __node: unknown;
 }
 export interface SceneContext {
+    name: string;
     model?: Reactive;
     schemes: Array<SchemeStatus>;
     getComponent: (name: keyof typeof ComponentType | String | Component) => Component | string;
     render: (slots?: Slots) => VNodeChild;
-    __config: SceneConfig;
+    __config?: SceneConfig;
 }
 export interface SceneConfig {
-    name: string;
+    ctx: SceneContext;
     components?: ComponentDesc[];
     plugins?: KoalaPlugin[];
 }
@@ -97,19 +122,9 @@ const defaultConfig: {
     renderPlugin?: KoalaPlugin;
     request?: (api: string, data?: unknown, config?: unknown) => Promise<any>;
     modelValueName: string;
-    // querySubmit: Record<;
-    dataPath: {
-        data?: string;
-        list?: string;
-        pageTotal?: string;
-    };
 } = {
     renderPlugin,
     modelValueName: 'modelValue',
-    dataPath: {
-        list: 'list',
-        pageTotal: 'page.totalCount',
-    },
 };
 
 export const setupGlobalConfig = (config: typeof defaultConfig) => {
@@ -171,33 +186,6 @@ export const mergePlugins = (...args: Array<KoalaPlugin | string>[]) => {
     return list;
 };
 
-export function getSceneContext<T = SceneContext>(name?: string | T): T | undefined {
-    if (typeof name === 'string') {
-        const vm = getCurrentInstance();
-        const $scene = vm?.['$scene'];
-        return $scene?.[name];
-    } else return name;
-}
-
-export function setSceneContext<T extends SceneContext>(name: string, ctx: T) {
-    const vm = getCurrentInstance();
-    if (!vm) return;
-    const $scene = vm?.['$scene'] || {};
-    $scene[name] = ctx;
-    vm['$scene'] = $scene;
-}
-
-export function createSceneContext<T extends SceneContext>(config: SceneConfig): T {
-    const ctx: SceneContext = {
-        schemes: [],
-        getComponent: (name) => name as string,
-        render: () => [],
-        __config: config,
-    };
-    setSceneContext(config.name, ctx);
-    return ctx as unknown as T;
-}
-
 export const createScheme = (node: ComponentDesc | string | Field): SchemeStatus => {
     if (isString(node)) {
         return { __node: node, component: '', children: node };
@@ -217,41 +205,73 @@ export const compileComponents = (ctx: SceneContext, components?: ComponentDesc 
     }
 };
 
+export const useSceneContext = (names?: string[]) => {
+    const ctxs: SceneContext[] = [];
+    const ctxMap: Record<string, SceneContext> = {};
+
+    const createContext = (cxtName: string): SceneContext => {
+        return {
+            name: cxtName,
+            schemes: [],
+            getComponent: (name) => name as string,
+            render: () => [],
+        };
+    };
+
+    names?.forEach((name) => {
+        const ctx = createContext(name);
+        ctxMap[name] = ctx;
+        ctxs.push(ctx);
+    });
+
+    const getContext = <T extends SceneContext>(name: string): T => {
+        return (ctxMap[name] || (ctxMap[name] = createContext(name))) as T;
+    };
+
+    const setContext = <T extends SceneContext>(name: string, values: T) => {
+        const cxt = getContext(name);
+        Object.assign(cxt, values);
+    };
+    return {
+        ctxs,
+        getContext,
+        setContext,
+    };
+};
+
+const addEventListener = (emitter: Emitter<any>, events: KoalaPluginResult) => {
+    if (!events) return;
+    Object.keys(events).forEach((key) => {
+        const cb = events[key];
+        isFunction(cb) && emitter.on(key, cb);
+    });
+};
+
 export function useBaseScene<T extends SceneContext, K extends SceneConfig>(config: K): T {
-    const ctx = createSceneContext<T>(config);
+    const { ctx, components } = config;
+    ctx.__config = config;
+    const emitter = mitt();
     const plugins: KoalaPlugin[] = mergePlugins(['renderPlugin', 'componentPlugin'], config.plugins || []);
-    const schemes = compileComponents(ctx, config.components);
+    const schemes = compileComponents(ctx, components);
     if (schemes) ctx.schemes = schemes;
+    const pluginOpt = { ctx, config, emit: emitter.emit as any };
 
     // 执行插件
     plugins.forEach((plugin) => {
-        if (plugin.length > 2 && ctx.schemes) {
+        // const event: BaseEvent = { ctx, config, pluginName: plugin.name };
+        // emitter.emit('onPluginStart', event);
+        if (plugin.length > 1 && ctx.schemes) {
             travelTree(ctx.schemes, (scheme) => {
-                plugin(ctx, config, scheme, scheme.__node as ComponentDesc);
+                const events = plugin(pluginOpt, { scheme, node: scheme.__node as ComponentDesc });
+                events && addEventListener(emitter, events);
             });
         } else {
-            plugin(ctx, config);
+            const events = plugin(pluginOpt);
+            events && addEventListener(emitter, events);
         }
+        // emitter.emit('onPluginEnd', event);
     });
 
     console.log(ctx);
-    return ctx;
+    return ctx as T;
 }
-
-const submitParamTemplate = {
-    model: '...model',
-    createTimeStart: 'model.createTime[0]',
-    page: {
-        current: 'currentPage',
-        pageSize: 'pageSize',
-    },
-};
-
-const resTemplate = {
-    model: '...model',
-    createTimeStart: 'model.createTime[0]',
-    page: {
-        current: 'currentPage',
-        pageSize: 'pageSize',
-    },
-};

@@ -1,5 +1,5 @@
 import { FormSceneConfig, FormSceneContext } from './base';
-import { KoalaPlugin, Field, ValidateRule, findScheme, getSceneContext, Handle } from '../base';
+import { KoalaPlugin, Field, ValidateRule, findScheme, Handle } from '../base';
 import { mergeRefProps } from '../helper';
 
 const parseFieldRule = (field: Field): Array<ValidateRule> => {
@@ -12,12 +12,12 @@ const parseFieldRule = (field: Field): Array<ValidateRule> => {
     }
 };
 
-export const formRulePlugin: KoalaPlugin<FormSceneContext, FormSceneConfig> = (cxt, { fields }) => {
+export const formRulePlugin: KoalaPlugin<FormSceneContext, FormSceneConfig> = ({ ctx, config: { fields } }) => {
     if (!fields) return;
     const ruleMap = {};
     fields.forEach((field) => {
         if (!field.name) return;
-        const scheme = findScheme(cxt.schemes, field);
+        const scheme = findScheme(ctx.schemes, field);
         if (!scheme) return;
         const rules = parseFieldRule(field);
         if (rules.length) {
@@ -26,25 +26,25 @@ export const formRulePlugin: KoalaPlugin<FormSceneContext, FormSceneConfig> = (c
         }
     });
 
-    cxt.validate = async (names) => {
-        await cxt.formRef.value?.validate(names);
+    ctx.validate = async (names) => {
+        await ctx.formRef.value?.validate(names);
     };
 
-    cxt.clearValidate = () => {
-        cxt.formRef.value?.clearValidate();
+    ctx.clearValidate = () => {
+        ctx.formRef.value?.clearValidate();
     };
 };
 
-export const validate = (names?: string[], ctx?: FormSceneContext | string): Handle => {
+export const validate = (names?: string[], ctx?: FormSceneContext): Handle => {
     return async (thisCtx) => {
-        const _cxt = getSceneContext(ctx || thisCtx) as FormSceneContext;
+        const _cxt = (ctx || thisCtx) as FormSceneContext;
         await _cxt?.validate(names);
     };
 };
 
-export const clearValidate = (ctx?: FormSceneContext | string): Handle => {
+export const clearValidate = (ctx?: FormSceneContext): Handle => {
     return (thisCtx) => {
-        const _cxt = getSceneContext(ctx || thisCtx) as FormSceneContext;
+        const _cxt = (ctx || thisCtx) as FormSceneContext;
         _cxt?.clearValidate();
     };
 };

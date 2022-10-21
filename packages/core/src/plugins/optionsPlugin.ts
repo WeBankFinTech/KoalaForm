@@ -1,13 +1,14 @@
 import { isFunction } from 'lodash-es';
 import { ref, unref } from 'vue';
-import { KoalaPlugin, Field, EnumOption, Handle, SceneContext, getSceneContext, findScheme } from '../base';
+import { KoalaPlugin, Field, EnumOption, Handle, SceneContext, findScheme } from '../base';
 import { resDataField, wrapRequest } from '../handles';
 import { mergeRefProps, turnArray } from '../helper';
 import { FormSceneConfig, FormSceneContext } from '../useForm';
 import { invokeHandles } from './eventsPlugin';
 
-export const optionsPlugin: KoalaPlugin = (ctx, config, scheme, node) => {
-    if (!scheme || !node) return;
+export const optionsPlugin: KoalaPlugin = ({ ctx }, every) => {
+    if (!every?.scheme || !every?.node) return;
+    const { scheme, node } = every;
     const _options = (node as Field).option;
     if (isFunction(_options)) {
         const options = ref<Array<EnumOption>>([]);
@@ -49,9 +50,9 @@ export const remoteOptions = (
     };
 };
 
-export const getFieldOptions = (fieldName: string, cxt?: SceneContext | string): Handle => {
+export const getFieldOptions = (fieldName: string, cxt?: SceneContext): Handle => {
     return (thisCxt) => {
-        const _cxt = getSceneContext(cxt || thisCxt) as FormSceneContext;
+        const _cxt = (cxt || thisCxt) as FormSceneContext;
         const fields = (_cxt?.__config as FormSceneConfig).fields || [];
         const scheme = findScheme(
             _cxt?.schemes,
@@ -64,7 +65,7 @@ export const getFieldOptions = (fieldName: string, cxt?: SceneContext | string):
     };
 };
 
-export const getFieldValueLabel = (fieldName: string, split = '、', cxt?: SceneContext | string): Handle => {
+export const getFieldValueLabel = (fieldName: string, split = '、', cxt?: SceneContext): Handle => {
     return (thisCxt, value) => {
         const [options] = (getFieldOptions(fieldName, cxt)(thisCxt) as Array<unknown>) || [];
         if (options) {

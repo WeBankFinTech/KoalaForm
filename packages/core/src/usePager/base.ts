@@ -11,5 +11,6 @@ export interface PagerSceneContext extends SceneContext {
 }
 
 export interface PagerSceneConfig extends SceneConfig {
+    ctx: PagerSceneContext;
     pager: ComponentDesc;
 }

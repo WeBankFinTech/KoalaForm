@@ -7,6 +7,7 @@ export interface TableSceneContext extends SceneContext {
 }
 
 export interface TableSceneConfig extends SceneConfig {
+    ctx: TableSceneContext;
     table: ComponentDesc;
     fields: Field[];
 }

@@ -3,7 +3,7 @@ import { compileComponents, ComponentType, createScheme, KoalaPlugin, SchemeChil
 import { mergeRefProps } from '../helper';
 import { ref } from 'vue';
 
-export const tableSchemePlugin: KoalaPlugin<TableSceneContext, TableSceneConfig> = (ctx, { table, fields }) => {
+export const tableSchemePlugin: KoalaPlugin<TableSceneContext, TableSceneConfig> = ({ ctx, config: { table, fields } }) => {
     if (!fields) return;
     const state = ref([]);
     const schemeChildren: SchemeChildren = [];

@@ -1,11 +1,11 @@
 import { isFunction } from 'lodash-es';
 import { ref } from 'vue';
-import { KoalaPlugin } from '../base';
-import { ComponentDesc } from '../field';
+import { KoalaPlugin, ComponentDesc } from '../base';
 import { mergeRefProps } from '../helper';
 
-export const disabledPlugin: KoalaPlugin = (ctx, config, scheme, node) => {
-    if (!scheme || !node) return;
+export const disabledPlugin: KoalaPlugin = ({ ctx }, every) => {
+    if (!every?.scheme || !every?.node) return;
+    const { scheme, node } = every;
     const disabled = (node as ComponentDesc).disabled;
     if (isFunction(disabled)) {
         const _disabled = ref(true);

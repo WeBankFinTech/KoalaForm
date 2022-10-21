@@ -1,9 +1,7 @@
-import { cloneDeep, get, merge } from 'lodash-es';
-import { unref } from 'vue';
-import { findScheme, getGlobalConfig, getSceneContext, Handle, SceneContext } from '../base';
-import { turnArray } from '../helper';
+import { get } from 'lodash-es';
+import { getGlobalConfig, Handle } from '../base';
 import { invokeHandles } from '../plugins';
-import { FormSceneConfig, FormSceneContext, getFormatFormData } from '../useForm';
+import { FormSceneContext, getFormatFormData } from '../useForm';
 import { PagerSceneContext } from '../usePager';
 import { TableSceneContext } from '../useTable';
 
@@ -47,20 +45,18 @@ export const resDataField = (path?: string): Handle => {
  * @param formCtx 表单上下文
  * @returns
  */
-export const beforeDoQuery = (pagerCtx?: PagerSceneContext | string, formCtx?: FormSceneContext | string): Handle => {
+export const beforeDoQuery = (pagerCtx?: PagerSceneContext, formCtx?: FormSceneContext): Handle => {
     return async (cxt) => {
-        debugger;
-        const _pagerCtx = getSceneContext(pagerCtx);
-        const _formCxt = getSceneContext(formCtx || cxt);
+        const _formCxt = formCtx || cxt;
         if (!_formCxt) return;
         let page;
-        if (_pagerCtx?.model) {
+        if (pagerCtx?.model) {
             page = {
-                pageSize: _pagerCtx.model.pageSize,
-                currentPage: _pagerCtx.model.currentPage,
+                pageSize: pagerCtx.model.pageSize,
+                currentPage: pagerCtx.model.currentPage,
             };
         }
-        return (await invokeHandles(_formCxt, getFormatFormData()), [{ page }]) || [];
+        return getFormatFormData({ page })(_formCxt);
     };
 };
 
@@ -82,12 +78,11 @@ export const beforeDoQuery = (pagerCtx?: PagerSceneContext | string, formCtx?: F
  * @param tableCtx 列表上下文
  * @returns
  */
-export const afterDoQuery = (pagerCtx?: PagerSceneContext | string, tableCtx?: TableSceneContext | string): Handle => {
+export const afterDoQuery = (pagerCtx?: PagerSceneContext, tableCtx?: TableSceneContext): Handle => {
     return (ctx, data?: { list: any[]; page?: { totalCount: number } }) => {
-        const pager = getSceneContext(pagerCtx);
-        const table = getSceneContext(tableCtx || ctx);
-        if (pager?.model) {
-            pager.model.totalCount = data?.page?.totalCount || 0;
+        const table = tableCtx || ctx;
+        if (pagerCtx?.model) {
+            pagerCtx.model.totalCount = data?.page?.totalCount || 0;
         }
         if (table?.model?.value) {
             table.model.value = data?.list || [];

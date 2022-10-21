@@ -1,6 +1,5 @@
 import { isFunction } from 'lodash-es';
-import { KoalaPlugin, SceneContext, SchemeStatus, Handle } from '../base';
-import { ComponentDesc } from '../field';
+import { KoalaPlugin, SceneContext, SchemeStatus, Handle, ComponentDesc } from '../base';
 import { mergeRefProps, turnArray } from '../helper';
 
 /**
@@ -44,8 +43,9 @@ export const wrapToHandle = (fn: Function, params?: unknown[], ctx?: SceneContex
     };
 };
 
-export const eventsPlugin: KoalaPlugin = (ctx, config, scheme, node) => {
-    if (!scheme || !node) return;
+export const eventsPlugin: KoalaPlugin = ({ ctx }, every) => {
+    if (!every?.scheme || !every?.node) return;
+    const { scheme, node } = every;
     const _events = (node as ComponentDesc).events;
     if (!_events) return;
     const events: SchemeStatus['events'] = {};

@@ -1,5 +1,14 @@
-import { ComponentType, useForm, useTable, when, usePager, useTableWithPager, useQueryPage } from '@koala-form/core';
-import { defineComponent, onMounted, ref } from 'vue';
+import {
+    ComponentType,
+    useForm,
+    useTable,
+    when,
+    usePager,
+    useTableWithPager,
+    useQueryPage,
+    useSceneContext,
+} from '@koala-form/core';
+import { defineComponent, getCurrentInstance, onMounted, ref } from 'vue';
 
 const options = [
     { value: '0', label: '女' },
@@ -109,10 +118,15 @@ export default defineComponent({
         // dataSource.value = list;
         // pager.model.totalCount = 60;
 
+        const {
+            ctxs: [queryFormCtx, tableCtx, pagerCtx],
+        } = useSceneContext(['queryForm', 'table', 'pager']);
+
         const { render } = useQueryPage({
             api: '/user.json',
-            table: { fields: tableFields },
-            query: { fields: formFields },
+            pager: { ctx: pagerCtx },
+            table: { fields: tableFields, ctx: tableCtx },
+            query: { fields: formFields, ctx: queryFormCtx },
         });
 
         const slots = {
@@ -120,14 +134,14 @@ export default defineComponent({
             //     console.log(record, 'name default');
             //     return 'aring111';
             // },
-            tableName: (record) => {
-                console.log(record, 'name default');
-                return 'aring222';
-            },
-            tableName__header: (record) => {
-                console.log(record, 'header');
-                return '自定义';
-            },
+            // tableName: (record) => {
+            //     console.log(record, 'name default');
+            //     return 'aring222';
+            // },
+            // tableName__header: (record) => {
+            //     console.log(record, 'header');
+            //     return '自定义';
+            // },
         };
         return () => {
             // const vnodes = render(slots);

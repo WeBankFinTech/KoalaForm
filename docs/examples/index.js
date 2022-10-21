@@ -1,5 +1,7 @@
 import './main';
 import Test from './Test';
+import StartedUseForm from './started/useForm';
+import StartedUseTable from './started/useTable';
 // import User from './User.vue';
 // import UseFormSlots from './UseFormSlots.vue';
 // import UseForm from './UseForm.vue';
@@ -13,6 +15,8 @@ import Test from './Test';
 
 export default {
     Test,
+    StartedUseForm,
+    StartedUseTable,
     // User,
     // UseForm,
     // UseFormSlots,
