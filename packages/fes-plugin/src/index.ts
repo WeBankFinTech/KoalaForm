@@ -1,21 +1,25 @@
-import { isComponent, KoalaPlugin, setupGlobalConfig } from '@koala-form/core';
+import { installInGlobal, isComponent, PluginFunction, SceneConfig, SceneContext, setupGlobalConfig } from '@koala-form/core';
 import * as fesd from '@fesjs/fes-design';
 
-export const componentPlugin: KoalaPlugin = ({ ctx, emit }) => {
-    ctx.getComponent = (name) => {
-        if (typeof name === 'string') {
-            const comp = fesd[`F${name}`];
-            if (isComponent(comp)) return comp;
-            else return name;
-        } else {
-            return name;
-        }
-    };
+export const componentPlugin: PluginFunction<SceneContext, SceneConfig> = (api) => {
+    setupGlobalConfig({
+        modelValueName: 'modelValue',
+    });
 
-    emit('onPluginEnd', { name: 'componentPlugin' });
+    api.describe('fes-plugin');
+
+    api.onSelfStart(({ ctx }) => {
+        ctx.getComponent = (name) => {
+            if (typeof name === 'string') {
+                const comp = fesd[`F${name}`];
+                if (isComponent(comp)) return comp;
+                else return name;
+            } else {
+                return name;
+            }
+        };
+        api.emit('componentLoaded');
+    });
 };
 
-setupGlobalConfig({
-    componentPlugin,
-    modelValueName: 'modelValue',
-});
+installInGlobal(componentPlugin);

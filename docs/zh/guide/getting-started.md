@@ -24,14 +24,14 @@ npm i @koala-form/preset-fesd
 
 ## 表单这么写
 
-<ExampleDoc>
+<!-- <ExampleDoc>
 <StartedUseForm>
 </StartedUseForm>
 <template #code>
 
 <<< @/examples/started/useForm.js
 </template>
-</ExampleDoc>
+</ExampleDoc> -->
 
 
 ## 列表这么写
@@ -45,17 +45,27 @@ npm i @koala-form/preset-fesd
 </template>
 </ExampleDoc> -->
 
-## 写一个用户表单试试
-实现如下一个用户的表单的CURD操作，通过定义字段名和配置，仅需几十行代码就可以实现完成的一个表单功能。
+## 分页这么写
 
 <!-- <ExampleDoc>
-<Test>
-</Test>
+<StartedUsePager>
+</StartedUsePager>
 <template #code>
 
-<<< @/examples/User.vue
+<<< @/examples/started/usePager.js
 </template>
 </ExampleDoc> -->
+
+## 组合CURD
+
+<ExampleDoc>
+<StartedUseCurd>
+</StartedUseCurd>
+<template #code>
+
+<<< @/examples/started/useCurd.js
+</template>
+</ExampleDoc>
 
 
 这个表单场景太简单了，实际的业务上会有各种复杂的表单，**Koala Form**也能支持吗？

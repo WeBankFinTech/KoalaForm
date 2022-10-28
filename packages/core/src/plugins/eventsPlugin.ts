@@ -1,6 +1,9 @@
-import { isFunction } from 'lodash-es';
-import { KoalaPlugin, SceneContext, SchemeStatus, Handle, ComponentDesc } from '../base';
-import { mergeRefProps, turnArray } from '../helper';
+import { isArray, isFunction } from 'lodash-es';
+import { SceneContext, Handle, SceneConfig } from '../base';
+import { Handler, invokeHandler } from '../handles';
+import { mergeRefProps, travelTree, turnArray } from '../helper';
+import { ComponentDesc, Scheme } from '../scheme';
+import { PluginFunction } from './define';
 
 /**
  * 按顺序执行所有的handle原子方法
@@ -43,17 +46,43 @@ export const wrapToHandle = (fn: Function, params?: unknown[], ctx?: SceneContex
     };
 };
 
-export const eventsPlugin: KoalaPlugin = ({ ctx }, every) => {
-    if (!every?.scheme || !every?.node) return;
-    const { scheme, node } = every;
-    const _events = (node as ComponentDesc).events;
-    if (!_events) return;
-    const events: SchemeStatus['events'] = {};
-    Object.keys(_events).forEach((key) => {
-        const handles = turnArray(_events?.[key]) as Handle<SceneContext, unknown>[];
-        if (handles.length) {
-            events[key] = (...args) => invokeHandles(ctx, handles, args);
-        }
+export const eventsPlugin: PluginFunction<SceneContext, SceneConfig> = (api) => {
+    api.describe('events-plugin');
+    api.on('schemeLoaded', ({ ctx }) => {
+        travelTree(ctx.schemes, (scheme) => {
+            const _events = (scheme.__node as ComponentDesc)?.events;
+            if (!_events) return;
+            const events: Scheme['events'] = {};
+            Object.keys(_events).forEach((key) => {
+                let handlers: Handler[] = [];
+                let configs: any[] = [];
+                const handler = _events?.[key];
+                if (isFunction(handler)) {
+                    handlers = [handler];
+                } else if (isArray(handler)) {
+                    handlers = handler;
+                } else if (handler?.handlers?.length) {
+                    handlers = handler.handlers;
+                    configs = handler.configs;
+                }
+                if (handlers.length) {
+                    events[key] = (...args) => {
+                        invokeHandler(handlers, configs, args);
+                    };
+                }
+            });
+            mergeRefProps(scheme, 'events', events);
+        });
+        api.emit('started');
     });
-    mergeRefProps(scheme, 'events', events);
+};
+
+/** 取事件的值 */
+export const hEventValue: Handler<
+    {
+        preVal: Array<any>;
+    },
+    any
+> = (config) => {
+    return config.preVal?.[0];
 };

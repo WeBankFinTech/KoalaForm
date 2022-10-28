@@ -1,12 +1,11 @@
-import { resetFields } from '@koala-form/core';
-import { ComponentType, useForm, useSceneContext } from '@koala-form/core';
+import { ComponentType, useForm, useSceneContext, hResetFields, LinkHandler } from '@koala-form/core';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
     setup() {
-        const { ctxs } = useSceneContext(['form']);
+        const { ctx } = useSceneContext('form');
         const { render } = useForm({
-            ctx: ctxs[0],
+            ctx,
             form: { props: { labelWidth: '40px' } },
             fields: [
                 {
@@ -21,14 +20,12 @@ export default defineComponent({
                     name: 'sex',
                     label: '性别',
                     defaultValue: '1',
+                    options: [
+                        { value: '0', label: '女' },
+                        { value: '1', label: '男' },
+                    ],
                     components: {
                         name: ComponentType.Select,
-                        props: {
-                            options: [
-                                { value: '0', label: '女' },
-                                { value: '1', label: '男' },
-                            ],
-                        },
                     },
                 },
                 {
@@ -48,12 +45,16 @@ export default defineComponent({
                                 children: ['保存'],
                                 props: { type: 'primary' },
                                 events: {
-                                    onClick: (cxt, event) => {
-                                        console.log(cxt.model, event);
-                                    },
+                                    onClick: new LinkHandler(({ preVal }) => {
+                                        console.log(preVal);
+                                    }),
                                 },
                             },
-                            { name: ComponentType.Button, children: ['重置'], events: { onClick: [resetFields()] } },
+                            {
+                                name: ComponentType.Button,
+                                children: ['重置'],
+                                events: { onClick: new LinkHandler(hResetFields, ctx) },
+                            },
                         ],
                     },
                 },

@@ -1,6 +1,5 @@
 import { FMessage } from '@fesjs/fes-design';
-import { useTable } from '@koala-form/core';
-import { ComponentType, useSceneContext } from '@koala-form/core';
+import { ComponentType, useSceneContext, formatByOptions, useTable, genFormatByDate } from '@koala-form/core';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -20,14 +19,20 @@ export default defineComponent({
                         { value: '0', label: '女' },
                         { value: '1', label: '男' },
                     ],
+                    format: formatByOptions,
                 },
                 {
                     name: 'age',
                     label: '年龄',
                 },
                 {
+                    name: 'birthday',
+                    label: '生日',
+                    format: genFormatByDate(),
+                },
+                {
                     label: '操作',
-                    props: { width: 200 },
+                    props: { width: 100 },
                     components: {
                         name: ComponentType.Button,
                         children: ['详情'],
@@ -44,8 +49,8 @@ export default defineComponent({
         });
 
         model.value = [
-            { name: '蒙奇·D·路飞', sex: '1', age: 16 },
-            { name: '罗罗诺亚·索隆', sex: '1', age: 18 },
+            { name: '蒙奇·D·路飞', sex: '1', age: 16, birthday: '2022-02-12' },
+            { name: '罗罗诺亚·索隆', sex: '1', age: 18, birthday: Date.now() + '' },
         ];
         return render;
     },

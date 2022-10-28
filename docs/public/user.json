@@ -6,7 +6,7 @@
                 "id": "1",
                 "name": "蒙奇·D·路飞",
                 "age": 16,
-                "sex": 1,
+                "sex": "1",
                 "awaken": true,
                 "reward": 1,
                 "hobby": "2,3",
@@ -24,7 +24,7 @@
                 "id": "2",
                 "name": "罗罗诺亚·索隆",
                 "age": 18,
-                "sex": 1
+                "sex": "1"
             }
         ],
         "page": {

@@ -1,77 +1,104 @@
 import { isFunction } from 'lodash-es';
 import { ref, unref } from 'vue';
-import { KoalaPlugin, Field, EnumOption, Handle, SceneContext, findScheme } from '../base';
-import { resDataField, wrapRequest } from '../handles';
-import { mergeRefProps, turnArray } from '../helper';
+import { EnumOption, SceneContext, SceneConfig } from '../base';
+import { Handler, hGetValue, hRequest, invokeHandler, LinkHandler } from '../handles';
+import { mergeRefProps, travelTree, turnArray } from '../helper';
+import { Field, findScheme } from '../scheme';
 import { FormSceneConfig, FormSceneContext } from '../useForm';
+import { PluginFunction } from './define';
 import { invokeHandles } from './eventsPlugin';
 
-export const optionsPlugin: KoalaPlugin = ({ ctx }, every) => {
-    if (!every?.scheme || !every?.node) return;
-    const { scheme, node } = every;
-    const _options = (node as Field).option;
-    if (isFunction(_options)) {
-        const options = ref<Array<EnumOption>>([]);
-        invokeHandles(ctx, _options, [ctx.model]).then((res) => {
-            if (res?.length) {
-                options.value = res[0] as Array<EnumOption>;
+export const optionsPlugin: PluginFunction<SceneContext, SceneConfig> = (api) => {
+    api.describe('options-plugin');
+
+    api.on('schemeLoaded', ({ ctx }) => {
+        travelTree(ctx.schemes, (scheme) => {
+            const _options = (scheme.__node as Field).options;
+            if (!_options) return;
+            let options: any;
+            if (isFunction(_options)) {
+                options = ref<Array<EnumOption>>([]);
+                invokeHandles(ctx, _options, [ctx.model]).then((res) => {
+                    if (res?.length) {
+                        options.value = res[0] as Array<EnumOption>;
+                    }
+                });
+            } else {
+                options = _options;
             }
+            mergeRefProps(scheme, 'props', { options: options });
+            scheme.children?.[0] && mergeRefProps(scheme.children[0], 'props', { options: options });
         });
-        mergeRefProps(scheme, 'props', { options: options });
-    } else {
-        mergeRefProps(scheme, 'props', { options: _options });
-    }
+        api.emit('started');
+    });
 };
 
-export const transferOptions = (valueName = 'value', labelName = 'label'): Handle<SceneContext, EnumOption[]> => {
-    return (ctx, options: Record<string, unknown>[]) => {
-        const list: EnumOption[] = options.map((item) => ({
-            value: item[valueName],
-            label: item[labelName],
+export const hTransferOptions: Handler<
+    {
+        valueName?: string;
+        labelName?: string;
+        preVal?: Record<string, any>[];
+    },
+    EnumOption[]
+> = ({ valueName, labelName, preVal }) => {
+    const list: EnumOption[] =
+        preVal?.map((item) => ({
+            value: item[valueName || 'value'],
+            label: item[labelName || 'label'],
             ...item,
-        }));
-        return [list];
-    };
+        })) || [];
+    return list;
 };
 
-export const remoteOptions = (
-    api: string,
-    data?: unknown,
-    config?: {
-        requestConfig?: Record<string, any>;
+export const hRemoteOptions: Handler<
+    {
+        api: string;
+        data?: Record<string, any>;
+        preVal: Record<string, any>;
+        config?: Record<string, any>;
         valueName?: string;
         labelName?: string;
         path?: string;
     },
-): Handle<SceneContext, EnumOption[]> => {
-    return async (cxt) => {
-        const handles = [wrapRequest(api, config?.requestConfig), resDataField(config?.path), transferOptions(config?.valueName, config?.valueName)];
-        return (await invokeHandles(cxt, handles, [data])) as EnumOption[][];
-    };
+    EnumOption[]
+> = ({ api, data, preVal, config, valueName, labelName, path }) => {
+    const { handlers, configs } = new LinkHandler(hRequest, { api, data, preVal, config }).next(hGetValue, { path }).next(hTransferOptions, { valueName, labelName });
+    return invokeHandler(handlers, configs);
 };
 
-export const getFieldOptions = (fieldName: string, cxt?: SceneContext): Handle => {
-    return (thisCxt) => {
-        const _cxt = (cxt || thisCxt) as FormSceneContext;
-        const fields = (_cxt?.__config as FormSceneConfig).fields || [];
-        const scheme = findScheme(
-            _cxt?.schemes,
-            fields.find((field) => field.name === fieldName),
-        );
-        if (!scheme) return [[]];
-        else {
-            return [unref(scheme.props)?.options];
-        }
-    };
+export const hFieldOptions: Handler<
+    {
+        cxt: FormSceneContext;
+        fieldName: string;
+    },
+    EnumOption[]
+> = ({ cxt, fieldName }) => {
+    const fields = (cxt?.__config as FormSceneConfig).fields || [];
+    const scheme = findScheme(
+        cxt.schemes,
+        fields.find((field) => field.name === fieldName),
+    );
+    if (!scheme) return [];
+    else {
+        return unref(scheme.props)?.options;
+    }
 };
 
-export const getFieldValueLabel = (fieldName: string, split = '、', cxt?: SceneContext): Handle => {
-    return (thisCxt, value) => {
-        const [options] = (getFieldOptions(fieldName, cxt)(thisCxt) as Array<unknown>) || [];
-        if (options) {
-            const values = turnArray(value);
-            const labels = values.map((val) => (options as Array<Record<string, unknown>>).find((item) => item.value === val)?.label);
-            return [labels.join(split)];
-        }
-    };
+export const hOptionLabels: Handler<
+    {
+        cxt: FormSceneContext;
+        preVal?: any;
+        split?: string;
+        fieldName: string;
+    },
+    EnumOption[]
+> = ({ cxt, fieldName, preVal, split }) => {
+    const options = hFieldOptions({ cxt, fieldName });
+    if (options) {
+        const values = turnArray(preVal);
+        const labels = values.map((val) => (options as Array<Record<string, unknown>>).find((item) => item.value === val)?.label);
+        return [labels.join(split || '、')];
+    } else {
+        return preVal;
+    }
 };

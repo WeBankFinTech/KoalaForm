@@ -1,6 +1,6 @@
 import '@koala-form/fes-plugin';
-import { setupGlobalConfig } from '@koala-form/core';
-
+import { setupGlobalConfig, installPluginPreset } from '@koala-form/core';
+installPluginPreset();
 setupGlobalConfig({
     request(api, params, config) {
         console.log('request.params => ', params);

@@ -1,8 +1,10 @@
 import { Slot, Slots } from 'vue';
-import { KoalaPlugin, SchemeStatus, ComponentDesc, Field } from '../base';
-import { mergeRefProps } from '../helper';
+import { SceneContext, SceneConfig } from '../base';
+import { mergeRefProps, travelTree } from '../helper';
+import { ComponentDesc, Field, Scheme } from '../scheme';
+import { PluginFunction } from './define';
 
-const parseSlotName = (_slots: Slots, scheme: SchemeStatus, node: ComponentDesc | Field) => {
+const parseSlotName = (_slots: Slots, scheme: Scheme, node: ComponentDesc | Field) => {
     const slots: Record<string, Slot> = {};
     const slotNameRule = `${node.slotName}__`;
     Object.keys(_slots).forEach((key) => {
@@ -19,14 +21,21 @@ const parseSlotName = (_slots: Slots, scheme: SchemeStatus, node: ComponentDesc 
     mergeRefProps(scheme, 'slots', slots);
 };
 
-export const slotPlugin: KoalaPlugin = ({ ctx }, every) => {
-    if (!every?.scheme || !every?.node) return;
-    const { scheme, node } = every;
-    const render = ctx.render;
-    ctx.render = (slots) => {
-        if (slots && scheme && node?.slotName) {
-            parseSlotName(slots, scheme, node);
+export const slotPlugin: PluginFunction<SceneContext, SceneConfig> = (api) => {
+    api.describe('slot-plugin');
+
+    api.on('started', ({ name, ctx }) => {
+        if (name === 'render-plugin') {
+            const render = ctx.render;
+            ctx.render = (slots) => {
+                travelTree(ctx.schemes, (scheme) => {
+                    if (slots && (scheme.__node as ComponentDesc)?.slotName) {
+                        parseSlotName(slots, scheme, scheme.__node as ComponentDesc);
+                    }
+                });
+                return render(slots);
+            };
+            api.emit('started');
         }
-        return render(slots);
-    };
+    });
 };

@@ -1,19 +1,27 @@
-import { isFunction } from 'lodash-es';
+import { isFunction, isUndefined } from 'lodash-es';
 import { ref } from 'vue';
-import { KoalaPlugin, ComponentDesc } from '../base';
-import { mergeRefProps } from '../helper';
+import { SceneConfig, SceneContext } from '../base';
+import { mergeRefProps, travelTree } from '../helper';
+import { ComponentDesc } from '../scheme';
+import { PluginFunction } from './define';
 
-export const disabledPlugin: KoalaPlugin = ({ ctx }, every) => {
-    if (!every?.scheme || !every?.node) return;
-    const { scheme, node } = every;
-    const disabled = (node as ComponentDesc).disabled;
-    if (isFunction(disabled)) {
-        const _disabled = ref(true);
-        disabled(ctx, (value) => {
-            _disabled.value = !!value;
+export const disabledPlugin: PluginFunction<SceneContext, SceneConfig> = (api) => {
+    api.describe('disabled-plugin');
+
+    api.on('schemeLoaded', ({ ctx }) => {
+        travelTree(ctx.schemes, (scheme) => {
+            const disabled = (scheme.__node as ComponentDesc)?.disabled;
+            if (isUndefined(disabled)) return;
+            if (isFunction(disabled)) {
+                const _disabled = ref(true);
+                disabled(ctx, (value: any) => {
+                    _disabled.value = !!value;
+                });
+                mergeRefProps(scheme, 'props', { disabled: _disabled });
+            } else {
+                mergeRefProps(scheme, 'props', { disabled: disabled });
+            }
         });
-        mergeRefProps(scheme, 'props', { disabled: _disabled });
-    } else {
-        mergeRefProps(scheme, 'props', { disabled: disabled });
-    }
+        api.emit('started');
+    });
 };
