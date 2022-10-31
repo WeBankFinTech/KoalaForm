@@ -7,7 +7,6 @@ import {
     useForm,
     usePager,
     useModal,
-    LinkHandler,
     hFormData,
     hBeforeDoQuery,
     hAfterDoQuery,
@@ -19,7 +18,7 @@ import {
     hClose,
     hOpen,
 } from '@koala-form/core';
-import { defineComponent, h } from 'vue';
+import { defineComponent, h, handleError } from 'vue';
 
 const USER = {
     name: {
@@ -51,33 +50,52 @@ const USER = {
 export default defineComponent({
     setup() {
         const {
-            ctxs: [query, table, pager, create, update, createModal, updateModal],
-        } = useSceneContext(['query', 'table', 'pager', 'create', 'update', 'createModal', 'updateModal']);
+            ctxs: [
+                query,
+                table,
+                pager,
+                create,
+                update,
+                createModal,
+                updateModal,
+            ],
+        } = useSceneContext([
+            'query',
+            'table',
+            'pager',
+            'create',
+            'update',
+            'createModal',
+            'updateModal',
+        ]);
 
-        const doQueryLink = new LinkHandler(hFormData, { ctx: query })
-            .next(hBeforeDoQuery, { form: query, pager: pager })
-            .next(hRequest, { api: '/user.json' })
-            .next(hAfterDoQuery, { table: table, pager: pager });
+        const doQuery = async () => {
+            const data = hBeforeDoQuery(query, pager);
+            const res = await hRequest('/user.json', data);
+            hAfterDoQuery(table, pager, res);
+        };
 
-        const doResetLink = new LinkHandler(hSetPager, { ctx: pager, currentPage: 1 })
-            .next(hResetFields, query)
-            .concat(doQueryLink);
+        const doReset = async () => {
+            hSetPager(pager, { currentPage: 1 });
+            hResetFields(query);
+            await doQuery();
+        };
 
-        const doCreateLink = new LinkHandler(hValidate, { ctx: create })
-            .next(hFormData, { ctx: create })
-            .next(hRequest, {
-                api: '/success.json',
-            })
-            .next(hClose, createModal)
-            .concat(doResetLink);
+        const doCreate = async () => {
+            await hValidate(create);
+            const data = hFormData(create);
+            await hRequest('/success.json', data);
+            hClose(createModal);
+            await doReset();
+        };
 
-        const doUpdateLink = new LinkHandler(hValidate, { ctx: update })
-            .next(hFormData, { ctx: update })
-            .next(hRequest, {
-                api: '/success.json',
-            })
-            .next(hClose, updateModal)
-            .concat(doResetLink);
+        const doUpdate = async () => {
+            await hValidate(update);
+            const data = hFormData(update);
+            await hRequest('/success.json', data);
+            hClose(updateModal);
+            await doReset();
+        };
 
         useForm({
             ctx: query,
@@ -94,18 +112,28 @@ export default defineComponent({
                                 props: { type: 'primary' },
                                 children: '查询',
                                 events: {
-                                    onClick: new LinkHandler(hSetPager, { ctx: pager, currentPage: 1 }).concat(
-                                        doQueryLink,
-                                    ),
+                                    onClick: () => {
+                                        hSetPager(pager, { currentPage: 1 });
+                                        doQuery();
+                                    },
                                 },
                             },
                             {
                                 name: ComponentType.Button,
                                 props: { type: 'primary' },
                                 children: '新增',
-                                events: { onClick: new LinkHandler(hResetFields, create).next(hOpen, createModal) },
+                                events: {
+                                    onClick: () => {
+                                        hResetFields(create);
+                                        hOpen(createModal);
+                                    },
+                                },
                             },
-                            { name: ComponentType.Button, children: '重置', events: { onClick: doResetLink } },
+                            {
+                                name: ComponentType.Button,
+                                children: '重置',
+                                events: { onClick: doReset },
+                            },
                         ],
                     },
                 },
@@ -118,7 +146,11 @@ export default defineComponent({
                 { ...USER.name, components: null },
                 { ...USER.sex, components: null, format: formatByOptions },
                 { ...USER.age, components: null },
-                { ...USER.birthday, components: null, format: genFormatByDate() },
+                {
+                    ...USER.birthday,
+                    components: null,
+                    format: genFormatByDate(),
+                },
                 {
                     label: '操作',
                     props: { width: 160 },
@@ -128,22 +160,24 @@ export default defineComponent({
                             children: ['更新'],
                             props: { type: 'link' },
                             events: {
-                                onClick: new LinkHandler(({ preVal }) => {
-                                    return preVal[0].row;
-                                })
-                                    .next(hSetFields, { ctx: update })
-                                    .next(hOpen, updateModal),
+                                onClick: (record) => {
+                                    hResetFields(update);
+                                    hSetFields(update, record.row);
+                                    hOpen(updateModal);
+                                },
                             },
                         },
                         {
                             name: ComponentType.Tooltip,
-                            props: { title: '是否删除当前记录', mode: 'confirm' },
+                            props: {
+                                title: '是否删除当前记录',
+                                mode: 'confirm',
+                            },
                             events: {
-                                onOk: new LinkHandler(({ preVal }) => {
-                                    return preVal[0].row;
-                                })
-                                    .next(hRequest, { api: '/error.json' })
-                                    .concat(doResetLink),
+                                onOk: (record) => {
+                                    hRequest('/error.json', record.row);
+                                    doReset();
+                                },
                             },
                             children: [
                                 {
@@ -158,16 +192,26 @@ export default defineComponent({
             ],
         });
 
-        usePager({ ctx: pager, pager: { events: { onChange: doQueryLink } } });
+        usePager({ ctx: pager, pager: { events: { onChange: doQuery } } });
 
         useForm({
             ctx: create,
-            fields: [{ ...USER.name, required: true }, { ...USER.sex }, { ...USER.age }, { ...USER.birthday }],
+            fields: [
+                { ...USER.name, required: true },
+                { ...USER.sex },
+                { ...USER.age },
+                { ...USER.birthday },
+            ],
         });
 
         useForm({
             ctx: update,
-            fields: [{ ...USER.name, required: true }, { ...USER.sex }, { ...USER.age }, { ...USER.birthday }],
+            fields: [
+                { ...USER.name, required: true },
+                { ...USER.sex },
+                { ...USER.age },
+                { ...USER.birthday },
+            ],
         });
 
         useModal({
@@ -175,7 +219,7 @@ export default defineComponent({
             childrenCtx: [create],
             modal: {
                 events: {
-                    onOk: doCreateLink,
+                    onOk: doCreate,
                 },
             },
         });
@@ -186,14 +230,20 @@ export default defineComponent({
             childrenCtx: [update],
             modal: {
                 events: {
-                    onOk: doUpdateLink,
+                    onOk: doUpdate,
                 },
             },
         });
         updateModal.model.title = '更新用户';
 
         return () => {
-            return [query.render(), table.render(), pager.render(), createModal.render(), updateModal.render()];
+            return [
+                query.render(),
+                table.render(),
+                pager.render(),
+                createModal.render(),
+                updateModal.render(),
+            ];
         };
     },
 });

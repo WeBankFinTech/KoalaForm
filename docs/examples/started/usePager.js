@@ -1,5 +1,5 @@
 import { FMessage } from '@fesjs/fes-design';
-import { useSceneContext, usePager, hSetPager, LinkHandler } from '@koala-form/core';
+import { useSceneContext, usePager, hSetPager } from '@koala-form/core';
 import { defineComponent, watch } from 'vue';
 
 export default defineComponent({
@@ -9,16 +9,15 @@ export default defineComponent({
             ctx,
             pager: {
                 events: {
-                    onChange: new LinkHandler(({ preVal }) => {
-                        FMessage.info('onChange ' + preVal);
-                    }),
+                    onChange: (value) => {
+                        FMessage.info('onChange ' + value);
+                    },
                 },
             },
         });
         model.currentPage = 2;
         model.totalCount = 100;
-        // setPagerTotal(100, ctx)();
-        // setPagerCurrent(2, ctx)();
+        // hSetPager(ctx, { currentPage: 2, totalCount: 100 });
 
         watch(
             () => model.currentPage,

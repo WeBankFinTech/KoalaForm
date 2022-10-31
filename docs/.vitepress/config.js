@@ -102,18 +102,26 @@ function getGuideSidebar() {
         ]
       },
       {
-        text: 'API',
+        text: '基础场景',
         children: [
-          { text: 'Field', link: '/zh/guide/field' },
-          { text: 'Action', link: '/zh/guide/action' },
-          { text: 'Config', link: '/zh/guide/config' },
+          // { text: 'Field', link: '/zh/guide/field' },
+          // { text: 'Action', link: '/zh/guide/action' },
+          // { text: 'Config', link: '/zh/guide/config' },
           { text: 'useForm', link: '/zh/guide/useForm' },
           { text: 'useTable', link: '/zh/guide/useTable' },
-          { text: 'useFormAction', link: '/zh/guide/useFormAction' },
           { text: 'useModal', link: '/zh/guide/useModal' },
           { text: 'useQuery', link: '/zh/guide/useQuery' },
           { text: 'usePage', link: '/zh/guide/usePage' },
-          { text: 'KoalaForm组件', link: '/zh/guide/koalaForm' },
+        ]
+      },
+      {
+        text: '组合场景',
+        children: [
+          { text: 'useTableWithPager', link: '/zh/guide/useTableWithPager' },
+          { text: 'useQueryPage', link: '/zh/guide/useQueryPage' },
+          { text: 'useModalForm', link: '/zh/guide/useModalForm' },
+          { text: 'useModalTable', link: '/zh/guide/useModalTable' },
+          { text: 'useCurd', link: '/zh/guide/useCurd' },
         ]
       },
       {

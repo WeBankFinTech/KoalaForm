@@ -24,8 +24,15 @@ export const useState = (initState: Record<string, unknown> | Ref<Record<string,
         }
     };
 
+    const empty = () => {
+        Object.keys(state).forEach((key) => {
+            delete state[key];
+        });
+    };
+
     return {
         state,
+        empty,
         getState,
         setState,
     };
@@ -68,7 +75,7 @@ export function mergeWithStrategy(object: unknown, source: unknown, strategy?: {
             if (_strategy.array === 'concat') return value.concat(srcValue);
             if (_strategy.array === 'override') return srcValue;
         }
-        return;
+        return undefined;
     });
 }
 

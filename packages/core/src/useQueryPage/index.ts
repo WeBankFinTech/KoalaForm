@@ -1,13 +1,11 @@
-import { getCurrentInstance, onMounted, Slots, watch } from 'vue';
-import { ComponentType } from '../base';
-import { beforeDoQuery } from '../handles';
+import { merge } from 'lodash-es';
+import { onMounted, Slots } from 'vue';
 import { mergeRefProps, mergeWithStrategy } from '../helper';
-import { invokeHandles } from '../plugins';
-import { doQueryHandles, queryAction, queryResetAction } from '../preset';
-import { FormSceneConfig, FormSceneContext, resetFields, useForm } from '../useForm';
-import { PagerSceneConfig, PagerSceneContext, usePager } from '../usePager';
-import { setPagerCurrent } from '../usePager/schemePlugin';
-import { useTable, TableSceneConfig, TableSceneContext } from '../useTable';
+import { presetDoQuery, presetDoResetQuery, presetPagerChange, presetQueryBtn, presetResetQueryBtn } from '../preset';
+import { ComponentType } from '../scheme';
+import { FormSceneConfig, useForm } from '../useForm';
+import { PagerSceneConfig, usePager } from '../usePager';
+import { useTable, TableSceneConfig } from '../useTable';
 
 const getDefaultConfig = () => {
     return {
@@ -23,44 +21,47 @@ const getDefaultConfig = () => {
 };
 
 export function useQueryPage(config: {
-    api?: string;
+    api: string;
     table: TableSceneConfig;
     pager: PagerSceneConfig;
     query: FormSceneConfig;
-    hasDefaultAction?: boolean;
-    hasFirstQueryCall?: boolean;
-    requestConfig?: unknown;
+    /** 使用默认查询按钮 */
+    withDefaultAction?: boolean;
+    /** 默认进行初始查询 */
+    withInitQuery?: boolean;
+    requestOpt?: Record<string, any>;
 }) {
     const mergeConfig = getDefaultConfig() as unknown as typeof config;
-    mergeWithStrategy(mergeConfig, config);
-    const { hasDefaultAction, hasFirstQueryCall, table: tableConfig, pager: pagerConfig, query: queryConfig } = mergeConfig;
-    if (hasDefaultAction) {
-        const queryHandles = doQueryHandles(mergeConfig.api || '', {
-            pagerCtx: pagerConfig.ctx,
-            tableCtx: tableConfig.ctx,
-            formCtx: queryConfig.ctx,
-            requestConfig: mergeConfig.requestConfig,
-        });
+    mergeWithStrategy(config, mergeConfig);
+    const { withDefaultAction, withInitQuery, table: tableConfig, pager: pagerConfig, query: queryConfig } = config;
+    if (withDefaultAction) {
+        const handleConfig = {
+            api: config.api,
+            pager: pagerConfig.ctx,
+            table: tableConfig.ctx,
+            form: queryConfig.ctx,
+            opt: config.requestOpt,
+        };
         // 使用默认的查询和重置按钮
-        mergeConfig.query.fields.push({
+        config.query.fields.push({
             components: {
                 name: ComponentType.Space,
-                children: [queryAction(queryHandles), queryResetAction([resetFields(), setPagerCurrent(1, pagerConfig.ctx), ...queryHandles])],
+                children: [presetQueryBtn(() => presetDoQuery(handleConfig)), presetResetQueryBtn(() => presetDoResetQuery(handleConfig))],
             },
         });
 
-        mergeRefProps(mergeConfig.pager.pager, 'events', {
-            onChange: queryHandles,
+        mergeRefProps(config.pager.pager, 'events', {
+            onChange: () => presetPagerChange(handleConfig),
         });
 
-        if (hasFirstQueryCall) {
-            onMounted(() => invokeHandles(mergeConfig.query.ctx, queryHandles));
+        if (withInitQuery) {
+            onMounted(() => presetDoQuery(handleConfig));
         }
     }
 
-    const query = useForm(mergeConfig.query);
-    const table = useTable(mergeConfig.table);
-    const pager = usePager(mergeConfig.pager);
+    const query = useForm(config.query);
+    const table = useTable(config.table);
+    const pager = usePager(config.pager);
 
     const render = (slots: Slots) => [query.render(slots), table.render(slots), pager.render(slots)];
 

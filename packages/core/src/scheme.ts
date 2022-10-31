@@ -1,7 +1,6 @@
 import { isString } from 'lodash-es';
 import { DefineComponent, Ref, Slot, Slots, VNodeChild } from 'vue';
-import { EnumOption, Handle, Reactive, When } from './base';
-import { Handler, LinkHandler } from './handles';
+import { EnumOption, Reactive, When } from './base';
 import { travelTree, turnArray } from './helper';
 
 export interface ComponentDesc {
@@ -10,7 +9,7 @@ export interface ComponentDesc {
     vIf?: Reactive<boolean> | When;
     vShow?: Reactive<boolean> | When;
     disabled?: Reactive<boolean> | When;
-    events?: Record<string, LinkHandler | Handler | Handler[]>;
+    events?: Record<string, (value: any, ...args: any[]) => void>;
     slotName?: string;
     children?: Array<string | ComponentDesc>;
 }
@@ -35,7 +34,7 @@ export interface Field {
     name?: string;
     vIf?: Ref<boolean> | boolean | When;
     vShow?: Ref<boolean> | boolean | When;
-    options?: Ref<EnumOption[]> | EnumOption[] | Handle;
+    options?: Ref<EnumOption[]> | EnumOption[] | ((model: any) => Promise<EnumOption[]>);
     props?: Reactive;
     defaultValue?: any;
     rules?: Array<ValidateRule>;

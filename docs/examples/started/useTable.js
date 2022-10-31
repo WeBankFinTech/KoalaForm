@@ -1,5 +1,11 @@
 import { FMessage } from '@fesjs/fes-design';
-import { ComponentType, useSceneContext, formatByOptions, useTable, genFormatByDate } from '@koala-form/core';
+import {
+    ComponentType,
+    useSceneContext,
+    formatByOptions,
+    useTable,
+    genFormatByDate,
+} from '@koala-form/core';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -38,9 +44,9 @@ export default defineComponent({
                         children: ['详情'],
                         props: { type: 'link' },
                         events: {
-                            onClick: (cxt, record, event) => {
+                            onClick: (record, event) => {
                                 FMessage.success(record.row.name);
-                                console.log(cxt, record, event);
+                                console.log(record, event);
                             },
                         },
                     },
@@ -50,7 +56,12 @@ export default defineComponent({
 
         model.value = [
             { name: '蒙奇·D·路飞', sex: '1', age: 16, birthday: '2022-02-12' },
-            { name: '罗罗诺亚·索隆', sex: '1', age: 18, birthday: Date.now() + '' },
+            {
+                name: '罗罗诺亚·索隆',
+                sex: '1',
+                age: 18,
+                birthday: Date.now() + '',
+            },
         ];
         return render;
     },

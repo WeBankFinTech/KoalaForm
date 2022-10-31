@@ -1,6 +1,5 @@
 import { computed, reactive, ref, Ref } from 'vue';
-import { Handle, SceneConfig, SceneContext, useBaseScene } from '../base';
-import { Handler } from '../handles';
+import { SceneConfig, SceneContext, useBaseScene } from '../base';
 import { mergeRefProps } from '../helper';
 import { PluginFunction } from '../plugins';
 import { ComponentDesc, ComponentType, createScheme } from '../scheme';
@@ -61,19 +60,17 @@ const checkPager = (ctx: PagerSceneContext) => {
     }
 };
 
-export const hSetPager: Handler<
-    {
-        ctx: PagerSceneContext;
+export const hSetPager = (
+    ctx: PagerSceneContext,
+    value: {
         currentPage?: number;
         pageSize?: number;
         totalCount?: number;
     },
-    PagerSceneContext['model']
-> = (config) => {
-    const { ctx, ...page } = config;
+) => {
     checkPager(ctx);
-    Object.assign(config.ctx.model, page);
-    return config.ctx.model;
+    Object.assign(ctx.model, value);
+    return ctx.model;
 };
 
 export function usePager(config: PagerSceneConfig): PagerSceneContext {

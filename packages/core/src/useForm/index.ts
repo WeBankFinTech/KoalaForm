@@ -1,11 +1,10 @@
-import { getGlobalConfig, Handle, SceneConfig, SceneContext, useBaseScene } from '../base';
+import { getGlobalConfig, SceneConfig, SceneContext, useBaseScene } from '../base';
 import { ref, Ref, unref } from 'vue';
 import { PluginFunction } from '../plugins/define';
 import { mergeRefProps, useState } from '../helper';
 import { compileComponents, ComponentDesc, ComponentType, createScheme, Field, Scheme, SchemeChildren } from '../scheme';
-import { cloneDeep, isArray, isNumber, isUndefined, merge } from 'lodash-es';
+import { cloneDeep, isArray, isNumber, isUndefined } from 'lodash-es';
 import dayjs from 'dayjs';
-import { Handler } from '../handles';
 
 export interface FormSceneContext extends SceneContext {
     formRef: Ref;
@@ -27,7 +26,7 @@ const formPlugin: PluginFunction<FormSceneContext, FormSceneConfig> = (api) => {
 
     api.onSelfStart(({ ctx, config: { fields, form } }) => {
         if (!fields) return;
-        const { state, setState } = useState({});
+        const { state, setState, empty } = useState({});
         const initModel: Record<string, unknown> = {};
         const schemeChildren: SchemeChildren = [];
         const config = getGlobalConfig();
@@ -36,7 +35,7 @@ const formPlugin: PluginFunction<FormSceneContext, FormSceneConfig> = (api) => {
         fields.forEach((field) => {
             if (field.name) {
                 // 初始值
-                initModel[field.name] = field.defaultValue;
+                initModel[field.name] = field.defaultValue || null;
             }
 
             const scheme: Scheme = createScheme(field);
@@ -59,6 +58,7 @@ const formPlugin: PluginFunction<FormSceneContext, FormSceneConfig> = (api) => {
 
         // 重置
         ctx.resetFields = () => {
+            empty();
             setState(initModel);
             formScheme.__ref?.value?.resetFields?.();
         };
@@ -98,48 +98,27 @@ const formPlugin: PluginFunction<FormSceneContext, FormSceneConfig> = (api) => {
     });
 };
 
-export const hResetFields: Handler<FormSceneContext> = (ctx) => {
+export const hResetFields = (ctx: FormSceneContext) => {
     ctx?.resetFields?.();
 };
 
-export const hInitFields: Handler<{
-    ctx: FormSceneContext;
-    values: Record<string, any>;
-    name?: string;
-    preVal?: Record<string, any>;
-}> = (config) => {
-    const values = config.values || {};
-    merge(values, config.preVal);
-    config?.ctx?.initFields?.(values, config.name);
+export const hInitFields = (ctx: FormSceneContext, values: Record<string, any>, name?: string) => {
+    ctx?.initFields?.(values, name);
 };
 
-export const hSetFields: Handler<{
-    ctx: FormSceneContext;
-    values: Record<string, any>;
-    name?: string;
-    preVal?: Record<string, any>;
-}> = (config) => {
-    const values = config.values || {};
-    merge(values, config.preVal);
-    config?.ctx?.setFields?.(values, config.name);
+export const hSetFields = (ctx: FormSceneContext, values: Record<string, any>, name?: string) => {
+    ctx?.setFields?.(values, name);
 };
 
 /**
  * 取from的model数据进行格式化，规则如下:
  * - 日期处理，当组件时时间组件，会转成时间戳；如果值是数组，那么会解析成${fieldName}Start和${fieldName}End字段
  * - 多选，当组件是Select或者CheckBox并值是数组时，转成用','分割，如[1,2,3] => '1,2,3'
- * @param extend form外的其他参数
- * @param cxt 指定上下文
+ * @param values form外的其他参数
+ * @param ctx 指定上下文
  * @returns
  */
-export const hFormData: Handler<
-    {
-        ctx: FormSceneContext;
-        values: Record<string, any>;
-    },
-    Record<string, any>
-> = (config) => {
-    const { ctx, values } = config;
+export const hFormData = (ctx: FormSceneContext, values?: Record<string, any>) => {
     const model = cloneDeep(unref(ctx.model) || {});
     const fields = (ctx?.__config as FormSceneConfig)?.fields || [];
     fields.forEach((field) => {

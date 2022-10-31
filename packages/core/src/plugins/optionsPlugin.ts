@@ -1,12 +1,11 @@
-import { isFunction } from 'lodash-es';
+import { get, isFunction, split } from 'lodash-es';
 import { ref, unref } from 'vue';
 import { EnumOption, SceneContext, SceneConfig } from '../base';
-import { Handler, hGetValue, hRequest, invokeHandler, LinkHandler } from '../handles';
+import { hRequest } from '../handles';
 import { mergeRefProps, travelTree, turnArray } from '../helper';
 import { Field, findScheme } from '../scheme';
 import { FormSceneConfig, FormSceneContext } from '../useForm';
 import { PluginFunction } from './define';
-import { invokeHandles } from './eventsPlugin';
 
 export const optionsPlugin: PluginFunction<SceneContext, SceneConfig> = (api) => {
     api.describe('options-plugin');
@@ -18,9 +17,9 @@ export const optionsPlugin: PluginFunction<SceneContext, SceneConfig> = (api) =>
             let options: any;
             if (isFunction(_options)) {
                 options = ref<Array<EnumOption>>([]);
-                invokeHandles(ctx, _options, [ctx.model]).then((res) => {
+                _options(ctx.model)?.then((res: EnumOption[]) => {
                     if (res?.length) {
-                        options.value = res[0] as Array<EnumOption>;
+                        options.value = res;
                     }
                 });
             } else {
@@ -33,46 +32,31 @@ export const optionsPlugin: PluginFunction<SceneContext, SceneConfig> = (api) =>
     });
 };
 
-export const hTransferOptions: Handler<
-    {
-        valueName?: string;
-        labelName?: string;
-        preVal?: Record<string, any>[];
-    },
-    EnumOption[]
-> = ({ valueName, labelName, preVal }) => {
-    const list: EnumOption[] =
-        preVal?.map((item) => ({
-            value: item[valueName || 'value'],
-            label: item[labelName || 'label'],
-            ...item,
-        })) || [];
-    return list;
+export const hTransferOptions = (list: Record<string, any>[], valueName?: string, labelName?: string): EnumOption[] => {
+    return list.map((item) => ({
+        value: item[valueName || 'value'],
+        label: item[labelName || 'label'],
+        ...item,
+    }));
 };
 
-export const hRemoteOptions: Handler<
-    {
-        api: string;
-        data?: Record<string, any>;
-        preVal: Record<string, any>;
-        config?: Record<string, any>;
+export const hRemoteOptions = async (
+    api: string,
+    data?: Record<string, any>,
+    config?: {
+        opt?: Record<string, any>;
         valueName?: string;
         labelName?: string;
         path?: string;
     },
-    EnumOption[]
-> = ({ api, data, preVal, config, valueName, labelName, path }) => {
-    const { handlers, configs } = new LinkHandler(hRequest, { api, data, preVal, config }).next(hGetValue, { path }).next(hTransferOptions, { valueName, labelName });
-    return invokeHandler(handlers, configs);
+): Promise<EnumOption[]> => {
+    let value: any = null;
+    value = await hRequest(api, data, config?.opt);
+    value = get(value, config?.path || '');
+    return hTransferOptions(value, config?.valueName, config?.labelName);
 };
 
-export const hFieldOptions: Handler<
-    {
-        cxt: FormSceneContext;
-        fieldName: string;
-    },
-    EnumOption[]
-> = ({ cxt, fieldName }) => {
+export const hFieldOptions = (cxt: FormSceneContext, fieldName: string): EnumOption[] => {
     const fields = (cxt?.__config as FormSceneConfig).fields || [];
     const scheme = findScheme(
         cxt.schemes,
@@ -84,21 +68,13 @@ export const hFieldOptions: Handler<
     }
 };
 
-export const hOptionLabels: Handler<
-    {
-        cxt: FormSceneContext;
-        preVal?: any;
-        split?: string;
-        fieldName: string;
-    },
-    EnumOption[]
-> = ({ cxt, fieldName, preVal, split }) => {
-    const options = hFieldOptions({ cxt, fieldName });
+export const hOptionLabels = (cxt: FormSceneContext, value: any, config: { fieldName: string; split?: string }): string => {
+    const options = hFieldOptions(cxt, config.fieldName);
+    const values = turnArray(value);
     if (options) {
-        const values = turnArray(preVal);
         const labels = values.map((val) => (options as Array<Record<string, unknown>>).find((item) => item.value === val)?.label);
-        return [labels.join(split || '、')];
+        return labels.join(config.split || '、');
     } else {
-        return preVal;
+        return values.join(config.split || '、');
     }
 };

@@ -24,37 +24,37 @@ npm i @koala-form/preset-fesd
 
 ## 表单这么写
 
-<!-- <ExampleDoc>
+<ExampleDoc>
 <StartedUseForm>
 </StartedUseForm>
 <template #code>
 
 <<< @/examples/started/useForm.js
 </template>
-</ExampleDoc> -->
+</ExampleDoc>
 
 
 ## 列表这么写
 
-<!-- <ExampleDoc>
+<ExampleDoc>
 <StartedUseTable>
 </StartedUseTable>
 <template #code>
 
 <<< @/examples/started/useTable.js
 </template>
-</ExampleDoc> -->
+</ExampleDoc>
 
 ## 分页这么写
 
-<!-- <ExampleDoc>
+<ExampleDoc>
 <StartedUsePager>
 </StartedUsePager>
 <template #code>
 
 <<< @/examples/started/usePager.js
 </template>
-</ExampleDoc> -->
+</ExampleDoc>
 
 ## 组合CURD
 

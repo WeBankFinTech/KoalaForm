@@ -1,8 +1,7 @@
 import { isArray } from 'lodash-es';
 import { computed, reactive, ref, Ref } from 'vue';
-import { Handle, SceneConfig, SceneContext, useBaseScene } from '../base';
-import { Handler, HandlerConfig } from '../handles';
-import { mergeRefProps, turnArray } from '../helper';
+import { SceneConfig, SceneContext, useBaseScene } from '../base';
+import { mergeRefProps } from '../helper';
 import { PluginFunction } from '../plugins';
 import { compileComponents, ComponentDesc, ComponentType, createScheme, findScheme, SchemeChildren } from '../scheme';
 
@@ -54,13 +53,13 @@ export const modalPlugin: PluginFunction<ModalSceneContext, ModalSceneConfig> = 
     });
 };
 
-export const hOpen: Handler<ModalSceneContext> = (ctx) => {
+export const hOpen = (ctx: ModalSceneContext) => {
     if (ctx.model) {
         ctx.model.show = true;
     }
 };
 
-export const hClose: Handler<ModalSceneContext> = (ctx) => {
+export const hClose = (ctx: ModalSceneContext) => {
     if (ctx.model) {
         ctx.model.show = false;
     }

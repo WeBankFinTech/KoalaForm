@@ -2,8 +2,6 @@ import { FormSceneConfig, FormSceneContext } from '../useForm';
 import { mergeRefProps } from '../helper';
 import { Field, findScheme, ValidateRule } from '../scheme';
 import { PluginFunction } from './define';
-import { Handle } from '../base';
-import { Handler } from '../handles';
 
 const parseFieldRule = (field: Field): Array<ValidateRule> => {
     if (field.rules && field.rules.some((rule) => rule.required)) {
@@ -44,13 +42,10 @@ export const formRulePlugin: PluginFunction<FormSceneContext, FormSceneConfig> =
     });
 };
 
-export const hValidate: Handler<{
-    names?: string[];
-    ctx?: FormSceneContext;
-}> = async ({ ctx, names }) => {
+export const hValidate = async (ctx: FormSceneContext, names?: string[]) => {
     await ctx?.validate(names);
 };
 
-export const hClearValidate: Handler<FormSceneContext> = async (cxt) => {
-    cxt?.clearValidate();
+export const hClearValidate = (ctx: FormSceneContext) => {
+    ctx?.clearValidate();
 };

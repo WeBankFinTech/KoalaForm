@@ -30,8 +30,6 @@ export type When<T extends SceneContext = SceneContext> = (cxt: T, invoke: (...a
 
 export type WhenPlugin<T, K extends SceneContext = SceneContext> = (args: T) => When<K> | undefined;
 
-export type Handle<T extends SceneContext = SceneContext, K = unknown> = (cxt: T, ...args: any[]) => Promise<K[] | void> | K[] | void;
-
 // 默认配置
 const defaultConfig: {
     request?: (api: string, data?: unknown, config?: unknown) => Promise<any>;
@@ -109,6 +107,5 @@ export function useBaseScene<T extends SceneContext, K extends SceneConfig>(conf
         .forEach((plugin) => {
             plugin.start(config);
         });
-    console.log(ctx);
     return ctx as T;
 }

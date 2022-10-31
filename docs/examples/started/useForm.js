@@ -1,4 +1,9 @@
-import { ComponentType, useForm, useSceneContext, hResetFields, LinkHandler } from '@koala-form/core';
+import {
+    ComponentType,
+    useForm,
+    useSceneContext,
+    hResetFields,
+} from '@koala-form/core';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -45,15 +50,15 @@ export default defineComponent({
                                 children: ['保存'],
                                 props: { type: 'primary' },
                                 events: {
-                                    onClick: new LinkHandler(({ preVal }) => {
+                                    onClick: (preVal) => {
                                         console.log(preVal);
-                                    }),
+                                    },
                                 },
                             },
                             {
                                 name: ComponentType.Button,
                                 children: ['重置'],
-                                events: { onClick: new LinkHandler(hResetFields, ctx) },
+                                events: { onClick: () => hResetFields(ctx) },
                             },
                         ],
                     },
