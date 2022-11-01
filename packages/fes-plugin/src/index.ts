@@ -1,5 +1,6 @@
 import { installInGlobal, isComponent, PluginFunction, SceneConfig, SceneContext, setupGlobalConfig } from '@koala-form/core';
-import * as fesd from '@fesjs/fes-design';
+import * as fesD from '@fesjs/fes-design';
+export * from './preset';
 
 export const componentPlugin: PluginFunction<SceneContext, SceneConfig> = (api) => {
     setupGlobalConfig({
@@ -11,7 +12,7 @@ export const componentPlugin: PluginFunction<SceneContext, SceneConfig> = (api) 
     api.onSelfStart(({ ctx }) => {
         ctx.getComponent = (name) => {
             if (typeof name === 'string') {
-                const comp = fesd[`F${name}`];
+                const comp = fesD[`F${name}`];
                 if (isComponent(comp)) return comp;
                 else return name;
             } else {

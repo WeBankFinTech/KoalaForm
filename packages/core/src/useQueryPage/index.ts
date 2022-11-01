@@ -1,4 +1,3 @@
-import { merge } from 'lodash-es';
 import { onMounted, Slots } from 'vue';
 import { mergeRefProps, mergeWithStrategy } from '../helper';
 import { presetDoQuery, presetDoResetQuery, presetPagerChange, presetQueryBtn, presetResetQueryBtn } from '../preset';
@@ -9,8 +8,8 @@ import { useTable, TableSceneConfig } from '../useTable';
 
 const getDefaultConfig = () => {
     return {
-        hasDefaultAction: true,
-        hasFirstQueryCall: true,
+        withPreset: true,
+        withInitQuery: true,
         table: { table: { name: ComponentType.Table }, fields: [] },
         pager: { pager: { name: ComponentType.Pagination } },
         query: {
@@ -25,16 +24,16 @@ export function useQueryPage(config: {
     table: TableSceneConfig;
     pager: PagerSceneConfig;
     query: FormSceneConfig;
-    /** 使用默认查询按钮 */
-    withDefaultAction?: boolean;
+    /** 使用preset逻辑 */
+    withPreset?: boolean;
     /** 默认进行初始查询 */
     withInitQuery?: boolean;
     requestOpt?: Record<string, any>;
 }) {
     const mergeConfig = getDefaultConfig() as unknown as typeof config;
     mergeWithStrategy(config, mergeConfig);
-    const { withDefaultAction, withInitQuery, table: tableConfig, pager: pagerConfig, query: queryConfig } = config;
-    if (withDefaultAction) {
+    const { withPreset, withInitQuery, table: tableConfig, pager: pagerConfig, query: queryConfig } = config;
+    if (withPreset) {
         const handleConfig = {
             api: config.api,
             pager: pagerConfig.ctx,

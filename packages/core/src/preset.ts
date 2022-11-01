@@ -15,7 +15,8 @@ import {
     vShowPlugin,
 } from './plugins';
 import { ComponentDesc, ComponentType } from './scheme';
-import { FormSceneContext, hResetFields } from './useForm';
+import { FormSceneContext, hFormData, hResetFields, hSetFields } from './useForm';
+import { hClose, hOpen, ModalSceneContext } from './useModal';
 import { hSetPager, PagerSceneContext } from './usePager';
 import { TableSceneContext } from './useTable';
 
@@ -62,6 +63,31 @@ export const presetDoResetQuery = async (config: Parameters<typeof presetDoQuery
     await presetDoQuery(config);
 };
 
+export const presetOpenModalForm = ({ modal, form, row }: { modal: ModalSceneContext; form: FormSceneContext; row?: Record<string, any> }) => {
+    form && hResetFields(form);
+    form && row && hSetFields(form, row);
+    hOpen(modal);
+};
+
+export const presetSubmitModalForm = async ({
+    api,
+    form,
+    modal,
+    values,
+    opt,
+}: {
+    api: string;
+    modal: ModalSceneContext;
+    form: FormSceneContext;
+    values?: Record<string, any>;
+    opt?: Record<string, any>;
+}) => {
+    await hValidate(form);
+    const data = hFormData(form, values);
+    await hRequest(api, data);
+    hClose(modal);
+};
+
 export const presetQueryBtn = (handler: () => void): ComponentDesc => {
     return {
         name: ComponentType.Button,
@@ -81,5 +107,58 @@ export const presetResetQueryBtn = (handler: () => void): ComponentDesc => {
         events: {
             onClick: handler,
         },
+    };
+};
+
+export const presetCreateBtn = (handler: () => void): ComponentDesc => {
+    return {
+        name: ComponentType.Button,
+        props: { type: 'primary' },
+        children: ['新增'],
+        events: {
+            onClick: handler,
+        },
+    };
+};
+
+export const presetUpdateBtn = (handler: (pre: any[]) => void): ComponentDesc => {
+    return {
+        name: ComponentType.Button,
+        props: { type: 'link' },
+        children: ['更新'],
+        events: {
+            onClick: handler,
+        },
+    };
+};
+
+export const presetViewBtn = (handler: (pre: any[]) => void): ComponentDesc => {
+    return {
+        name: ComponentType.Button,
+        props: { type: 'link' },
+        children: ['详情'],
+        events: {
+            onClick: handler,
+        },
+    };
+};
+
+export const presetDeleteBtn = (handler: (pre: any[]) => void, title = '是否删除当前记录'): ComponentDesc => {
+    return {
+        name: ComponentType.Tooltip,
+        props: {
+            title: title,
+            mode: 'confirm',
+        },
+        events: {
+            onOk: handler,
+        },
+        children: [
+            {
+                name: ComponentType.Button,
+                children: ['删除'],
+                props: { type: 'link' },
+            },
+        ],
     };
 };

@@ -87,3 +87,7 @@ export const renderPlugin: PluginFunction = (api) => {
         api.emit('started');
     });
 };
+
+export const composeRender = (renders: Array<SceneContext['render']>): SceneContext['render'] => {
+    return (slots?: Slots) => renders.map((render) => render(slots));
+};

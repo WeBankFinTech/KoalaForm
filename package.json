@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "lerna exec --scope @koala-form/core tsc",
-    "build:preset": "node ./build/build-preset-esm.js -t=preset-fesd",
+    "build:preset": "lerna exec --scope @koala-form/fes-plugin tsc",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs"

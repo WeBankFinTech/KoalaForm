@@ -36,15 +36,6 @@ export default defineComponent({
             },
             pager: { ctx: pager },
         });
-
-        // pager.model.pageSize = 5;
-        // const names = ['蒙奇·D·路飞', '罗罗诺亚·索隆', '山治'];
-        // for (let index = 1; index <= 22; index++) {
-        //     dataSource.value.push({
-        //         id: index,
-        //         name: names[parseInt(Math.random() * 10) % 3],
-        //     });
-        // }
         return render;
     },
 });

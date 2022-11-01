@@ -4,6 +4,14 @@ sidebarDepth: 3
 # useQueryPage
 查询页面，将查询表单查询的结果展示到列表和分页上
 
+
+## 属性
+| 属性        | 说明                           | 类型                      | 默认值       |
+| ----------- | ----------------------------- | ------------------------- | ------------ |
+| api       | 配置查询列表数据的接口     | `string`       | -
+| withPreset     | 使用preset提供的默认按钮及逻辑      |  `boolean`    |  true           |
+| withInitQuery | 开启初始化调用查询，`withPreset === true`时才会生效   | `boolean`                    | true           |
+
 <ExampleDoc>
 <ComposeUseQueryPage>
 </ComposeUseQueryPage>
@@ -13,3 +21,12 @@ sidebarDepth: 3
 
 </template>
 </ExampleDoc>
+
+## withPreset
+开启使用preset后，查询表单、列表、分页之间的逻辑会自动处理
+
+- 分页改变：获取查询表单数据 -> 查询前组装表单和分页数据 -> 执行查询 -> 查询结果解析到列表和分页上
+
+- 点击查询：重置分页 ->【分页改变】
+
+- 点击重置：重置查询表单 -> 【点击查询】

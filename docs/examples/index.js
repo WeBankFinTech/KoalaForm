@@ -8,6 +8,8 @@ import ComposeUseTableWithPager from './compose/useTableWithPager';
 import ComposeUseTableWithPager2 from './compose/useTableWithPager2';
 import ComposeUseQueryPage from './compose/useQueryPage';
 
+import UseFormQuery from './useForm/query';
+
 export default {
     // Test,
     StartedUseForm,
@@ -17,6 +19,7 @@ export default {
     ComposeUseTableWithPager,
     ComposeUseTableWithPager2,
     ComposeUseQueryPage,
+    UseFormQuery,
     // User,
     // UseForm,
     // UseFormSlots,

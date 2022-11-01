@@ -107,5 +107,6 @@ export function useBaseScene<T extends SceneContext, K extends SceneConfig>(conf
         .forEach((plugin) => {
             plugin.start(config);
         });
+    console.log(ctx);
     return ctx as T;
 }
