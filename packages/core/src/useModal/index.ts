@@ -1,6 +1,6 @@
 import { isArray } from 'lodash-es';
-import { computed, reactive, ref, Ref } from 'vue';
-import { SceneConfig, SceneContext, useBaseScene } from '../base';
+import { computed, reactive, ref, Ref, unref } from 'vue';
+import { SceneConfig, SceneContext, useBaseScene, useSceneContext } from '../base';
 import { mergeRefProps } from '../helper';
 import { PluginFunction } from '../plugins';
 import { compileComponents, ComponentDesc, ComponentType, createScheme, findScheme, SchemeChildren } from '../scheme';
@@ -14,18 +14,18 @@ export interface ModalSceneContext extends SceneContext {
 }
 
 export interface ModalSceneConfig extends SceneConfig {
-    ctx: ModalSceneContext;
+    ctx?: ModalSceneContext;
+    title?: string;
     modal?: ComponentDesc;
-    childrenCtx?: SceneContext[];
 }
 
 export const modalPlugin: PluginFunction<ModalSceneContext, ModalSceneConfig> = (api) => {
     api.describe('modal-plugin');
 
-    api.onSelfStart(({ ctx, config: { modal } }) => {
+    api.onSelfStart(({ ctx, config: { modal, title } }) => {
         const state = reactive({
             show: false,
-            title: '',
+            title: title || '',
         });
         const scheme = createScheme(modal || { name: ComponentType.Modal });
         scheme.__ref = ref(null);
@@ -66,19 +66,12 @@ export const hClose = (ctx: ModalSceneContext) => {
 };
 
 export function useModal(config: ModalSceneConfig): ModalSceneContext {
+    if (!config.ctx) {
+        const { ctx } = useSceneContext('modal');
+        config.ctx = ctx as ModalSceneContext;
+    }
     const modal = config?.modal || { name: ComponentType.Modal };
     config.ctx.use(modalPlugin as PluginFunction);
     const mergeConfig = { ...(config || {}), modal };
-    useBaseScene(mergeConfig);
-
-    const scheme = findScheme(config.ctx.schemes, mergeConfig.modal);
-    if (scheme && config.childrenCtx?.length) {
-        const children = (isArray(scheme.children) && scheme.children) || (scheme.children && [scheme.children]) || [];
-        config.childrenCtx.forEach((child) => {
-            children.push(...child.schemes);
-        });
-        scheme.children = children as SchemeChildren;
-    }
-
-    return config.ctx;
+    return useBaseScene(mergeConfig);
 }

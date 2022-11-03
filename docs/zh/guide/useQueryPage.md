@@ -12,15 +12,6 @@ sidebarDepth: 3
 | withPreset     | 使用preset提供的默认按钮及逻辑      |  `boolean`    |  true           |
 | withInitQuery | 开启初始化调用查询，`withPreset === true`时才会生效   | `boolean`                    | true           |
 
-<ExampleDoc>
-<ComposeUseQueryPage>
-</ComposeUseQueryPage>
-<template #code>
-
-<<< @/examples/compose/useQueryPage.js
-
-</template>
-</ExampleDoc>
 
 ## withPreset
 开启使用preset后，查询表单、列表、分页之间的逻辑会自动处理

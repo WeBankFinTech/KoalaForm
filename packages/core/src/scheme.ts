@@ -1,17 +1,17 @@
 import { isString } from 'lodash-es';
 import { DefineComponent, Ref, Slot, Slots, VNodeChild } from 'vue';
-import { EnumOption, Reactive, When } from './base';
+import { EnumOption, Reactive, SceneContext, When } from './base';
 import { travelTree, turnArray } from './helper';
 
 export interface ComponentDesc {
     name: string;
     props?: Reactive;
-    vIf?: Reactive<boolean> | When;
-    vShow?: Reactive<boolean> | When;
+    vIf?: Reactive<boolean> | When | boolean;
+    vShow?: Reactive<boolean> | When | boolean;
     disabled?: Reactive<boolean> | When;
     events?: Record<string, (value: any, ...args: any[]) => void>;
     slotName?: string;
-    children?: Array<string | ComponentDesc>;
+    children?: Array<string | ComponentDesc | SceneContext> | string | ComponentDesc | SceneContext;
 }
 // Field定义相关
 export type ValueType = 'string' | 'number' | 'boolean' | 'method' | 'regexp' | 'integer' | 'float' | 'array' | 'object' | 'enum' | 'date' | 'url' | 'hex' | 'email' | 'any';
@@ -83,6 +83,7 @@ export const ComponentType = {
     Modal: 'Modal',
     Pagination: 'Pagination',
     Tooltip: 'Tooltip',
+    Drawer: 'Drawer',
 };
 
 export function isComponent(component: DefineComponent): boolean {
@@ -99,11 +100,13 @@ export const findScheme = (schemes: Scheme[], node: unknown): Scheme | void => {
     }
 };
 
-export const createScheme = (node: ComponentDesc | string | Field): Scheme => {
+export const createScheme = (node: ComponentDesc | string | Field | SceneContext): Scheme => {
     if (isString(node)) {
         return { __node: node, component: '', children: node };
+    } else if ((node as SceneContext).schemes) {
+        return { __node: node, component: '', children: (node as SceneContext).schemes };
     } else {
-        return { __node: node, component: node.name || '', props: node.props };
+        return { __node: node, component: node.name || '', props: (node as ComponentDesc).props };
     }
 };
 

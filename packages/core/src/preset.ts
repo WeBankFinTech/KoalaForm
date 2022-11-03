@@ -14,7 +14,6 @@ import {
     vIfPlugin,
     vShowPlugin,
 } from './plugins';
-import { ComponentDesc, ComponentType } from './scheme';
 import { FormSceneContext, hFormData, hResetFields, hSetFields } from './useForm';
 import { hClose, hOpen, ModalSceneContext } from './useModal';
 import { hSetPager, PagerSceneContext } from './usePager';
@@ -32,14 +31,20 @@ export const installPluginPreset = () => {
         .append(formatPlugin as PluginFunction);
 };
 
-export const presetPagerChange = async ({
-    api,
-    pager,
-    table,
-    form,
-    values,
-    opt,
-}: {
+/**
+ * 校验表单，并提交表单数据到接口
+ */
+export const doSubmit = async (config: { api: string; form: FormSceneContext; values?: Record<string, any>; opt?: Record<string, any> }) => {
+    const { api, form, values, opt } = config;
+    await hValidate(form);
+    const data = hFormData(form, values);
+    return await hRequest(api, data, opt);
+};
+
+/**
+ * 取form、pager当前状态作为参数进行刷新列表数据，适用于刷新和pager改变之后
+ */
+export const doRefresh = async (config: {
     api: string;
     form: FormSceneContext;
     table: TableSceneContext;
@@ -47,118 +52,39 @@ export const presetPagerChange = async ({
     values?: Record<string, any>;
     opt?: Record<string, any>;
 }) => {
+    const { api, pager, table, form, values, opt } = config;
     await hValidate(form);
     const data = hBeforeDoQuery(form, pager);
     const res = await hRequest(api, merge(data, values), opt);
     hAfterDoQuery(table, pager, res);
 };
 
-export const presetDoQuery = async (config: Parameters<typeof presetPagerChange>[0]) => {
+/**
+ * 查询条件改变时，再次查询重置pager后，执行doRefresh，适用于点击查询按钮和首次查询
+ */
+export const doQuery = async (config: Parameters<typeof doRefresh>[0]) => {
     config.pager && hSetPager(config.pager, { currentPage: 1 });
-    await presetPagerChange(config);
+    await doRefresh(config);
 };
 
-export const presetDoResetQuery = async (config: Parameters<typeof presetDoQuery>[0]) => {
+/**
+ * 重置表单后，执行doRefresh；适用于重置按钮
+ */
+export const doResetQuery = async (config: Parameters<typeof doRefresh>[0]) => {
     hResetFields(config.form);
-    await presetDoQuery(config);
+    await doQuery(config);
 };
 
-export const presetOpenModalForm = ({ modal, form, row }: { modal: ModalSceneContext; form: FormSceneContext; row?: Record<string, any> }) => {
+/** 重置表单并打开弹窗，如果row存在时,将row设置到表单上，适用于新增/更新/详情按钮打开弹窗表单 */
+export const doOpenModal = (config: { modal: ModalSceneContext; form?: FormSceneContext; row?: Record<string, any> }) => {
+    const { modal, form, row } = config;
     form && hResetFields(form);
     form && row && hSetFields(form, row);
     hOpen(modal);
 };
 
-export const presetSubmitModalForm = async ({
-    api,
-    form,
-    modal,
-    values,
-    opt,
-}: {
-    api: string;
-    modal: ModalSceneContext;
-    form: FormSceneContext;
-    values?: Record<string, any>;
-    opt?: Record<string, any>;
-}) => {
-    await hValidate(form);
-    const data = hFormData(form, values);
-    await hRequest(api, data);
-    hClose(modal);
-};
-
-export const presetQueryBtn = (handler: () => void): ComponentDesc => {
-    return {
-        name: ComponentType.Button,
-        props: { type: 'primary' },
-        children: ['查询'],
-        events: {
-            onClick: handler,
-        },
-    };
-};
-
-export const presetResetQueryBtn = (handler: () => void): ComponentDesc => {
-    return {
-        name: ComponentType.Button,
-        props: {},
-        children: ['重置'],
-        events: {
-            onClick: handler,
-        },
-    };
-};
-
-export const presetCreateBtn = (handler: () => void): ComponentDesc => {
-    return {
-        name: ComponentType.Button,
-        props: { type: 'primary' },
-        children: ['新增'],
-        events: {
-            onClick: handler,
-        },
-    };
-};
-
-export const presetUpdateBtn = (handler: (pre: any[]) => void): ComponentDesc => {
-    return {
-        name: ComponentType.Button,
-        props: { type: 'link' },
-        children: ['更新'],
-        events: {
-            onClick: handler,
-        },
-    };
-};
-
-export const presetViewBtn = (handler: (pre: any[]) => void): ComponentDesc => {
-    return {
-        name: ComponentType.Button,
-        props: { type: 'link' },
-        children: ['详情'],
-        events: {
-            onClick: handler,
-        },
-    };
-};
-
-export const presetDeleteBtn = (handler: (pre: any[]) => void, title = '是否删除当前记录'): ComponentDesc => {
-    return {
-        name: ComponentType.Tooltip,
-        props: {
-            title: title,
-            mode: 'confirm',
-        },
-        events: {
-            onOk: handler,
-        },
-        children: [
-            {
-                name: ComponentType.Button,
-                children: ['删除'],
-                props: { type: 'link' },
-            },
-        ],
-    };
+/** 执行doSubmit成功后，关闭弹窗，适用于弹窗表单的提交按钮 */
+export const doCloseModal = async (config: { api: string; modal: ModalSceneContext; form: FormSceneContext; values?: Record<string, any>; opt?: Record<string, any> }) => {
+    await doSubmit(config);
+    hClose(config.modal);
 };

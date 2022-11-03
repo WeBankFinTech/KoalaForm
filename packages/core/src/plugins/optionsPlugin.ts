@@ -12,7 +12,7 @@ export const optionsPlugin: PluginFunction<SceneContext, SceneConfig> = (api) =>
 
     api.on('schemeLoaded', ({ ctx }) => {
         travelTree(ctx.schemes, (scheme) => {
-            const _options = (scheme.__node as Field).options;
+            const _options = (scheme?.__node as Field)?.options;
             if (!_options) return;
             let options: any;
             if (isFunction(_options)) {

@@ -1,4 +1,4 @@
-import { getGlobalConfig, SceneConfig, SceneContext, useBaseScene } from '../base';
+import { getGlobalConfig, SceneConfig, SceneContext, useBaseScene, useSceneContext } from '../base';
 import { ref, Ref, unref } from 'vue';
 import { PluginFunction } from '../plugins/define';
 import { mergeRefProps, useState } from '../helper';
@@ -143,6 +143,10 @@ export const hFormData = (ctx: FormSceneContext, values?: Record<string, any>) =
 };
 
 export function useForm(config: FormSceneConfig): FormSceneContext {
+    if (!config.ctx) {
+        const { ctx } = useSceneContext('form');
+        config.ctx = ctx as FormSceneContext;
+    }
     config.ctx.use(formPlugin as PluginFunction);
     return useBaseScene(config);
 }

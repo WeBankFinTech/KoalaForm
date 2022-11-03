@@ -1,7 +1,6 @@
 import { FMessage } from '@fesjs/fes-design';
 import {
     ComponentType,
-    useSceneContext,
     formatByOptions,
     useTable,
     genFormatByDate,
@@ -10,9 +9,7 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
     setup() {
-        const { ctxs } = useSceneContext(['table']);
         const { render, model } = useTable({
-            ctx: ctxs[0],
             fields: [
                 {
                     name: 'name',
@@ -45,6 +42,7 @@ export default defineComponent({
                         props: { type: 'link' },
                         events: {
                             onClick: (record, event) => {
+                                // record只有在useTable下才会存在
                                 FMessage.success(record.row.name);
                                 console.log(record, event);
                             },

@@ -1,19 +1,13 @@
 import '@koala-form/fes-plugin';
 import { setupGlobalConfig, installPluginPreset } from '@koala-form/core';
+// 将依赖的插件安装到全局
 installPluginPreset();
+
 setupGlobalConfig({
+    // 实现网络请求的实现
     request(api, params, config) {
         console.log('request.params => ', params);
-        const paramStr = Object.keys(params)
-            .map((key) => `${key}=${params[key] || ''}`)
-            .join('&');
-        return fetch(`${api}?${paramStr}`, {
-            cache: 'no-cache',
-            headers: {
-                'content-type': 'application/json',
-            },
-            method: 'GET',
-        })
+        return fetch(api)
             .then((res) => {
                 return res.json();
             })

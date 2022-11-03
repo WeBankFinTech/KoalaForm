@@ -1,11 +1,11 @@
-import { FMessage } from '@fesjs/fes-design';
 import {
     ComponentType,
     useForm,
     useSceneContext,
     hResetFields,
+    hFormData,
 } from '@koala-form/core';
-import { genFesDForm, genFesDQueryAction } from '@koala-form/fes-plugin';
+import { genFesDForm, genFesDSubmitAction } from '@koala-form/fes-plugin';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -13,7 +13,7 @@ export default defineComponent({
         const { ctx } = useSceneContext('form');
         const { render } = useForm({
             ctx,
-            form: genFesDForm('inline'),
+            form: genFesDForm(),
             fields: [
                 {
                     name: 'name',
@@ -30,8 +30,10 @@ export default defineComponent({
                         name: ComponentType.InputNumber,
                     },
                 },
-                genFesDQueryAction({
-                    query: () => FMessage.success('点击查询'),
+                genFesDSubmitAction({
+                    save: () => console.log(hFormData(ctx)),
+                    clear: () =>
+                        Object.assign(ctx.model, { name: null, age: null }),
                     reset: () => hResetFields(ctx),
                 }),
             ],

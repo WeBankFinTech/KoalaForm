@@ -1,4 +1,4 @@
-import { SceneConfig, SceneContext, useBaseScene } from '../base';
+import { SceneConfig, SceneContext, useBaseScene, useSceneContext } from '../base';
 import { ref, Ref } from 'vue';
 import { compileComponents, ComponentDesc, ComponentType, createScheme, Field, Scheme, SchemeChildren } from '../scheme';
 import { PluginFunction } from '../plugins';
@@ -49,6 +49,10 @@ export const tableSchemePlugin: PluginFunction<TableSceneContext, TableSceneConf
 };
 
 export function useTable(config: TableSceneConfig): TableSceneContext {
+    if (!config.ctx) {
+        const { ctx } = useSceneContext('table');
+        config.ctx = ctx as TableSceneContext;
+    }
     config.ctx.use(tableSchemePlugin as PluginFunction);
     return useBaseScene(config);
 }

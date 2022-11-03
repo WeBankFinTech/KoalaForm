@@ -1,16 +1,9 @@
-import {
-    ComponentType,
-    useForm,
-    useSceneContext,
-    hResetFields,
-} from '@koala-form/core';
+import { ComponentType, useForm, hResetFields } from '@koala-form/core';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
     setup() {
-        const { ctx } = useSceneContext('form');
-        const { render } = useForm({
-            ctx,
+        const form = useForm({
             form: { props: { labelWidth: '40px' } },
             fields: [
                 {
@@ -50,21 +43,21 @@ export default defineComponent({
                                 children: ['保存'],
                                 props: { type: 'primary' },
                                 events: {
-                                    onClick: (preVal) => {
-                                        console.log(preVal);
+                                    onClick: (event) => {
+                                        console.log(event, form.model);
                                     },
                                 },
                             },
                             {
                                 name: ComponentType.Button,
                                 children: ['重置'],
-                                events: { onClick: () => hResetFields(ctx) },
+                                events: { onClick: () => hResetFields(form) },
                             },
                         ],
                     },
                 },
             ],
         });
-        return render;
+        return form.render;
     },
 });

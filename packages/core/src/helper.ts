@@ -43,7 +43,10 @@ export function turnArray<T>(param?: T[] | T): T[] {
 }
 
 export function travelTree<T, K>(tree: T[], cb: (node: T) => K | void): K[] | void {
-    if (!isArray(tree)) return tree;
+    if (!tree) return;
+    if (!isArray(tree)) {
+        tree = turnArray(tree);
+    }
     const newTree: K[] = [];
     tree.forEach((node) => {
         const newNode = cb(node);

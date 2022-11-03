@@ -9,8 +9,8 @@ export const eventsPlugin: PluginFunction<SceneContext, SceneConfig> = (api) => 
     api.describe('events-plugin');
     api.on('schemeLoaded', ({ ctx }) => {
         travelTree(ctx.schemes, (scheme) => {
-            const _events = (scheme.__node as ComponentDesc)?.events;
-            // if (!_events) return;
+            const _events = (scheme?.__node as ComponentDesc)?.events;
+            if (!_events) return;
             // const events: Scheme['events'] = {};
             // Object.keys(_events).forEach((key) => {
             //     let handlers: Handler[] = [];

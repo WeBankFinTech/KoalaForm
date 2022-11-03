@@ -10,8 +10,8 @@ export const vShowPlugin: PluginFunction<SceneContext, SceneConfig> = (api) => {
 
     api.on('schemeLoaded', ({ ctx }) => {
         travelTree(ctx.schemes, (scheme) => {
-            const node = scheme.__node as ComponentDesc;
-            if (isUndefined(node.vShow)) return;
+            const node = scheme?.__node as ComponentDesc;
+            if (!node || isUndefined(node.vShow)) return;
             if (isFunction(node.vShow)) {
                 const vShow = ref(true);
                 node.vShow(ctx, (value: any) => {

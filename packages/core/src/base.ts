@@ -22,8 +22,8 @@ export interface SceneContext {
 }
 
 export interface SceneConfig {
-    ctx: SceneContext;
-    components?: ComponentDesc[];
+    ctx?: SceneContext;
+    components?: ComponentDesc[] | ComponentDesc;
 }
 
 export type When<T extends SceneContext = SceneContext> = (cxt: T, invoke: (...args: unknown[]) => void, field?: Field) => void;
@@ -91,6 +91,10 @@ export const useSceneContext = (names: string[] | string) => {
 };
 
 export function useBaseScene<T extends SceneContext, K extends SceneConfig>(config: K): T {
+    if (!config.ctx) {
+        const { ctx } = useSceneContext('base');
+        config.ctx = ctx;
+    }
     const { ctx, components } = config;
     ctx.__config = config;
     const schemes = compileComponents(ctx.schemes || [], components);
