@@ -98,15 +98,15 @@ const formPlugin: PluginFunction<FormSceneContext, FormSceneConfig> = (api) => {
     });
 };
 
-export const hResetFields = (ctx: FormSceneContext) => {
+export const doResetFields = (ctx: FormSceneContext) => {
     ctx?.resetFields?.();
 };
 
-export const hInitFields = (ctx: FormSceneContext, values: Record<string, any>, name?: string) => {
+export const doInitFields = (ctx: FormSceneContext, values: Record<string, any>, name?: string) => {
     ctx?.initFields?.(values, name);
 };
 
-export const hSetFields = (ctx: FormSceneContext, values: Record<string, any>, name?: string) => {
+export const doSetFields = (ctx: FormSceneContext, values: Record<string, any>, name?: string) => {
     ctx?.setFields?.(values, name);
 };
 
@@ -118,7 +118,7 @@ export const hSetFields = (ctx: FormSceneContext, values: Record<string, any>, n
  * @param ctx 指定上下文
  * @returns
  */
-export const hFormData = (ctx: FormSceneContext, values?: Record<string, any>) => {
+export const doGetFormData = (ctx: FormSceneContext, values?: Record<string, any>) => {
     const model = cloneDeep(unref(ctx.model) || {});
     const fields = (ctx?.__config as FormSceneConfig)?.fields || [];
     fields.forEach((field) => {

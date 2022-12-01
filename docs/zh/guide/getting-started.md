@@ -41,7 +41,7 @@ npm i @koala-form/fes-plugin
 按钮也是用ComponentDesc进行描述，其中events是传入组件的响应事件。
 
 在响应事件，可以调用一些内置的handler函数进行处理表单的处理，
-比如`hResetFields`会将表单进行重置。
+比如`doResetFields`会将表单进行重置。
 
 `cxt.model`可以直接访问到表单响应式的model，可以进行更多的操作
 

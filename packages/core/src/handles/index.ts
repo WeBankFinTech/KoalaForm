@@ -1,7 +1,7 @@
 import { isArray } from 'lodash-es';
 import { getGlobalConfig } from '../base';
 import { turnArray } from '../helper';
-import { FormSceneContext, hFormData } from '../useForm';
+import { FormSceneContext, doGetFormData } from '../useForm';
 import { PagerSceneContext } from '../usePager';
 import { TableSceneContext } from '../useTable';
 
@@ -72,10 +72,10 @@ import { TableSceneContext } from '../useTable';
 /**
  * 网络接口请求
  */
-export const hRequest = async (api: string, params?: Record<string, any>, opt?: Record<string, any>) => {
+export const doRequest = async (api: string, params?: Record<string, any>, opt?: Record<string, any>) => {
     const globalConfig = getGlobalConfig();
-    if (!globalConfig.request) throw new Error('hRequest: globalConfig.request not found, please config request by setupGlobalConfig');
-    if (!api) throw new Error('hRequest: config.api not found!');
+    if (!globalConfig.request) throw new Error('doRequest: globalConfig.request not found, please config request by setupGlobalConfig');
+    if (!api) throw new Error('doRequest: config.api not found!');
     return await globalConfig.request(api, params, opt);
 };
 
@@ -95,7 +95,7 @@ export const hRequest = async (api: string, params?: Record<string, any>, opt?: 
  * @param form 表单上下文
  * @returns
  */
-export const hBeforeDoQuery = (
+export const doBeforeDoQuery = (
     form: FormSceneContext,
     pager?: PagerSceneContext,
 ): {
@@ -106,7 +106,7 @@ export const hBeforeDoQuery = (
     };
 } => {
     const { currentPage, pageSize } = pager?.model || ({} as PagerSceneContext['model']);
-    return hFormData(form, { page: { currentPage, pageSize } });
+    return doGetFormData(form, { page: { currentPage, pageSize } });
 };
 
 /**
@@ -115,7 +115,7 @@ export const hBeforeDoQuery = (
  * @param table 列表上下文
  * @returns
  */
-export const hAfterDoQuery = (table: TableSceneContext, pager?: PagerSceneContext, data?: { list: any[]; page: PagerSceneContext['model'] }) => {
+export const doAfterDoQuery = (table: TableSceneContext, pager?: PagerSceneContext, data?: { list: any[]; page: PagerSceneContext['model'] }) => {
     if (pager?.model) {
         pager.model.totalCount = data?.page?.totalCount || 0;
     }

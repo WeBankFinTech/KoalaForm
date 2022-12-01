@@ -56,11 +56,11 @@ export const pagerPlugin: PluginFunction<PagerSceneContext, PagerSceneConfig> = 
 
 const checkPager = (ctx: PagerSceneContext) => {
     if (!ctx?.isPager) {
-        throw new Error('hSetPager: config.ctx is not PagerSceneContext!');
+        throw new Error('doSetPager: config.ctx is not PagerSceneContext!');
     }
 };
 
-export const hSetPager = (
+export const doSetPager = (
     ctx: PagerSceneContext,
     value: {
         currentPage?: number;

@@ -53,13 +53,13 @@ export const modalPlugin: PluginFunction<ModalSceneContext, ModalSceneConfig> = 
     });
 };
 
-export const hOpen = (ctx: ModalSceneContext) => {
+export const doOpen = (ctx: ModalSceneContext) => {
     if (ctx.model) {
         ctx.model.show = true;
     }
 };
 
-export const hClose = (ctx: ModalSceneContext) => {
+export const doClose = (ctx: ModalSceneContext) => {
     if (ctx.model) {
         ctx.model.show = false;
     }

@@ -42,10 +42,10 @@ export const formRulePlugin: PluginFunction<FormSceneContext, FormSceneConfig> =
     });
 };
 
-export const hValidate = async (ctx: FormSceneContext, names?: string[]) => {
+export const doValidate = async (ctx: FormSceneContext, names?: string[]) => {
     await ctx?.validate(names);
 };
 
-export const hClearValidate = (ctx: FormSceneContext) => {
+export const doClearValidate = (ctx: FormSceneContext) => {
     ctx?.clearValidate();
 };

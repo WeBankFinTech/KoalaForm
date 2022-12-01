@@ -7,16 +7,16 @@ import {
     useForm,
     usePager,
     useModal,
-    hFormData,
-    hBeforeDoQuery,
-    hAfterDoQuery,
-    hResetFields,
-    hRequest,
-    hSetFields,
-    hSetPager,
-    hValidate,
-    hClose,
-    hOpen,
+    doGetFormData,
+    doBeforeDoQuery,
+    doAfterDoQuery,
+    doResetFields,
+    doRequest,
+    doSetFields,
+    doSetPager,
+    doValidate,
+    doClose,
+    doOpen,
 } from '@koala-form/core';
 import { defineComponent } from 'vue';
 
@@ -70,30 +70,30 @@ export default defineComponent({
         ]);
 
         const doQuery = async () => {
-            const data = hBeforeDoQuery(query, pager);
-            const res = await hRequest('/user.json', data);
-            hAfterDoQuery(table, pager, res);
+            const data = doBeforeDoQuery(query, pager);
+            const res = await doRequest('/user.json', data);
+            doAfterDoQuery(table, pager, res);
         };
 
         const doReset = async () => {
-            hSetPager(pager, { currentPage: 1 });
-            hResetFields(query);
+            doSetPager(pager, { currentPage: 1 });
+            doResetFields(query);
             await doQuery();
         };
 
         const doCreate = async () => {
-            await hValidate(create);
-            const data = hFormData(create);
-            await hRequest('/success.json', data);
-            hClose(createModal);
+            await doValidate(create);
+            const data = doGetFormData(create);
+            await doRequest('/success.json', data);
+            doClose(createModal);
             await doReset();
         };
 
         const doUpdate = async () => {
-            await hValidate(update);
-            const data = hFormData(update);
-            await hRequest('/success.json', data);
-            hClose(updateModal);
+            await doValidate(update);
+            const data = doGetFormData(update);
+            await doRequest('/success.json', data);
+            doClose(updateModal);
             await doReset();
         };
 
@@ -113,7 +113,7 @@ export default defineComponent({
                                 children: '查询',
                                 events: {
                                     onClick: () => {
-                                        hSetPager(pager, { currentPage: 1 });
+                                        doSetPager(pager, { currentPage: 1 });
                                         doQuery();
                                     },
                                 },
@@ -124,8 +124,8 @@ export default defineComponent({
                                 children: '新增',
                                 events: {
                                     onClick: () => {
-                                        hResetFields(create);
-                                        hOpen(createModal);
+                                        doResetFields(create);
+                                        doOpen(createModal);
                                     },
                                 },
                             },
@@ -161,9 +161,9 @@ export default defineComponent({
                             props: { type: 'link' },
                             events: {
                                 onClick: (record) => {
-                                    hResetFields(update);
-                                    hSetFields(update, record.row);
-                                    hOpen(updateModal);
+                                    doResetFields(update);
+                                    doSetFields(update, record.row);
+                                    doOpen(updateModal);
                                 },
                             },
                         },
@@ -175,7 +175,7 @@ export default defineComponent({
                             },
                             events: {
                                 onOk: (record) => {
-                                    hRequest('/error.json', record.row);
+                                    doRequest('/error.json', record.row);
                                     doReset();
                                 },
                             },

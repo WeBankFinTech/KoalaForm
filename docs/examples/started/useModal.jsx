@@ -1,5 +1,5 @@
 import { FButton, FMessage, FSpace } from '@fesjs/fes-design';
-import { useModal, ComponentType, hOpen, useForm } from '@koala-form/core';
+import { useModal, ComponentType, doOpen, useForm } from '@koala-form/core';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -30,7 +30,7 @@ export default defineComponent({
                         FMessage.success('点击了Cancel');
                     },
                 },
-                children: form,
+                children: form, // 嵌套表单场景
             },
         });
 
@@ -53,8 +53,8 @@ export default defineComponent({
 
         return () => (
             <FSpace>
-                <FButton onClick={() => hOpen(modal1)}>Open Modal</FButton>
-                <FButton onClick={() => hOpen(modal2)}>Open Drawer</FButton>
+                <FButton onClick={() => doOpen(modal1)}>Open Modal</FButton>
+                <FButton onClick={() => doOpen(modal2)}>Open Drawer</FButton>
                 {modal1.render()}
                 {modal2.render()}
             </FSpace>

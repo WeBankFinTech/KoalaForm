@@ -12,17 +12,18 @@ export default defineComponent({
         const { render, model } = useTable({
             fields: [
                 {
-                    name: 'name',
-                    label: '姓名',
+                    name: 'name', // 每行数据取值的key
+                    label: '姓名', // 行标题
                 },
                 {
                     name: 'sex',
                     label: '性别',
                     options: [
+                        // 枚举映射
                         { value: '0', label: '女' },
                         { value: '1', label: '男' },
                     ],
-                    format: formatByOptions,
+                    format: formatByOptions, // 格式化展示值
                 },
                 {
                     name: 'age',

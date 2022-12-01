@@ -11,8 +11,7 @@ sidebarDepth: 3
 ## Context
 
 ## 查询表单
-
-配合fes-plugin提供的presetFesDForm、fesDQueryAction更快的搭建出一个查询的表单
+查询表单一般是横向排列的，常见的操作是查询和重置
 
 <ExampleDoc>
 <UseFormQuery>
@@ -26,7 +25,7 @@ sidebarDepth: 3
 
 ## 新增/更新表单
 
-同样fesDSubmitAction能快速搭建提交新增/更新表单的操作
+新增/更新表单一般是垂直排列，场景的操作是保存、清空和重置
 
 <ExampleDoc>
 <UseFormEdit>
@@ -38,9 +37,22 @@ sidebarDepth: 3
 </template>
 </ExampleDoc>
 
+<!-- ## 多列表单
+
+<ExampleDoc>
+<UseFormColEdit>
+</UseFormColEdit>
+<template #code>
+
+<<< @/examples/useForm/colEdit.js
+
+</template>
+</ExampleDoc> -->
+
+
 ## 表单联动
 
-下面三个属性表单联动更简单，可以作用于组件和Fields字段上
+表单联动可使用下面三个属性，可以作用于ComponentDesc组件描述和Fields字段上：
 
 - vIf：是否渲染
 - vShow：是否显示

@@ -60,24 +60,25 @@ export default {
         logo: '/logo.png',
         nav: [
             { text: '教程', link: '/zh/guide/', activeMatch: '^/zh/guide' },
-            { text: '精彩示例', link: '/zh/demos/', activeMatch: '^/zh/demos' },
             {
-              text: '集成Preset',
-              link: '/preset',
+              text: 'UI库插件',
+              link: '/zh/ui',
+              activeMatch: '^/zh/ui',
               items: [
-                { text: 'Ant Design Preset', link: '/preset' },
-                { text: 'Fes Design Preset', link: '/preset' },
+                { text: 'Fes Plugin', link: '/zh/ui/fes' },
               ]
             },
+            { text: '精彩示例', link: '/zh/demos/', activeMatch: '^/zh/demos' },
             {
               text: 'Github',
               link: 'https://github.com/vuejs/vitepress/releases'
             }
         ],
         sidebar: {
-            '/config/': getConfigSidebar(),
-            '/zh/guide/': getGuideSidebar(),
-            '/zh/preset/': getGuideSidebar(),
+            'zh/guide/': getGuideSidebar(),
+            '/zh/ui/fes': [
+              { text: 'Fes Plugin', link: '/zh/ui/fes' },
+            ],
             '/zh/demos/': getDemosSidebar(),
         }
     }

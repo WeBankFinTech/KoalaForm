@@ -15,7 +15,7 @@ export default defineComponent({
         });
         model.currentPage = 2;
         model.totalCount = 100;
-        // hSetPager(ctx, { currentPage: 2, totalCount: 100 });
+        // doSetPager(ctx, { currentPage: 2, totalCount: 100 });
 
         watch(
             () => model.currentPage,

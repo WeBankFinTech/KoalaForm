@@ -1,4 +1,4 @@
-import { ComponentType, useForm, hResetFields } from '@koala-form/core';
+import { ComponentType, useForm, doResetFields } from '@koala-form/core';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -7,11 +7,11 @@ export default defineComponent({
             form: { props: { labelWidth: '40px' } },
             fields: [
                 {
-                    name: 'name',
-                    label: '姓名',
-                    defaultValue: '蒙奇·D·路飞',
+                    name: 'name', // model.name可以访问到值
+                    label: '姓名', // 表单项的名称
+                    defaultValue: '蒙奇·D·路飞', // 默认值
                     components: {
-                        name: ComponentType.Input,
+                        name: ComponentType.Input, // 表单组件是输入框
                     },
                 },
                 {
@@ -19,6 +19,7 @@ export default defineComponent({
                     label: '性别',
                     defaultValue: '1',
                     options: [
+                        // 设置下拉框选项
                         { value: '0', label: '女' },
                         { value: '1', label: '男' },
                     ],
@@ -39,10 +40,11 @@ export default defineComponent({
                         name: ComponentType.Space,
                         children: [
                             {
-                                name: ComponentType.Button,
-                                children: ['保存'],
-                                props: { type: 'primary' },
+                                name: ComponentType.Button, // 按钮组件
+                                children: ['保存'], // 按钮内容
+                                props: { type: 'primary' }, // 组件的属性
                                 events: {
+                                    // 按钮的事件
                                     onClick: (event) => {
                                         console.log(event, form.model);
                                     },
@@ -51,7 +53,7 @@ export default defineComponent({
                             {
                                 name: ComponentType.Button,
                                 children: ['重置'],
-                                events: { onClick: () => hResetFields(form) },
+                                events: { onClick: () => doResetFields(form) }, // 重置按钮点击调用handler函数
                             },
                         ],
                     },

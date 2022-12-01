@@ -1,11 +1,11 @@
 import { merge } from 'lodash-es';
-import { hAfterDoQuery, hBeforeDoQuery, hRequest } from './handles';
+import { doAfterDoQuery, doBeforeDoQuery, doRequest } from './handles';
 import {
     disabledPlugin,
     eventsPlugin,
     formatPlugin,
     formRulePlugin,
-    hValidate,
+    doValidate,
     installInGlobal,
     optionsPlugin,
     PluginFunction,
@@ -14,9 +14,9 @@ import {
     vIfPlugin,
     vShowPlugin,
 } from './plugins';
-import { FormSceneContext, hFormData, hResetFields, hSetFields } from './useForm';
-import { hClose, hOpen, ModalSceneContext } from './useModal';
-import { hSetPager, PagerSceneContext } from './usePager';
+import { FormSceneContext, doGetFormData, doResetFields, doSetFields } from './useForm';
+import { doClose, doOpen, ModalSceneContext } from './useModal';
+import { doSetPager, PagerSceneContext } from './usePager';
 import { TableSceneContext } from './useTable';
 
 export const installPluginPreset = () => {
@@ -36,9 +36,9 @@ export const installPluginPreset = () => {
  */
 export const doSubmit = async (config: { api: string; form: FormSceneContext; values?: Record<string, any>; opt?: Record<string, any> }) => {
     const { api, form, values, opt } = config;
-    await hValidate(form);
-    const data = hFormData(form, values);
-    return await hRequest(api, data, opt);
+    await doValidate(form);
+    const data = doGetFormData(form, values);
+    return await doRequest(api, data, opt);
 };
 
 /**
@@ -53,17 +53,17 @@ export const doRefresh = async (config: {
     opt?: Record<string, any>;
 }) => {
     const { api, pager, table, form, values, opt } = config;
-    await hValidate(form);
-    const data = hBeforeDoQuery(form, pager);
-    const res = await hRequest(api, merge(data, values), opt);
-    hAfterDoQuery(table, pager, res);
+    await doValidate(form);
+    const data = doBeforeDoQuery(form, pager);
+    const res = await doRequest(api, merge(data, values), opt);
+    doAfterDoQuery(table, pager, res);
 };
 
 /**
  * 查询条件改变时，再次查询重置pager后，执行doRefresh，适用于点击查询按钮和首次查询
  */
 export const doQuery = async (config: Parameters<typeof doRefresh>[0]) => {
-    config.pager && hSetPager(config.pager, { currentPage: 1 });
+    config.pager && doSetPager(config.pager, { currentPage: 1 });
     await doRefresh(config);
 };
 
@@ -71,20 +71,20 @@ export const doQuery = async (config: Parameters<typeof doRefresh>[0]) => {
  * 重置表单后，执行doRefresh；适用于重置按钮
  */
 export const doResetQuery = async (config: Parameters<typeof doRefresh>[0]) => {
-    hResetFields(config.form);
+    doResetFields(config.form);
     await doQuery(config);
 };
 
 /** 重置表单并打开弹窗，如果row存在时,将row设置到表单上，适用于新增/更新/详情按钮打开弹窗表单 */
 export const doOpenModal = (config: { modal: ModalSceneContext; form?: FormSceneContext; row?: Record<string, any> }) => {
     const { modal, form, row } = config;
-    form && hResetFields(form);
-    form && row && hSetFields(form, row);
-    hOpen(modal);
+    form && doResetFields(form);
+    form && row && doSetFields(form, row);
+    doOpen(modal);
 };
 
 /** 执行doSubmit成功后，关闭弹窗，适用于弹窗表单的提交按钮 */
 export const doCloseModal = async (config: { api: string; modal: ModalSceneContext; form: FormSceneContext; values?: Record<string, any>; opt?: Record<string, any> }) => {
     await doSubmit(config);
-    hClose(config.modal);
+    doClose(config.modal);
 };

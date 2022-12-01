@@ -1,7 +1,14 @@
 import { ComponentDesc, ComponentType, Field } from '@koala-form/core';
 import { isArray } from 'lodash-es';
 
-export const genFesDButton = (
+/**
+ * 生产按钮配置
+ * @param name 按钮名称
+ * @param handler 按钮点击回调
+ * @param props 按钮组件属性
+ * @returns
+ */
+export const genButton = (
     name: string,
     handler: (rowData?: Record<string, any>) => void,
     props?: {
@@ -31,7 +38,13 @@ export const genFesDButton = (
     };
 };
 
-export const genFesDForm = (
+/**
+ * 生产表单配置
+ * @param layout 布局类型
+ * @param props 组件属性
+ * @returns
+ */
+export const genForm = (
     layout: 'horizontal' | 'inline' = 'horizontal',
     props?: { inlineItemWidth?: number | string; labelWidth?: number | string; labelPosition?: 'left' | 'top' | 'right' },
 ): ComponentDesc => {
@@ -41,29 +54,39 @@ export const genFesDForm = (
     };
 };
 
-export const genFesDQueryAction = (handlers: { query?: () => void; reset?: () => void; create?: () => void }): Field => {
+/**
+ * 生成查询表单的行为配置
+ * @param handlers 行为响应
+ * @returns
+ */
+export const genQueryAction = (handlers: { query?: () => void; reset?: () => void; create?: () => void }): Field => {
     return {
         label: ' ',
         components: {
             name: ComponentType.Space,
             children: [
-                handlers.query && genFesDButton('查询', handlers.query),
-                handlers.create && genFesDButton('新增', handlers.create),
-                handlers.reset && genFesDButton('重置', handlers.reset, { type: 'default' }),
+                handlers.query && genButton('查询', handlers.query),
+                handlers.create && genButton('新增', handlers.create),
+                handlers.reset && genButton('重置', handlers.reset, { type: 'default' }),
             ].filter(Boolean) as ComponentDesc[],
         },
     };
 };
 
-export const genFesDSubmitAction = (handlers: { save?: () => void; clear?: () => void; reset?: () => void }): Field => {
+/**
+ * 生成提交表单的行为配置
+ * @param handlers 行为响应
+ * @returns
+ */
+export const genSubmitAction = (handlers: { save?: () => void; clear?: () => void; reset?: () => void }): Field => {
     return {
         label: ' ',
         components: {
             name: ComponentType.Space,
             children: [
-                handlers.save && genFesDButton('保存', handlers.save),
-                handlers.clear && genFesDButton('清空', handlers.clear, { type: 'default' }),
-                handlers.reset && genFesDButton('重置', handlers.reset, { type: 'default' }),
+                handlers.save && genButton('保存', handlers.save),
+                handlers.clear && genButton('清空', handlers.clear, { type: 'default' }),
+                handlers.reset && genButton('重置', handlers.reset, { type: 'default' }),
             ].filter(Boolean) as ComponentDesc[],
         },
     };

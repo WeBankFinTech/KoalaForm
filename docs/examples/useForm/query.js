@@ -3,9 +3,9 @@ import {
     ComponentType,
     useForm,
     useSceneContext,
-    hResetFields,
+    doResetFields,
 } from '@koala-form/core';
-import { genFesDForm, genFesDQueryAction } from '@koala-form/fes-plugin';
+import { genForm, genQueryAction } from '@koala-form/fes-plugin';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -13,7 +13,7 @@ export default defineComponent({
         const { ctx } = useSceneContext('form');
         const { render } = useForm({
             ctx,
-            form: genFesDForm('inline'),
+            form: genForm('inline'),
             fields: [
                 {
                     name: 'name',
@@ -30,9 +30,9 @@ export default defineComponent({
                         name: ComponentType.InputNumber,
                     },
                 },
-                genFesDQueryAction({
+                genQueryAction({
                     query: () => FMessage.success('点击查询'),
-                    reset: () => hResetFields(ctx),
+                    reset: () => doResetFields(ctx),
                 }),
             ],
         });

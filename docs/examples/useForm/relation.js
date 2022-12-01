@@ -5,7 +5,7 @@ import {
     useSceneContext,
     when,
 } from '@koala-form/core';
-import { genFesDButton, genFesDForm } from '@koala-form/fes-plugin';
+import { genButton, genForm } from '@koala-form/fes-plugin';
 import { computed, defineComponent } from 'vue';
 
 export default defineComponent({
@@ -16,7 +16,7 @@ export default defineComponent({
         });
         const { render } = useForm({
             ctx,
-            form: genFesDForm('horizontal', { labelWidth: 50 }),
+            form: genForm('horizontal', { labelWidth: 50 }),
             fields: [
                 {
                     name: 'name',
@@ -51,24 +51,18 @@ export default defineComponent({
                     components: {
                         name: ComponentType.Space,
                         children: [
-                            genFesDButton(
-                                '保存',
-                                () => {
-                                    FMessage.success('--保存--');
-                                },
-                                {
-                                    disabled: when(() => ctx.model.age <= 0),
-                                },
-                            ),
-                            genFesDButton(
-                                '审核',
-                                () => {
-                                    FMessage.success('--审核--');
-                                },
-                                {
-                                    vShow: showCheck,
-                                },
-                            ),
+                            {
+                                ...genButton('保存', () =>
+                                    FMessage.success('--保存--'),
+                                ),
+                                disabled: when(() => ctx.model.age <= 0),
+                            },
+                            {
+                                ...genButton('审核', () =>
+                                    FMessage.success('--审核--'),
+                                ),
+                                vShow: showCheck,
+                            },
                         ],
                     },
                 },
