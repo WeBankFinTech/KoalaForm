@@ -12,7 +12,11 @@ import ComposeUseTableWithPager2 from './compose/useTableWithPager2';
 import UseFormQuery from './useForm/query';
 import UseFormEdit from './useForm/edit';
 import UseFormRelation from './useForm/relation';
-import UseFormColEdit from './useForm/colEdit';
+import UseFormValidate from './useForm/validate';
+
+import BaseForm from './base/form';
+import BaseComp from './base/comp';
+import BaseField from './base/field';
 
 export default {
     // Test,
@@ -27,7 +31,10 @@ export default {
     UseFormQuery,
     UseFormEdit,
     UseFormRelation,
-    UseFormColEdit,
+    UseFormValidate,
+    BaseForm,
+    BaseComp,
+    BaseField,
     // User,
     // UseForm,
     // UseFormSlots,

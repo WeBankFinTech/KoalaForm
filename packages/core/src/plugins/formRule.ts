@@ -7,7 +7,7 @@ const parseFieldRule = (field: Field): Array<ValidateRule> => {
     if (field.rules && field.rules.some((rule) => rule.required)) {
         return field.rules;
     } else if (field.required) {
-        return [{ required: true, message: '必填项', type: field.type }];
+        return [{ required: true, message: '必填项', type: field.type }, ...(field.rules || [])];
     } else {
         return [];
     }

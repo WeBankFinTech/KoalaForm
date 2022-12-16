@@ -1,5 +1,5 @@
 import { merge } from 'lodash-es';
-import { doAfterDoQuery, doBeforeDoQuery, doRequest } from './handles';
+import { doAfterQuery, doBeforeQuery, doRequest } from './handles';
 import {
     disabledPlugin,
     eventsPlugin,
@@ -54,9 +54,9 @@ export const doRefresh = async (config: {
 }) => {
     const { api, pager, table, form, values, opt } = config;
     await doValidate(form);
-    const data = doBeforeDoQuery(form, pager);
+    const data = doBeforeQuery(form, pager);
     const res = await doRequest(api, merge(data, values), opt);
-    doAfterDoQuery(table, pager, res);
+    doAfterQuery(table, pager, res);
 };
 
 /**

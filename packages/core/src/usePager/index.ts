@@ -1,5 +1,5 @@
 import { computed, reactive, ref, Ref } from 'vue';
-import { SceneConfig, SceneContext, useBaseScene, useSceneContext } from '../base';
+import { SceneConfig, SceneContext, useScene, useSceneContext } from '../base';
 import { mergeRefProps } from '../helper';
 import { PluginFunction } from '../plugins';
 import { ComponentDesc, ComponentType, createScheme } from '../scheme';
@@ -82,5 +82,5 @@ export function usePager(config: PagerSceneConfig): PagerSceneContext {
     mergeRefProps(pager, 'props', { style: { justifyContent: 'right', marginTop: '16px' } });
     config.ctx.isPager = true;
     config.ctx.use(pagerPlugin as PluginFunction);
-    return useBaseScene({ ...(config || {}), pager });
+    return useScene({ ...(config || {}), pager });
 }

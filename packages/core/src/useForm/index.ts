@@ -1,4 +1,4 @@
-import { getGlobalConfig, SceneConfig, SceneContext, useBaseScene, useSceneContext } from '../base';
+import { getGlobalConfig, SceneConfig, SceneContext, useScene, useSceneContext } from '../base';
 import { ref, Ref, unref } from 'vue';
 import { PluginFunction } from '../plugins/define';
 import { mergeRefProps, useState } from '../helper';
@@ -148,5 +148,5 @@ export function useForm(config: FormSceneConfig): FormSceneContext {
         config.ctx = ctx as FormSceneContext;
     }
     config.ctx.use(formPlugin as PluginFunction);
-    return useBaseScene(config);
+    return useScene(config);
 }

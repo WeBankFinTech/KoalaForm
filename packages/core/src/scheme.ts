@@ -6,9 +6,9 @@ import { travelTree, turnArray } from './helper';
 export interface ComponentDesc {
     name: string;
     props?: Reactive;
-    vIf?: Reactive<boolean> | When | boolean;
-    vShow?: Reactive<boolean> | When | boolean;
-    disabled?: Reactive<boolean> | When;
+    vIf?: Ref<boolean> | When | boolean;
+    vShow?: Ref<boolean> | When | boolean;
+    disabled?: Ref<boolean> | When;
     events?: Record<string, (value: any, ...args: any[]) => void>;
     slotName?: string;
     children?: Array<string | ComponentDesc | SceneContext> | string | ComponentDesc | SceneContext;

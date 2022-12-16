@@ -1,6 +1,6 @@
 import { isArray } from 'lodash-es';
 import { computed, reactive, ref, Ref, unref } from 'vue';
-import { SceneConfig, SceneContext, useBaseScene, useSceneContext } from '../base';
+import { SceneConfig, SceneContext, useScene, useSceneContext } from '../base';
 import { mergeRefProps } from '../helper';
 import { PluginFunction } from '../plugins';
 import { compileComponents, ComponentDesc, ComponentType, createScheme, findScheme, SchemeChildren } from '../scheme';
@@ -73,5 +73,5 @@ export function useModal(config: ModalSceneConfig): ModalSceneContext {
     const modal = config?.modal || { name: ComponentType.Modal };
     config.ctx.use(modalPlugin as PluginFunction);
     const mergeConfig = { ...(config || {}), modal };
-    return useBaseScene(mergeConfig);
+    return useScene(mergeConfig);
 }

@@ -27,7 +27,7 @@ npm i @koala-form/fes-plugin
 </StartedBaseScene>
 <template #code>
 
-<<< @/examples/started/useBaseScene.js
+<<< @/examples/started/useScene.js
 </template>
 </ExampleDoc>
 

@@ -1,8 +1,7 @@
-import { isArray, isFunction } from 'lodash-es';
 import { SceneContext, SceneConfig } from '../base';
 // import { Handler, invokeHandler } from '../handles';
-import { mergeRefProps, travelTree, turnArray } from '../helper';
-import { ComponentDesc, Scheme } from '../scheme';
+import { mergeRefProps, travelTree } from '../helper';
+import { ComponentDesc } from '../scheme';
 import { PluginFunction } from './define';
 
 export const eventsPlugin: PluginFunction<SceneContext, SceneConfig> = (api) => {

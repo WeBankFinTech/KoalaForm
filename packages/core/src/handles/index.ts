@@ -95,7 +95,7 @@ export const doRequest = async (api: string, params?: Record<string, any>, opt?:
  * @param form 表单上下文
  * @returns
  */
-export const doBeforeDoQuery = (
+export const doBeforeQuery = (
     form: FormSceneContext,
     pager?: PagerSceneContext,
 ): {
@@ -115,7 +115,7 @@ export const doBeforeDoQuery = (
  * @param table 列表上下文
  * @returns
  */
-export const doAfterDoQuery = (table: TableSceneContext, pager?: PagerSceneContext, data?: { list: any[]; page: PagerSceneContext['model'] }) => {
+export const doAfterQuery = (table: TableSceneContext, pager?: PagerSceneContext, data?: { list: any[]; page: PagerSceneContext['model'] }) => {
     if (pager?.model) {
         pager.model.totalCount = data?.page?.totalCount || 0;
     }

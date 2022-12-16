@@ -8,8 +8,8 @@ import {
     usePager,
     useModal,
     doGetFormData,
-    doBeforeDoQuery,
-    doAfterDoQuery,
+    doBeforeQuery,
+    doAfterQuery,
     doResetFields,
     doRequest,
     doSetFields,
@@ -70,9 +70,9 @@ export default defineComponent({
         ]);
 
         const doQuery = async () => {
-            const data = doBeforeDoQuery(query, pager);
+            const data = doBeforeQuery(query, pager);
             const res = await doRequest('/user.json', data);
-            doAfterDoQuery(table, pager, res);
+            doAfterQuery(table, pager, res);
         };
 
         const doReset = async () => {

@@ -10,7 +10,7 @@
                 <mxCell id="DwGz0jpXQfFEOZT0aRM2-17" value="Scene Context Reactive" style="rounded=1;whiteSpace=wrap;html=1;fontSize=26;fillColor=none;" vertex="1" parent="8EWd1xhJfRFUhPiCfJxK-1">
                     <mxGeometry x="80" y="590" width="760" height="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="DwGz0jpXQfFEOZT0aRM2-20" value="useBaseScene" style="rounded=1;whiteSpace=wrap;html=1;fontSize=26;fillColor=none;" vertex="1" parent="8EWd1xhJfRFUhPiCfJxK-1">
+                <mxCell id="DwGz0jpXQfFEOZT0aRM2-20" value="useScene" style="rounded=1;whiteSpace=wrap;html=1;fontSize=26;fillColor=none;" vertex="1" parent="8EWd1xhJfRFUhPiCfJxK-1">
                     <mxGeometry x="80" y="330" width="200" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="DwGz0jpXQfFEOZT0aRM2-22" value="useFormScene" style="rounded=1;whiteSpace=wrap;html=1;fontSize=26;fillColor=none;" vertex="1" parent="8EWd1xhJfRFUhPiCfJxK-1">

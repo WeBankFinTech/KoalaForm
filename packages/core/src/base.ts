@@ -90,15 +90,25 @@ export const useSceneContext = (names: string[] | string) => {
     };
 };
 
-export function useBaseScene<T extends SceneContext, K extends SceneConfig>(config: K): T {
+export const baseComPlugin: PluginFunction<SceneContext, SceneConfig> = (api) => {
+    api.describe('base-comp-plugin');
+    api.onSelfStart(({ ctx, config }) => {
+        const schemes = compileComponents(ctx.schemes || [], config.components);
+        if (schemes) ctx.schemes = schemes;
+        api.emit('baseSchemeLoaded');
+        api.emit('schemeLoaded');
+        api.emit('started');
+    });
+};
+
+export function useScene<T extends SceneContext, K extends SceneConfig>(config: K): T {
     if (!config.ctx) {
         const { ctx } = useSceneContext('base');
         config.ctx = ctx;
     }
-    const { ctx, components } = config;
+    const { ctx } = config;
     ctx.__config = config;
-    const schemes = compileComponents(ctx.schemes || [], components);
-    if (schemes) ctx.schemes = schemes;
+    ctx.use(baseComPlugin);
 
     const pluginDefineList = [...pluginInstalled, ...ctx.__plugins];
 

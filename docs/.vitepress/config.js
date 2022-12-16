@@ -103,11 +103,21 @@ function getGuideSidebar() {
         ]
       },
       {
-        text: '基础场景',
+        text: '基础',
         children: [
-          // { text: 'Field', link: '/zh/guide/field' },
-          // { text: 'Action', link: '/zh/guide/action' },
-          // { text: 'Config', link: '/zh/guide/config' },
+          { text: '写一个表单', link: '/zh/guide/base/form' },
+          { text: '组件描述', link: '/zh/guide/base/component' },
+          { text: '字段描述', link: '/zh/guide/base/field' },
+          { text: '联动基础', link: '/zh/guide/base/relation' },
+          { text: '事件基础', link: '/zh/guide/base/event' },
+          { text: '行为函数', link: '/zh/guide/base/handler' },
+          { text: '插件基础', link: '/zh/guide/base/plugin' },
+        ]
+      },
+      {
+        text: '场景',
+        children: [
+          { text: 'useScene', link: '/zh/guide/useScene' },
           { text: 'useForm', link: '/zh/guide/useForm' },
           { text: 'useTable', link: '/zh/guide/useTable' },
           { text: 'useModal', link: '/zh/guide/useModal' },
@@ -116,21 +126,16 @@ function getGuideSidebar() {
         ]
       },
       {
-        text: '组合场景',
+        text: '深入插件',
         children: [
-          { text: 'useTableWithPager', link: '/zh/guide/useTableWithPager' },
-          { text: 'useQueryPage', link: '/zh/guide/useQueryPage' },
-          { text: 'useModalForm', link: '/zh/guide/useModalForm' },
-          { text: 'useModalTable', link: '/zh/guide/useModalTable' },
-          { text: 'useCurd', link: '/zh/guide/useCurd' },
+          // { text: 'useScene', link: '/zh/guide/useScene' },
+          // { text: 'useForm', link: '/zh/guide/useForm' },
+          // { text: 'useTable', link: '/zh/guide/useTable' },
+          // { text: 'useModal', link: '/zh/guide/useModal' },
+          // { text: 'useQuery', link: '/zh/guide/useQuery' },
+          // { text: 'usePage', link: '/zh/guide/usePage' },
         ]
       },
-      {
-        text: 'Preset进阶',
-        children: [
-          { text: 'Preset', link: '/zh/preset/index' }
-        ]
-      }
     ]
   }
   

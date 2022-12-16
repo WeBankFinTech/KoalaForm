@@ -2,7 +2,13 @@
 sidebarDepth: 3
 ---
 # useForm
-在curd中出现表单场景是查询表单、新增表单、更新表单。
+在curd中出现表单场景是查询表单、新增表单、更新表单。表单的关键就是字段，所以useForm通过传入的字段定义`Filed`，就可以获得表单的render函数，并对表单的常见操作提供了支持，比如
+- 表单布局
+- 表单校验
+- 表单重置
+- 表单提交
+- 表单初始化
+- 表单联动
 
 ## 表单配置
 
@@ -37,17 +43,30 @@ sidebarDepth: 3
 </template>
 </ExampleDoc>
 
-<!-- ## 多列表单
+## 表单校验
 
 <ExampleDoc>
-<UseFormColEdit>
-</UseFormColEdit>
+<UseFormValidate>
+</UseFormValidate>
 <template #code>
 
-<<< @/examples/useForm/colEdit.js
+<<< @/examples/useForm/validate.js
 
 </template>
-</ExampleDoc> -->
+</ExampleDoc>
+
+
+## 表单操作
+
+<ExampleDoc>
+<UseFormValidate>
+</UseFormValidate>
+<template #code>
+
+<<< @/examples/useForm/validate.js
+
+</template>
+</ExampleDoc>
 
 
 ## 表单联动
