@@ -1,5 +1,5 @@
 import { isArray, isObject, mergeWith } from 'lodash-es';
-import { isReactive, isRef, reactive, Ref, unref, watch } from 'vue';
+import { isReactive, isRef, reactive, Ref, Slots, unref, watch } from 'vue';
 
 export function concatCaseCamel(...args: string[]) {
     return args.map((str, index) => (index === 0 ? str : str.replace(/^[a-z]/, (s) => s.toLocaleUpperCase()))).join('');

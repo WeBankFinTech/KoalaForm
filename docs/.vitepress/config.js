@@ -99,7 +99,7 @@ function getGuideSidebar() {
         children: [
           { text: 'Koala Form是什么', link: '/zh/guide/' },
           { text: '快速上手', link: '/zh/guide/getting-started' },
-          { text: '设计原理', link: '/zh/guide/design' },
+          // { text: '设计原理', link: '/zh/guide/design' },
         ]
       },
       {
@@ -109,6 +109,7 @@ function getGuideSidebar() {
           { text: '组件描述', link: '/zh/guide/base/component' },
           { text: '字段描述', link: '/zh/guide/base/field' },
           { text: '联动基础', link: '/zh/guide/base/relation' },
+          { text: '自定义渲染', link: '/zh/guide/base/slots' },
           { text: '事件基础', link: '/zh/guide/base/event' },
           { text: '行为函数', link: '/zh/guide/base/handler' },
           { text: '插件基础', link: '/zh/guide/base/plugin' },
@@ -117,12 +118,11 @@ function getGuideSidebar() {
       {
         text: '场景',
         children: [
-          { text: 'useScene', link: '/zh/guide/useScene' },
-          { text: 'useForm', link: '/zh/guide/useForm' },
-          { text: 'useTable', link: '/zh/guide/useTable' },
-          { text: 'useModal', link: '/zh/guide/useModal' },
-          { text: 'useQuery', link: '/zh/guide/useQuery' },
-          { text: 'usePage', link: '/zh/guide/usePage' },
+          { text: '基础场景', link: '/zh/guide/scene/useScene' },
+          { text: 'useForm', link: '/zh/guide/scene/useForm' },
+          { text: 'useTable', link: '/zh/guide/scene/useTable' },
+          { text: 'usePager', link: '/zh/guide/scene/usePager' },
+          { text: 'useModal', link: '/zh/guide/scene/useModal' },
         ]
       },
       {

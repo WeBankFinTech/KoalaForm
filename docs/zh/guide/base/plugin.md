@@ -3,111 +3,43 @@ sidebarDepth: 2
 ---
 
 # 插件基础
-在表单中经常会有多个字段相互关联，在组件和字段的定义都提到了vIf、vShow和disabled，他们支持的类型都是
+使用插件可以扩展场景或者场景的功能，比如可以通过插件来适配UI库、扩展ComponentDesc和Field的配置。
+## 安装到全局
 
-`Ref<boolean> | When | boolean`
+- installInGlobal 将插件安装到全局，意味着所有的场景都生效。
 
-可以使用它们实现字段间的联动。
-
-## vIf、vShow
-
-vIf等价于vue模板指令`v-if`，如果是false时，则不渲染组件或者字段。
-
-vShow等价于vue模版指令`v-show`，如果是false时，则不显示渲染的组件或字段。
+- installPluginPreset 将预设[内置插件](#内置插件列表)安装到全局
 
 ```js
+import { componentPlugin } from '@koala-form/fes-plugin';
+import { installPluginPreset } from '@koala-form/core';
 
-const btn = { name:  ComponentType.Button, vIf: false }
+installInGlobal(componentPlugin); // 安装fes design组件插件
 
-const showName = ref(false);
-const nameFiled = { label: '姓名', name: 'name', vIf: showName } // 不渲染
-
-const showAge = ref(false);
-const ageFiled = { label: '年龄', name: 'age', vShow: showAge } // 渲染，不显示
+installPluginPreset() // 安装所有预设内置插件
 
 ```
-
-## disabled
-disabled等价于组件的属性props.disabled，比如按钮disabled为true是不能点击。
-::: warning
-存在disabled属性的组件才会生效。
-:::
+## 局部安装
+全局安装的插件将在所有的场景中生效，当场景需要特定的插件时，可以使用上下文进行局部安装。
 
 ```js
+const plugin = (api) => {
+    // do something
+}
 
-const disabled = ref(true)
-const btn = { name:  ComponentType.Button, disabled: disabled } // 按钮无法点击
-
+const cxt = useSceneContext('name');
+ctx.use(plugin); // 安装插件到局部场景中
 ```
 
-## 响应式联动
-假如接受的值是`Ref<boolean>`时，意味可以动态的去控制组件或字段的显示。
-```js
-const { ctx } = useSceneContext(['form']) 
-
-// 存在id时，是更新表单
-const isForUpdate = computed(() => ctx.model.id)
-
-// 是否成人
-const isAdult = computed(() => cxt.model.age >= 18)
-
-useForm({ ctx, fields: [
-    { label: 'ID', name: 'id', vIf: isForUpdate }, // 更新表单才显示
-    { label: '姓名', name: 'name', components: { name: ComponentType.Input, disabled: isForUpdate }  }, // 更新表单不能修改名称
-    { label: '年龄', name: 'age', components: { name: ComponentType.InputNumber }  },
-    { label: '职业', name: 'work', vShow: isAdult, components: { name: ComponentType.Input} }, // 成人可以填写职业
-] })
-```
-
-## when联动
-when是一个函数，接受字符表达式或者函数
-
-- 字符表达式，可以根据当前上下文的modal属性来编写表达式，比如age >= 18
-- 函数，函数内部可以写响应式的变量去判断，返回true/false。
-
-::: tip
-字符表达式的变量只能是当前上下文的model属性。
-:::
-
-```jsx
-const { ctx } = useSceneContext(['form']) 
-
-// 存在id时，是更新表单
-const isForUpdate = when('!!id');
-
-// 是否成人
-const isAdult = when(() => cxt.model.age >= 18);
-
-useForm({ ctx, fields: [
-    { label: 'ID', name: 'id', vIf: isForUpdate }, // 更新表单才显示
-    { label: '姓名', name: 'name', components: { name: ComponentType.Input, disabled: isForUpdate }  }, // 更新表单不能修改名称
-    { label: '年龄', name: 'age', components: { name: ComponentType.InputNumber }  },
-    { label: '职业', name: 'work', vShow: isAdult, components: { name: ComponentType.Input} }, // 成人可以填写职业
-] })
-```
-
-## props联动
-组件的属性props是支持响应式的，因为也可以做联动
-
-```js
-
-const { ctx } = useSceneContext(['form']) 
-
-const styleRef = computed(() =>( { color: ctx.model.age >= 18 'red' : '' })) // 单个属性值响应式
-
-const propsRef = computed(() => ({ // 整个属性响应式
-    disabled: !cxt.model.name
-}));
-
-useForm({ ctx, fields: [
-    { label: '姓名', name: 'name', components: { name: ComponentType.Input, props: propsRef }  },
-    { label: '年龄', name: 'age', components: { name: ComponentType.InputNumber }  },
-    { label: '职业', name: 'work', components: { name: ComponentType.Input , props: { style: styleRef }} },
-] })
-
-```
-
-## 联动扩展
-联动主要是靠响应式的实现，因此需要扩展其他方式的表单联动可以通过解析组件或者字段的定义来实现，具体可参考[插件]()
-
-
+## 内置插件列表
+| 插件         |      插件说明               |
+| ------------ | ----------------------- |
+| [disabledPlugin]() | 组件disbaled支持 |
+| [eventsPlugin]() | 事件支持 |
+| [formatPlugin]() | 格式化解析支持 |
+| [formRule]() | 表单校验规则支持 |
+| [optionsPlugin]() | 枚举选项支持 |
+| [renderPlugin]() | 场景渲染 |
+| [slotPlugin]() | 插槽支持 |
+| [vIfPlugin]() | vIf支持 |
+| [vShowPlugin]() | vShow支持 |

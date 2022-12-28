@@ -1,9 +1,3 @@
-<!-- <p align="center">
-  <a href="https://fes-design-4gvn317r3b6bfe17-1254145788.ap-shanghai.app.tcloudbase.com/">
-    <img width="362" src="./docs/public/images/fes-logo.svg">
-  </a>
-</p> -->
-
 <h1 align="center">Koala-Form</h1>
 
 <div align="center">
@@ -15,49 +9,44 @@
 
 ```bash
 npm i @koala-form/core
-npm i @koala-form/preset-fesd
+npm i @koala-form/fes-plugin
 ```
 
 ## Usage
-使用预设
+注册全局插件
 ```js
-import { usePreset } from '@koala-form/core';
-import fesdPreset from '@koala-form/preset-fesd';
+import '@koala-form/fes-plugin';
+import { installPluginPreset } from '@koala-form/core';
 
-usePreset(fesdPreset);
+// 将依赖的插件安装到全局
+installPluginPreset();
 ```
 写一个简单的表单
 ```html
 <template>
-    <KoalaForm :metaList="metaList" :config="config"></KoalaForm>
+    <KoalaRender :render="render"></KoalaRender>
 </template>
 
 <script>
-import { KoalaForm, defineFields, defineConfig } from '@koala-form/core';
-import { BASE_URL } from './const';
-
-const commonStatus = { query: true, table: true, insert: true, update: true, delete: true, view: true };
-const metaList = defineFields([
-    { key: 'id', label: 'ID', status: { ...commonStatus, query: false, insert: false, update: 'disabled' } },
-    { key: 'name', label: '姓名', status: commonStatus, required: true },
-    { key: 'age', label: '年龄', type: 'number', status: commonStatus },
-    { key: 'actions', label: '操作', colProps: { width: 220 }, status: { table: true } },
-]);
-
-const config = defineConfig({
-    name: '用户',
-    query: { api: `${BASE_URL}user.json` },
-    insert: { api: `${BASE_URL}success.json` },
-    update: { api: `${BASE_URL}success.json` },
-    delete: { api: `${BASE_URL}success.json` },
-});
+import { KoalaRender, useForm, ComponentType } from '@koala-form/core';
 
 export default {
-    components: { KoalaForm },
+    components: { KoalaRender },
     setup() {
+        const { render } = useForm({
+            fields: [
+                {
+                    name: 'name', // model.name可以访问到值
+                    label: '姓名', // 表单项的名称
+                    defaultValue: '蒙奇·D·路飞', // 默认值
+                    components: {
+                        name: ComponentType.Input, // 表单组件是输入框
+                    },
+                },
+            ],
+        });
         return {
-            metaList,
-            config,
+            render
         };
     },
 };
@@ -66,18 +55,3 @@ export default {
 
 
 ## 反馈
-
-
-## 设计
-Filed + Action => 渲染
-
-渲染上下文：{
-    getState: 响应式对象
-    setState
-    getProps: 属性
-    setProps
-    getComponent：组件
-    render
-}
-
-Plugin插件 通过解析Filed和Action来动态改变渲染结果

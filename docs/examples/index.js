@@ -1,6 +1,6 @@
 import './main';
 // import Test from './Test';
-import StartedBaseScene from './started/useBaseScene';
+import StartedScene from './started/useScene';
 import StartedUseForm from './started/useForm';
 import StartedUseTable from './started/useTable';
 import StartedUsePager from './started/usePager';
@@ -17,10 +17,13 @@ import UseFormValidate from './useForm/validate';
 import BaseForm from './base/form';
 import BaseComp from './base/comp';
 import BaseField from './base/field';
+import BaseSlotRender from './base/slotRender.vue';
+
+import FesdCurd from './fesdCurd';
 
 export default {
     // Test,
-    StartedBaseScene,
+    StartedScene,
     StartedUseForm,
     StartedUseTable,
     StartedUsePager,
@@ -35,6 +38,8 @@ export default {
     BaseForm,
     BaseComp,
     BaseField,
+    BaseSlotRender,
+    FesdCurd,
     // User,
     // UseForm,
     // UseFormSlots,

@@ -1,5 +1,5 @@
 ---
-sidebarDepth: 2
+sidebarDepth: 3
 ---
 
 # 组件描述
@@ -105,10 +105,10 @@ const ctx = useScene({ components: modal })
 ctx.render(slots) // 渲染
 
 // template
-<KoalaForm :render="ctx.render">
+<KoalaRender :render="ctx.render">
     <template name="test">modal内容</template>
     <template name="test__footer"><button>确定</button></template>
-</KoalaForm>
+</KoalaRender>
 ```
 
 ## 嵌套子组件

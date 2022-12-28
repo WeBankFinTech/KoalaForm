@@ -23,8 +23,8 @@ npm i @koala-form/fes-plugin
 
 ## 基础场景
 <ExampleDoc>
-<StartedBaseScene>
-</StartedBaseScene>
+<StartedScene>
+</StartedScene>
 <template #code>
 
 <<< @/examples/started/useScene.js
@@ -139,17 +139,3 @@ events: {
 <<< @/examples/started/useCurd.js
 </template>
 </ExampleDoc>
-
-
-这个表单场景太简单了，实际的业务上会有各种复杂的表单，**Koala Form**也能支持吗？
-
-那是自然的，**Koala Form**提供了这些灵活的能力：
-- **表单重组：** 基础表单（useForm）、带操作的表单（useFromAction）、模态框表单（useModal）、查询表单（useQuery）、列表（useTable）、完整的表单页面（usePage），可以自由选择组合到你的页面中，满足的更复杂的业务。
-
-- **Slot：** 每个字段域都会提供对应的slot，特殊的字段域，你可以用slot来覆盖默认的渲染。
-
-- **仅逻辑：** 每个use都会导出相应的model、操作方法及render，如果render的效果与需求的差异大，你可以自己实现自己的render。
-
-- **Preset：** 提供Preset扩展，你可以自定义自己的Preset，也可以继承已有的Preset再扩展。
-
-为了更好的掌握这些灵活性，让我们学习下设计原理。

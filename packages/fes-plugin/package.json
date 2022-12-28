@@ -1,6 +1,6 @@
 {
   "name": "@koala-form/fes-plugin",
-  "version": "2.0.0",
+  "version": "2.0.0-rc.0",
   "description": "vue form helper",
   "main": "dist/index.js",
   "module": "dist/index.js",

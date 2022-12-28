@@ -25,6 +25,17 @@ ctx.use(componentPlugin);
 ```
 
 ## 使用Preset
+UI插件提供一些预设，使页面写起来更简洁。
+
+<ExampleDoc>
+<FesdCurd>
+</FesdCurd>
+<template #code>
+
+<<< @/examples/fesdCurd.js
+
+</template>
+</ExampleDoc>
 
 ## Preset API
 preset是提供一些方便快捷的方法去生成场景的配置，比如按钮、表单等。
@@ -93,4 +104,21 @@ const genSubmitAction: (handlers: {
     clear?: () => void;
     reset?: () => void;
 }) => Field
+```
+
+### genTableAction
+生成列表的行为配置
+
+***@param*** 
+- handlers 行为响应
+    - update 更新按钮的响应，不传则隐藏
+    - delete 删除按钮的响应，不传则隐藏
+    - view 详情按钮的响应，不传则隐藏
+- label: 操作列名
+```js
+const genTableAction: (handlers: {
+    update?: () => void;
+    delete?: () => void;
+    view?: () => void;
+}, label?: string) => Field
 ```

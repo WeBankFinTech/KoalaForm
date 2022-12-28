@@ -1,4 +1,4 @@
-import KoalaForm from './koalaForm';
+import KoalaRender from './koalaRender';
 export * from './scheme';
 export * from './base';
 export * from './when';
@@ -10,4 +10,4 @@ export * from './useTable';
 export * from './usePager';
 export * from './useModal';
 export * from './useTableWithPager';
-export { KoalaForm };
+export { KoalaRender };

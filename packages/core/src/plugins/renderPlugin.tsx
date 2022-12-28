@@ -1,20 +1,20 @@
 import { isArray, isFunction, isString, isUndefined } from 'lodash-es';
 import { h, unref, withDirectives, vShow, DirectiveArguments, VNode, createTextVNode, Slots, Slot, DefineComponent, VNodeChild } from 'vue';
 import { SceneContext } from '../base';
-import { ModelRef, Scheme, SchemeChildren } from '../scheme';
+import { ComponentType, ModelRef, Scheme, SchemeChildren } from '../scheme';
 import { PluginFunction } from './define';
 
-const wrapProps = (props: Record<string, any>, slotParams?: any[]) => {
+const wrapProps = (props: Record<string, any>, slotParams?: any) => {
     const _props = { ...props };
     Object.keys(props).forEach((key) => {
         if (isFunction(props[key]) && !key.startsWith('onUpdate')) {
-            _props[key] = (...args: any[]) => props[key](...(slotParams || []), ...args);
+            _props[key] = (...args: any[]) => props[key](slotParams, ...args);
         }
     });
     return _props;
 };
 
-const renderNode = (ctx: SceneContext, scheme: Scheme | string | ModelRef | Slot, slotParams?: any[]) => {
+const renderNode = (ctx: SceneContext, scheme: Scheme | string | ModelRef | Slot, slotParam?: any) => {
     if (!scheme) return;
     if (isString(scheme)) return createTextVNode(scheme);
     if ((scheme as ModelRef).ref) {
@@ -22,7 +22,7 @@ const renderNode = (ctx: SceneContext, scheme: Scheme | string | ModelRef | Slot
         return createTextVNode(ref[name]);
     }
     if (isFunction(scheme)) {
-        return scheme(...(slotParams || []));
+        return scheme(slotParam);
     }
     const { __ref, vIf, vModels, vShow: _vShow, component, events, props: _props, children: _children, slots: _slots } = scheme as Scheme;
     if (vIf?.value === false) return;
@@ -54,10 +54,15 @@ const renderNode = (ctx: SceneContext, scheme: Scheme | string | ModelRef | Slot
     } else if (_children) {
         children = {
             ...(_slots || {}),
-            default: (...args) => renderSchemes(ctx, _children, args) as VNode[],
+            default: (_slotParam) => {
+                if (component === ComponentType.TableColumn && _slotParam) {
+                    slotParam = { ..._slotParam, __koalaColFlag: true };
+                }
+                return renderSchemes(ctx, _children, slotParam?.__koalaColFlag ? slotParam : _slotParam) as VNode[];
+            },
         };
     }
-    const vNode = h(Component as DefineComponent, wrapProps(props, slotParams), children);
+    const vNode = h(Component as DefineComponent, wrapProps(props, slotParam), children);
     // 指令
     const directives: DirectiveArguments = [];
     if (!isUndefined(_vShow)) {
@@ -70,12 +75,12 @@ const renderNode = (ctx: SceneContext, scheme: Scheme | string | ModelRef | Slot
     }
 };
 
-const renderSchemes = (ctx: SceneContext, schemes?: SchemeChildren, slotParams?: any[]): VNodeChild | undefined => {
+const renderSchemes = (ctx: SceneContext, schemes?: SchemeChildren, slotParam?: any): VNodeChild | undefined => {
     if (!schemes) return;
     if (isArray(schemes)) {
-        return schemes.map((scheme) => renderNode(ctx, scheme, slotParams));
+        return schemes.map((scheme) => renderNode(ctx, scheme, slotParam));
     } else {
-        return renderNode(ctx, schemes as string | ModelRef, slotParams);
+        return renderNode(ctx, schemes as string | ModelRef, slotParam);
     }
 };
 
