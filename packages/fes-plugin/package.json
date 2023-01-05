@@ -1,6 +1,6 @@
 {
   "name": "@koala-form/fes-plugin",
-  "version": "2.0.0-rc.0",
+  "version": "2.0.0-rc.1",
   "description": "vue form helper",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -13,8 +13,5 @@
   "peerDependencies": {
     "vue": "^3.0.7",
     "@fesjs/fes-design": "^0.6.1"
-  },
-  "dependencies": {
-    "@koala-form/core": "^2.0.0"
   }
 }

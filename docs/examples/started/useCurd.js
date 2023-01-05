@@ -50,24 +50,8 @@ const USER = {
 export default defineComponent({
     setup() {
         const {
-            ctxs: [
-                query,
-                table,
-                pager,
-                create,
-                update,
-                createModal,
-                updateModal,
-            ],
-        } = useSceneContext([
-            'query',
-            'table',
-            'pager',
-            'create',
-            'update',
-            'createModal',
-            'updateModal',
-        ]);
+            ctxs: [query, table, pager, create, update, createModal, updateModal],
+        } = useSceneContext(['query', 'table', 'pager', 'create', 'update', 'createModal', 'updateModal']);
 
         const doQuery = async () => {
             const data = doBeforeQuery(query, pager);
@@ -155,6 +139,7 @@ export default defineComponent({
                     label: '操作',
                     props: { width: 160 },
                     components: [
+                        { name: 'div', slotName: 'extend' },
                         {
                             name: ComponentType.Button,
                             children: ['更新'],
@@ -196,22 +181,12 @@ export default defineComponent({
 
         useForm({
             ctx: create,
-            fields: [
-                { ...USER.name, required: true },
-                { ...USER.sex },
-                { ...USER.age },
-                { ...USER.birthday },
-            ],
+            fields: [{ ...USER.name, required: true }, { ...USER.sex }, { ...USER.age }, { ...USER.birthday }],
         });
 
         useForm({
             ctx: update,
-            fields: [
-                { ...USER.name, required: true },
-                { ...USER.sex },
-                { ...USER.age },
-                { ...USER.birthday },
-            ],
+            fields: [{ ...USER.name, required: true }, { ...USER.sex }, { ...USER.age }, { ...USER.birthday }],
         });
 
         useModal({
@@ -236,14 +211,15 @@ export default defineComponent({
         });
         updateModal.model.title = '更新用户';
 
+        const slot = {
+            extend(parmas) {
+                console.log(parmas, '----');
+                return 'ok';
+            },
+        };
+
         return () => {
-            return [
-                query.render(),
-                table.render(),
-                pager.render(),
-                createModal.render(),
-                updateModal.render(),
-            ];
+            return [query.render(), table.render(slot), pager.render(), createModal.render(), updateModal.render()];
         };
     },
 });

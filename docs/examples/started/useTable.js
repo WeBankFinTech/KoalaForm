@@ -1,10 +1,5 @@
 import { FMessage } from '@fesjs/fes-design';
-import {
-    ComponentType,
-    formatByOptions,
-    useTable,
-    genFormatByDate,
-} from '@koala-form/core';
+import { ComponentType, formatByOptions, useTable, genFormatByDate } from '@koala-form/core';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
