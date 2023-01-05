@@ -23,6 +23,9 @@ export const tableSchemePlugin: PluginFunction<TableSceneContext, TableSceneConf
         const schemeChildren: SchemeChildren = [];
         const scheme = createScheme(table || { name: ComponentType.Table });
         scheme.__ref = ref(null);
+        if (!scheme.component) {
+            scheme.component = ComponentType.Table;
+        }
 
         fields.forEach((field) => {
             const scheme: Scheme = createScheme(field);

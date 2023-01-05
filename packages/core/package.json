@@ -1,9 +1,9 @@
 {
   "name": "@koala-form/core",
-  "version": "2.0.0-rc.0",
+  "version": "2.0.0-rc.3",
   "description": "vue form helper",
   "main": "dist/index.js",
-  "module": "src/index.ts",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "aringlai",
   "license": "MIT",

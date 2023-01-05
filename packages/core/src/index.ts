@@ -10,4 +10,5 @@ export * from './useTable';
 export * from './usePager';
 export * from './useModal';
 export * from './useTableWithPager';
+export * from './helper';
 export { KoalaRender };

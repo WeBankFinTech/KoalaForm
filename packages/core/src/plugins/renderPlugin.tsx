@@ -6,11 +6,13 @@ import { PluginFunction } from './define';
 
 const wrapProps = (props: Record<string, any>, slotParams?: any) => {
     const _props = { ...props };
-    Object.keys(props).forEach((key) => {
-        if (isFunction(props[key]) && !key.startsWith('onUpdate')) {
-            _props[key] = (...args: any[]) => props[key](slotParams, ...args);
-        }
-    });
+    if (slotParams) {
+        Object.keys(props).forEach((key) => {
+            if (isFunction(props[key]) && !key.startsWith('onUpdate')) {
+                _props[key] = (...args: any[]) => props[key](slotParams, ...args);
+            }
+        });
+    }
     return _props;
 };
 
@@ -50,11 +52,11 @@ const renderNode = (ctx: SceneContext, scheme: Scheme | string | ModelRef | Slot
     }
     let children: Slots | undefined = _slots;
     if (_slots?.default) {
-        children = _slots as Slots;
+        children = { ..._slots } as Slots;
     } else if (_children) {
         children = {
             ...(_slots || {}),
-            default: (_slotParam) => {
+            default: (_slotParam: any) => {
                 if (component === ComponentType.TableColumn && _slotParam) {
                     slotParam = { ..._slotParam, __koalaColFlag: true };
                 }
@@ -62,7 +64,17 @@ const renderNode = (ctx: SceneContext, scheme: Scheme | string | ModelRef | Slot
             },
         };
     }
-    const vNode = h(Component as DefineComponent, wrapProps(props, slotParam), children);
+    const newChildren: any = { ...(children || {}) };
+    if (slotParam?.__koalaColFlag && children) {
+        // 列表的childrenslot加上列表的slot参数
+        Object.keys(children).forEach((key) => {
+            const slot = children?.[key];
+            if (isFunction(slot)) {
+                newChildren[key] = (params: any) => slot({ ...slotParam, ...(params || {}) });
+            }
+        });
+    }
+    const vNode = h(Component as DefineComponent, wrapProps(props, slotParam), newChildren);
     // 指令
     const directives: DirectiveArguments = [];
     if (!isUndefined(_vShow)) {
