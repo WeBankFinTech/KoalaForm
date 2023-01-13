@@ -16,7 +16,7 @@ const format = (ctx: FormSceneContext, config: FormSceneConfig, type: string) =>
         if (!scheme) return;
         let defaultSlot: Slot | null = null;
         if (type === 'form') {
-            defaultSlot = () => field.format?.(ctx.model, ctx.model?.[field.name || ''], scheme) as VNode[];
+            defaultSlot = () => field.format?.(ctx.modelRef.value, ctx.modelRef.value?.[field.name || ''], scheme) as VNode[];
         } else if (type === 'table') {
             defaultSlot = ({ row, cellValue }) => field.format?.(row, cellValue, scheme) as VNode[];
         }

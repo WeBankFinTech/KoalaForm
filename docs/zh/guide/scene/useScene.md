@@ -28,7 +28,7 @@ export interface SceneConfig {
 场景提供上下文进行场景渲染和操作场景的API。
 
 - name 场景名
-- model 场景的响应式的对象，用于取值和更新值。
+- modelRef 场景的响应式的对象，用于取值和更新值。
 - schemes 组件树的解析态，用于插件的修改和访问。
 - getComponent 解析组件，用于扩展UI库
 - render 渲染场景
@@ -36,7 +36,7 @@ export interface SceneConfig {
 ```ts
 export interface SceneContext {
     name: string;
-    model?: Reactive;
+    modelRef?: Ref;
     schemes: Array<Scheme>;
     getComponent: (name: keyof typeof ComponentType | String | Component) => Component | string;
     render: (slots?: Slots) => VNodeChild;

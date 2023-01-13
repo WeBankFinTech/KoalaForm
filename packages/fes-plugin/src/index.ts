@@ -1,6 +1,7 @@
 import { installInGlobal, isComponent, PluginFunction, SceneConfig, SceneContext, setupGlobalConfig } from '@koala-form/core';
 import * as fesD from '@fesjs/fes-design';
 export * from './preset';
+export * from './useCurd';
 
 export const componentPlugin: PluginFunction<SceneContext, SceneConfig> = (api) => {
     setupGlobalConfig({

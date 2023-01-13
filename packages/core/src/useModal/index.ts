@@ -1,15 +1,14 @@
-import { isArray } from 'lodash-es';
-import { computed, reactive, ref, Ref, unref } from 'vue';
+import { computed, ref, Ref } from 'vue';
 import { SceneConfig, SceneContext, useScene, useSceneContext } from '../base';
 import { mergeRefProps } from '../helper';
 import { PluginFunction } from '../plugins';
-import { compileComponents, ComponentDesc, ComponentType, createScheme, findScheme, SchemeChildren } from '../scheme';
+import { compileComponents, ComponentDesc, ComponentType, createScheme } from '../scheme';
 
 export interface ModalSceneContext extends SceneContext {
-    model: {
+    modelRef: Ref<{
         show: boolean;
         title: string;
-    };
+    }>;
     ref: Ref;
 }
 
@@ -23,22 +22,22 @@ export const modalPlugin: PluginFunction<ModalSceneContext, ModalSceneConfig> = 
     api.describe('modal-plugin');
 
     api.onSelfStart(({ ctx, config: { modal, title } }) => {
-        const state = reactive({
+        const { modelRef } = ctx;
+        modelRef.value = {
             show: false,
             title: title || '',
-        });
+        };
         const scheme = createScheme(modal || { name: ComponentType.Modal });
         scheme.__ref = ref(null);
         if (!scheme.component) {
             scheme.component = ComponentType.Modal;
         }
         mergeRefProps(scheme, 'vModels', {
-            show: { ref: state, name: 'show' },
+            show: { ref: modelRef, name: 'show' },
         });
 
-        mergeRefProps(scheme, 'props', { title: computed(() => state.title) });
+        mergeRefProps(scheme, 'props', { title: computed(() => modelRef.value.title) });
 
-        ctx.model = state;
         ctx.ref = scheme.__ref;
         if (ctx.schemes) {
             ctx.schemes.push(scheme);
@@ -54,14 +53,14 @@ export const modalPlugin: PluginFunction<ModalSceneContext, ModalSceneConfig> = 
 };
 
 export const doOpen = (ctx: ModalSceneContext) => {
-    if (ctx.model) {
-        ctx.model.show = true;
+    if (ctx.modelRef.value) {
+        ctx.modelRef.value.show = true;
     }
 };
 
 export const doClose = (ctx: ModalSceneContext) => {
-    if (ctx.model) {
-        ctx.model.show = false;
+    if (ctx.modelRef.value) {
+        ctx.modelRef.value.show = false;
     }
 };
 

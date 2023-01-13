@@ -1,5 +1,5 @@
 import { merge } from 'lodash-es';
-import { Ref, Slots, VNodeChild, Component } from 'vue';
+import { Ref, Slots, VNodeChild, Component, ref } from 'vue';
 import { turnArray } from './helper';
 import { installIn, Plugin, PluginFunction, pluginInstalled } from './plugins/define';
 import { compileComponents, ComponentDesc, ComponentType, Field, Scheme } from './scheme';
@@ -10,7 +10,7 @@ export type EnumOption = { label: unknown; value: unknown; [key: string]: unknow
 
 export interface SceneContext {
     name: string;
-    model?: Reactive;
+    modelRef: Ref;
     schemes: Array<Scheme>;
     getComponent: (name: keyof typeof ComponentType | String | Component) => Component | string;
     render: (slots?: Slots) => VNodeChild;
@@ -54,6 +54,7 @@ export const useSceneContext = (names: string[] | string) => {
         scopeId++;
         const cxt: SceneContext = {
             name: cxtName,
+            modelRef: ref(null),
             schemes: [],
             getComponent: (name) => name as string,
             render: () => [],

@@ -13,6 +13,7 @@ import {
     slotPlugin,
     vIfPlugin,
     vShowPlugin,
+    vModelsPlugin,
 } from './plugins';
 import { FormSceneContext, doGetFormData, doResetFields, doSetFields } from './useForm';
 import { doClose, doOpen, ModalSceneContext } from './useModal';
@@ -28,7 +29,8 @@ export const installPluginPreset = () => {
         .append(slotPlugin)
         .append(disabledPlugin)
         .append(optionsPlugin)
-        .append(formatPlugin as PluginFunction);
+        .append(formatPlugin as PluginFunction)
+        .append(vModelsPlugin);
 };
 
 /**

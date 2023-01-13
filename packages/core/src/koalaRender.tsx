@@ -6,7 +6,7 @@ import { composeRender } from './plugins';
 const KoalaRender = defineComponent({
     props: {
         render: {
-            type: Object as PropType<SceneContext['render'] | SceneContext['render'][]>,
+            type: Function as unknown as PropType<SceneContext['render'] | SceneContext['render'][]>,
             required: true,
         },
     },

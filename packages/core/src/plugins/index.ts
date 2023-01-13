@@ -8,3 +8,4 @@ export * from './slotPlugin';
 export * from './formRule';
 export * from './optionsPlugin';
 export * from './formatPlugin';
+export * from './vModelsPlugin';

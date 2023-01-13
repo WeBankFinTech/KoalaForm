@@ -1,11 +1,4 @@
-import {
-    ComponentType,
-    formatByOptions,
-    genFormatByDate,
-    useForm,
-    useSceneContext,
-    useTable,
-} from '@koala-form/core';
+import { ComponentType, formatByOptions, genFormatByDate, useForm, useSceneContext, useTable } from '@koala-form/core';
 import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
@@ -16,7 +9,7 @@ export default defineComponent({
         ]);
 
         const name = {
-            name: 'name', // model.name可以访问到值
+            name: 'name', // modelRef.value.name可以访问到值
             label: '姓名', // 表单项的名称
         };
 
@@ -67,8 +60,8 @@ export default defineComponent({
                         events: {
                             onClick: async () => {
                                 await form.validate();
-                                table.model.value.push({
-                                    ...form.model,
+                                table.modelRef.value.push({
+                                    ...form.modelRef.value,
                                     date: Date.now(),
                                 });
                             },
@@ -93,7 +86,7 @@ export default defineComponent({
                         events: {
                             onClick(record) {
                                 const { rowIndex } = record;
-                                table.model.value.splice(rowIndex, 1);
+                                table.modelRef.value.splice(rowIndex, 1);
                             },
                         },
                     },

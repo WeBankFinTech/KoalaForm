@@ -1,37 +1,37 @@
 import { isArray, isObject, mergeWith } from 'lodash-es';
-import { isReactive, isRef, reactive, Ref, Slots, unref, watch } from 'vue';
+import { isReactive, isRef, ref, Ref, unref, watch } from 'vue';
 
 export function concatCaseCamel(...args: string[]) {
     return args.map((str, index) => (index === 0 ? str : str.replace(/^[a-z]/, (s) => s.toLocaleUpperCase()))).join('');
 }
 
 export const useState = (initState: Record<string, unknown> | Ref<Record<string, unknown>>) => {
-    const state = reactive(unref(initState || {}));
+    const stateRef = ref(unref(initState || {}));
 
     if (isReactive(initState) || isRef(initState)) {
         watch(initState, () => {
-            Object.assign(state, unref(initState));
+            Object.assign(stateRef.value, unref(initState));
         });
     }
 
-    const getState = () => state;
+    const getState = () => stateRef.value;
 
     const setState = (value: unknown, name?: string) => {
         if (name) {
-            state[name] = value;
+            stateRef.value[name] = value;
         } else if (isObject(value)) {
-            Object.assign(state, value);
+            Object.assign(stateRef.value, value);
         }
     };
 
     const empty = () => {
-        Object.keys(state).forEach((key) => {
-            delete state[key];
+        Object.keys(stateRef.value).forEach((key) => {
+            delete stateRef.value[key];
         });
     };
 
     return {
-        state,
+        stateRef,
         empty,
         getState,
         setState,

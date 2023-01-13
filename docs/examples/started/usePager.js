@@ -4,7 +4,7 @@ import { defineComponent, watch } from 'vue';
 
 export default defineComponent({
     setup() {
-        const { render, model } = usePager({
+        const { render, modelRef } = usePager({
             pager: {
                 events: {
                     onChange: (value) => {
@@ -13,14 +13,14 @@ export default defineComponent({
                 },
             },
         });
-        model.currentPage = 2;
-        model.totalCount = 100;
+        modelRef.value.currentPage = 2;
+        modelRef.value.totalCount = 100;
         // doSetPager(ctx, { currentPage: 2, totalCount: 100 });
 
         watch(
-            () => model.currentPage,
+            () => modelRef.value.currentPage,
             () => {
-                FMessage.success('watch ' + model.currentPage);
+                FMessage.success('watch ' + modelRef.value.currentPage);
             },
         );
 

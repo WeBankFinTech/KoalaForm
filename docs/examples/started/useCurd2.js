@@ -50,24 +50,8 @@ const USER = {
 export default defineComponent({
     setup() {
         const {
-            ctxs: [
-                query,
-                table,
-                pager,
-                create,
-                update,
-                createModal,
-                updateModal,
-            ],
-        } = useSceneContext([
-            'query',
-            'table',
-            'pager',
-            'create',
-            'update',
-            'createModal',
-            'updateModal',
-        ]);
+            ctxs: [query, table, pager, create, update, createModal, updateModal],
+        } = useSceneContext(['query', 'table', 'pager', 'create', 'update', 'createModal', 'updateModal']);
 
         const doQuery = async () => {
             const data = doBeforeQuery(query, pager);
@@ -196,22 +180,12 @@ export default defineComponent({
 
         useForm({
             ctx: create,
-            fields: [
-                { ...USER.name, required: true },
-                { ...USER.sex },
-                { ...USER.age },
-                { ...USER.birthday },
-            ],
+            fields: [{ ...USER.name, required: true }, { ...USER.sex }, { ...USER.age }, { ...USER.birthday }],
         });
 
         useForm({
             ctx: update,
-            fields: [
-                { ...USER.name, required: true },
-                { ...USER.sex },
-                { ...USER.age },
-                { ...USER.birthday },
-            ],
+            fields: [{ ...USER.name, required: true }, { ...USER.sex }, { ...USER.age }, { ...USER.birthday }],
         });
 
         useModal({
@@ -223,7 +197,7 @@ export default defineComponent({
                 },
             },
         });
-        createModal.model.title = '新增用户';
+        createModal.modelRef.value.title = '新增用户';
 
         useModal({
             ctx: updateModal,
@@ -234,16 +208,10 @@ export default defineComponent({
                 },
             },
         });
-        updateModal.model.title = '更新用户';
+        updateModal.modelRef.value.title = '更新用户';
 
         return () => {
-            return [
-                query.render(),
-                table.render(),
-                pager.render(),
-                createModal.render(),
-                updateModal.render(),
-            ];
+            return [query.render(), table.render(), pager.render(), createModal.render(), updateModal.render()];
         };
     },
 });

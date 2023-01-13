@@ -25,7 +25,7 @@ export default defineComponent({
             },
         );
 
-        pager.model.pageSize = 5;
+        pager.modelRef.value.pageSize = 5;
         const names = ['蒙奇·D·路飞', '罗罗诺亚·索隆', '山治'];
         for (let index = 1; index <= 22; index++) {
             dataSource.value.push({

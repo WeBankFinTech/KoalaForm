@@ -139,7 +139,6 @@ export default defineComponent({
                     label: '操作',
                     props: { width: 160 },
                     components: [
-                        { name: 'div', slotName: 'extend' },
                         {
                             name: ComponentType.Button,
                             children: ['更新'],
@@ -198,7 +197,7 @@ export default defineComponent({
                 },
             },
         });
-        createModal.model.title = '新增用户';
+        createModal.modelRef.value.title = '新增用户';
 
         useModal({
             ctx: updateModal,
@@ -209,17 +208,10 @@ export default defineComponent({
                 },
             },
         });
-        updateModal.model.title = '更新用户';
-
-        const slot = {
-            extend(parmas) {
-                console.log(parmas, '----');
-                return 'ok';
-            },
-        };
+        updateModal.modelRef.value.title = '更新用户';
 
         return () => {
-            return [query.render(), table.render(slot), pager.render(), createModal.render(), updateModal.render()];
+            return [query.render(), table.render(), pager.render(), createModal.render(), updateModal.render()];
         };
     },
 });

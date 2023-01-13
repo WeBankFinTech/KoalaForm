@@ -17,7 +17,7 @@ useForm({ fields: [] })
 每个表单都包含多个字段，用于搜集用户输入，字段的表现有各种形式，比如输入框、下拉选择框、单选、多选等，使用Field描述表单的字段，定义字段的标签描述、属性名、默认值、组件等。
 ```js
 const name = {
-    name: 'name', // model.name可以访问到值
+    name: 'name', // modelRef.value.name可以访问到值
     label: '姓名', // 表单项的名称
     defaultValue: '蒙奇·D·路飞', // 默认值
     components: {

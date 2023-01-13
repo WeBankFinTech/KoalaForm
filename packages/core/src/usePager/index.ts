@@ -1,15 +1,15 @@
-import { computed, reactive, ref, Ref } from 'vue';
+import { computed, ref, Ref } from 'vue';
 import { SceneConfig, SceneContext, useScene, useSceneContext } from '../base';
 import { mergeRefProps } from '../helper';
 import { PluginFunction } from '../plugins';
 import { ComponentDesc, ComponentType, createScheme } from '../scheme';
 
 export interface PagerSceneContext extends SceneContext {
-    model: {
+    modelRef: Ref<{
         pageSize: number;
         currentPage: number;
         totalCount: number;
-    };
+    }>;
     ref: Ref;
     isPager: boolean;
 }
@@ -23,24 +23,24 @@ export const pagerPlugin: PluginFunction<PagerSceneContext, PagerSceneConfig> = 
     api.describe('pager-plugin');
 
     api.onSelfStart(({ ctx, config: { pager } }) => {
-        const state = reactive({
+        const { modelRef } = ctx;
+        modelRef.value = {
             pageSize: 10,
             currentPage: 1,
             totalCount: 0,
-        });
+        };
         const scheme = createScheme(pager || { name: ComponentType.Pagination });
         scheme.__ref = ref(null);
         if (!scheme.component) {
             scheme.component = ComponentType.Pagination;
         }
         mergeRefProps(scheme, 'vModels', {
-            pageSize: { ref: state, name: 'pageSize' },
-            currentPage: { ref: state, name: 'currentPage' },
+            pageSize: { ref: modelRef, name: 'pageSize' },
+            currentPage: { ref: modelRef, name: 'currentPage' },
         });
 
-        mergeRefProps(scheme, 'props', { totalCount: computed(() => state.totalCount) });
+        mergeRefProps(scheme, 'props', { totalCount: computed(() => modelRef.value.totalCount) });
 
-        ctx.model = state;
         ctx.ref = scheme.__ref;
         if (ctx.schemes) {
             ctx.schemes.push(scheme);
@@ -69,8 +69,8 @@ export const doSetPager = (
     },
 ) => {
     checkPager(ctx);
-    Object.assign(ctx.model, value);
-    return ctx.model;
+    Object.assign(ctx.modelRef.value, value);
+    return ctx.modelRef;
 };
 
 export function usePager(config: PagerSceneConfig): PagerSceneContext {

@@ -105,7 +105,7 @@ export const doBeforeQuery = (
         currentPage: number;
     };
 } => {
-    const { currentPage, pageSize } = pager?.model || ({} as PagerSceneContext['model']);
+    const { currentPage, pageSize } = pager?.modelRef.value || ({} as PagerSceneContext['modelRef']['value']);
     return doGetFormData(form, { page: { currentPage, pageSize } });
 };
 
@@ -115,11 +115,11 @@ export const doBeforeQuery = (
  * @param table 列表上下文
  * @returns
  */
-export const doAfterQuery = (table: TableSceneContext, pager?: PagerSceneContext, data?: { list: any[]; page: PagerSceneContext['model'] }) => {
-    if (pager?.model) {
-        pager.model.totalCount = data?.page?.totalCount || 0;
+export const doAfterQuery = (table: TableSceneContext, pager?: PagerSceneContext, data?: { list: any[]; page: PagerSceneContext['modelRef']['value'] }) => {
+    if (pager?.modelRef) {
+        pager.modelRef.value.totalCount = data?.page?.totalCount || 0;
     }
-    if (table?.model?.value) {
-        table.model.value = data?.list || [];
+    if (table?.modelRef?.value) {
+        table.modelRef.value = data?.list || [];
     }
 };

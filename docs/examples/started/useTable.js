@@ -4,7 +4,7 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
     setup() {
-        const { render, model } = useTable({
+        const { render, modelRef } = useTable({
             fields: [
                 {
                     name: 'name', // 每行数据取值的key
@@ -48,7 +48,7 @@ export default defineComponent({
             ],
         });
 
-        model.value = [
+        modelRef.value = [
             { name: '蒙奇·D·路飞', sex: '1', age: 16, birthday: '2022-02-12' },
             {
                 name: '罗罗诺亚·索隆',

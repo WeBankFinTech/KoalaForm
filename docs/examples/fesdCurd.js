@@ -45,7 +45,7 @@ export default defineComponent({
             reset: () => doResetQuery({ api: '/user.json', form: query, table, pager }),
             create: () => {
                 doOpenModal({ modal, form: edit });
-                modal.model.title = '新增用户';
+                modal.modelRef.value.title = '新增用户';
                 isCreate = true;
             },
         });
@@ -56,7 +56,7 @@ export default defineComponent({
             },
             update: ({ row }) => {
                 doOpenModal({ modal, form: edit, row });
-                modal.model.title = '修改用户';
+                modal.modelRef.value.title = '修改用户';
                 isCreate = false;
             },
         });

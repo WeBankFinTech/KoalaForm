@@ -43,7 +43,7 @@ npm i @koala-form/fes-plugin
 在响应事件，可以调用一些内置的handler函数进行处理表单的处理，
 比如`doResetFields`会将表单进行重置。
 
-`cxt.model`可以直接访问到表单响应式的model，可以进行更多的操作
+`cxt.modelRef`可以直接访问到表单响应式的model，可以进行更多的操作
 
 了解更多关于useForm，请移步[这里](./useForm.md)
 
@@ -78,7 +78,7 @@ events: {
 ```
 :::
 
-`cxt.model`是table的响应式数据源，可以进赋值操作。
+`cxt.modelRef`是table的响应式数据源，可以进赋值操作。
 
 了解更多关于useTable，请移步[这里](./useTable.md)
 
@@ -94,7 +94,7 @@ events: {
 ## 分页这么写
 分页用usePager描述，属性pager是分页组件描述
 
-`cxt.model`是pager的响应式数据，可进行修改
+`cxt.modelRef`是pager的响应式数据，可进行修改
 - currentPage 当前页码
 - totalCount 总数
 - pageSize 页数量 
@@ -113,7 +113,7 @@ events: {
 ## 弹窗这么写
 分页用usePager描述，属性pager是分页组件描述
 
-`cxt.model`是pager的响应式数据，可进行修改
+`cxt.modelRef`是pager的响应式数据，可进行修改
 - currentPage 当前页码
 - totalCount 总数
 - pageSize 页数量 

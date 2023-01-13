@@ -1187,19 +1187,19 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fesjs/fes-design@0.6.1":
-  version "0.6.1"
-  resolved "https://registry.npmmirror.com/@fesjs/fes-design/-/fes-design-0.6.1.tgz#5ca3e558859c8326ad9b21668f44d6ba66c2bb3d"
-  integrity sha512-nFzmO8VP/5G+HVWqFogZ1uR9Ht8Cl1gE+BAPyx1MBBoaDJ7qMuOej8EmLs20D6uS/NU4zmONoXVzd7Jy6b0BzA==
+"@fesjs/fes-design@0.7.15":
+  version "0.7.15"
+  resolved "http://10.107.103.115:8001/@fesjs/fes-design/download/@fesjs/fes-design-0.7.15.tgz#2bbd37c2601e55caa3249dee28acdbcc43b58d68"
+  integrity sha1-K703wmAeVcqjJJ3uKKzbzEO1jWg=
   dependencies:
     "@babel/runtime" "^7.16.3"
     "@floating-ui/dom" "^0.4.2"
     "@juggle/resize-observer" "^3.3.1"
     "@types/lodash-es" "^4.17.5"
     "@types/normalize-wheel" "^1.0.0"
-    "@vue/shared" "^3.2.19"
-    "@vueuse/core" "^6.7.5"
-    async-validator "^4.0.1"
+    "@vue/shared" "^3.2.24"
+    "@vueuse/core" "^9.6.0"
+    async-validator "^4.0.7"
     csstype "^3.0.10"
     date-fns "^2.28.0"
     lodash-es "^4.17.21"
@@ -2308,6 +2308,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/web-bluetooth@^0.0.16":
+  version "0.0.16"
+  resolved "http://10.107.103.115:8001/@types/web-bluetooth/download/@types/web-bluetooth-0.0.16.tgz#1d12873a8e49567371f2a75fe3e7f7edca6662d8"
+  integrity sha1-HRKHOo5JVnNx8qdf4+f37cpmYtg=
+
 "@typescript-eslint/eslint-plugin@^4.29.3":
   version "4.33.0"
   resolved "https://registry.npmmirror.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-4.33.0.tgz#c24dc7c8069c7706bc40d99f6fa87edcb2005276"
@@ -2595,10 +2600,10 @@
   resolved "https://registry.npmmirror.com/@vue/shared/-/shared-3.2.31.tgz#c90de7126d833dcd3a4c7534d534be2fb41faa4e"
   integrity sha512-ymN2pj6zEjiKJZbrf98UM2pfDd6F2H7ksKw7NDt/ZZ1fh5Ei39X5tABugtT03ZRlWd9imccoK0hE8hpjpU7irQ==
 
-"@vue/shared@3.2.45", "@vue/shared@^3.2.19":
+"@vue/shared@3.2.45", "@vue/shared@^3.2.24":
   version "3.2.45"
-  resolved "https://registry.npmmirror.com/@vue/shared/-/shared-3.2.45.tgz#a3fffa7489eafff38d984e23d0236e230c818bc2"
-  integrity sha512-Ewzq5Yhimg7pSztDV+RH1UDKBzmtqieXQlpTVm2AwraoRL/Rks96mvd8Vgi7Lj+h+TH8dv7mXD3FRZR3TUvbSg==
+  resolved "http://10.107.103.115:8001/@vue/shared/download/@vue/shared-3.2.45.tgz#a3fffa7489eafff38d984e23d0236e230c818bc2"
+  integrity sha1-o//6dInq//ONmE4j0CNuIwyBi8I=
 
 "@vue/theme@0.1.16":
   version "0.1.16"
@@ -2620,13 +2625,20 @@
     "@vueuse/shared" "5.3.0"
     vue-demi "*"
 
-"@vueuse/core@^6.7.5":
-  version "6.9.2"
-  resolved "https://registry.npmmirror.com/@vueuse/core/-/core-6.9.2.tgz#76b16d01f33cf367dd1a2d7f2e31d106443ceb8a"
-  integrity sha512-FRwl4ccSFuHZBHLGgS9TMv/+Dd6XFaL4o9nph2qtgQIV+z29RBFokw08XjHfykiENRzB01MjYHJ7iRUnsIFQXg==
+"@vueuse/core@^9.6.0":
+  version "9.10.0"
+  resolved "http://10.107.103.115:8001/@vueuse/core/download/@vueuse/core-9.10.0.tgz#2ef6e55ca773c5b2db1e3f13b8292af96dd32214"
+  integrity sha1-LvblXKdzxbLbHj8TuCkq+W3TIhQ=
   dependencies:
-    "@vueuse/shared" "6.9.2"
+    "@types/web-bluetooth" "^0.0.16"
+    "@vueuse/metadata" "9.10.0"
+    "@vueuse/shared" "9.10.0"
     vue-demi "*"
+
+"@vueuse/metadata@9.10.0":
+  version "9.10.0"
+  resolved "http://10.107.103.115:8001/@vueuse/metadata/download/@vueuse/metadata-9.10.0.tgz#1a5eb94ca755bd8e666505f47da7d88969cffdc7"
+  integrity sha1-Gl65TKdVvY5mZQX0fafYiWnP/cc=
 
 "@vueuse/shared@5.3.0":
   version "5.3.0"
@@ -2635,10 +2647,10 @@
   dependencies:
     vue-demi "*"
 
-"@vueuse/shared@6.9.2":
-  version "6.9.2"
-  resolved "https://registry.npmmirror.com/@vueuse/shared/-/shared-6.9.2.tgz#97e4369fa7262ebc96fe1d6e210268f30b037005"
-  integrity sha512-lAiMh6XROs0kSKVd0Yb/6GKoQMxC1fYrFDi6opvQWISPtcqRNluRrQxLUZ3WTI78ovtoKRLktjhkFAtydcfFDg==
+"@vueuse/shared@9.10.0":
+  version "9.10.0"
+  resolved "http://10.107.103.115:8001/@vueuse/shared/download/@vueuse/shared-9.10.0.tgz#49874a0f9955d28689b3133de660367c63dbc030"
+  integrity sha1-SYdKD5lV0oaJsxM95mA2fGPbwDA=
   dependencies:
     vue-demi "*"
 
@@ -2950,10 +2962,10 @@ async-validator@^3.3.0:
   resolved "https://registry.npmmirror.com/async-validator/-/async-validator-3.5.2.tgz#68e866a96824e8b2694ff7a831c1a25c44d5e500"
   integrity sha512-8eLCg00W9pIRZSB781UUX/H6Oskmm8xloZfr09lz5bikRpBVDlJ3hRVuxxP1SxcwsEYfJ4IU8Q19Y8/893r3rQ==
 
-async-validator@^4.0.1:
+async-validator@^4.0.7:
   version "4.2.5"
-  resolved "https://registry.npmmirror.com/async-validator/-/async-validator-4.2.5.tgz#c96ea3332a521699d0afaaceed510a54656c6339"
-  integrity sha512-7HhHjtERjqlNbZtqNqy2rckN/SpOOlmDliet+lP7k+eKZEjPk3DgyeU9lIXLdeLz0uBbbVp+9Qdow9wJWgwwfg==
+  resolved "http://10.107.103.115:8001/async-validator/download/async-validator-4.2.5.tgz#c96ea3332a521699d0afaaceed510a54656c6339"
+  integrity sha1-yW6jMypSFpnQr6rO7VEKVGVsYzk=
 
 asynckit@^0.4.0:
   version "0.4.0"

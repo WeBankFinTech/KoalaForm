@@ -1,10 +1,4 @@
-import {
-    ComponentType,
-    useForm,
-    useSceneContext,
-    doResetFields,
-    doGetFormData,
-} from '@koala-form/core';
+import { ComponentType, useForm, useSceneContext, doResetFields, doGetFormData } from '@koala-form/core';
 import { genForm, genSubmitAction } from '@koala-form/fes-plugin';
 import { defineComponent } from 'vue';
 
@@ -32,8 +26,7 @@ export default defineComponent({
                 },
                 genSubmitAction({
                     save: () => console.log(doGetFormData(ctx)),
-                    clear: () =>
-                        Object.assign(ctx.model, { name: null, age: null }),
+                    clear: () => Object.assign(ctx.modelRef.value, { name: null, age: null }),
                     reset: () => doResetFields(ctx),
                 }),
             ],

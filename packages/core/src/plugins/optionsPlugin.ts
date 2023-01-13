@@ -17,7 +17,7 @@ export const optionsPlugin: PluginFunction<SceneContext, SceneConfig> = (api) =>
             let options: any;
             if (isFunction(_options)) {
                 options = ref<Array<EnumOption>>([]);
-                _options(ctx.model)?.then((res: EnumOption[]) => {
+                _options(ctx.modelRef.value)?.then((res: EnumOption[]) => {
                     if (res?.length) {
                         options.value = res;
                     }

@@ -10,11 +10,8 @@ export default defineComponent({
         const names = ['蒙奇·D·路飞', '罗罗诺亚·索隆', '山治'];
         const doQuery = () => {
             dataSource.value = [];
-            const { pageSize, totalCount, currentPage } = pager.model;
-            const len =
-                Math.ceil(totalCount / pageSize) === currentPage
-                    ? totalCount - (currentPage - 1) * pageSize
-                    : pageSize;
+            const { pageSize, totalCount, currentPage } = pager.modelRef.value;
+            const len = Math.ceil(totalCount / pageSize) === currentPage ? totalCount - (currentPage - 1) * pageSize : pageSize;
             for (let index = 1; index <= len; index++) {
                 dataSource.value.push({
                     id: index,
@@ -47,9 +44,11 @@ export default defineComponent({
             },
         );
 
-        pager.model.pageSize = 5;
-        pager.model.currentPage = 1;
-        pager.model.totalCount = 32;
+        pager.modelRef.value = {
+            pageSize: 5,
+            currentPage: 1,
+            totalCount: 32,
+        };
 
         doQuery();
 

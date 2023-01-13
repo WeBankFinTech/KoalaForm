@@ -36,7 +36,7 @@ export default {
         const { render } = useForm({
             fields: [
                 {
-                    name: 'name', // model.name可以访问到值
+                    name: 'name', // modelRef.value.name可以访问到值
                     label: '姓名', // 表单项的名称
                     defaultValue: '蒙奇·D·路飞', // 默认值
                     components: {

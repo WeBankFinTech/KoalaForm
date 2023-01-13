@@ -8,6 +8,7 @@ export interface ComponentDesc {
     props?: Reactive;
     vIf?: Ref<boolean> | When | boolean;
     vShow?: Ref<boolean> | When | boolean;
+    vModels?: Record<string, ModelRef>;
     disabled?: Ref<boolean> | When;
     events?: Record<string, (value: any, ...args: any[]) => void>;
     slotName?: string;
@@ -34,6 +35,7 @@ export interface Field {
     name?: string;
     vIf?: Ref<boolean> | boolean | When;
     vShow?: Ref<boolean> | boolean | When;
+    vModels?: Record<string, ModelRef>;
     options?: Ref<EnumOption[]> | EnumOption[] | ((model: any) => Promise<EnumOption[]>);
     props?: Reactive;
     defaultValue?: any;
@@ -70,6 +72,7 @@ export const ComponentType = {
     Input: 'Input',
     InputNumber: 'InputNumber',
     Checkbox: 'Checkbox',
+    CheckboxGroup: 'CheckboxGroup',
     Radio: 'Radio',
     Select: 'Select',
     Switch: 'Switch',

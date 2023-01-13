@@ -5,7 +5,7 @@ import { PluginFunction } from '../plugins';
 import { mergeRefProps } from '../helper';
 export interface TableSceneContext extends SceneContext {
     ref: Ref;
-    model: Ref<Array<unknown>>;
+    modelRef: Ref<Array<unknown>>;
 }
 
 export interface TableSceneConfig extends SceneConfig {
@@ -19,7 +19,8 @@ export const tableSchemePlugin: PluginFunction<TableSceneContext, TableSceneConf
 
     api.onSelfStart(({ ctx, config: { fields, table } }) => {
         if (!fields) return;
-        const state = ref([]);
+        const { modelRef } = ctx;
+        modelRef.value = [];
         const schemeChildren: SchemeChildren = [];
         const scheme = createScheme(table || { name: ComponentType.Table });
         scheme.__ref = ref(null);
@@ -35,9 +36,8 @@ export const tableSchemePlugin: PluginFunction<TableSceneContext, TableSceneConf
             schemeChildren.push(scheme);
         });
         scheme.children = schemeChildren;
-        mergeRefProps(scheme, 'props', { data: state });
+        mergeRefProps(scheme, 'props', { data: modelRef });
 
-        ctx.model = state;
         ctx.ref = scheme.__ref;
         if (ctx.schemes) {
             ctx.schemes.push(scheme);

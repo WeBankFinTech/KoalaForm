@@ -1,5 +1,5 @@
 import { isArray, isFunction, isString, isUndefined } from 'lodash-es';
-import { h, unref, withDirectives, vShow, DirectiveArguments, VNode, createTextVNode, Slots, Slot, DefineComponent, VNodeChild } from 'vue';
+import { h, unref, withDirectives, vShow, DirectiveArguments, VNode, createTextVNode, Slots, Slot, DefineComponent, VNodeChild, isRef } from 'vue';
 import { SceneContext } from '../base';
 import { ComponentType, ModelRef, Scheme, SchemeChildren } from '../scheme';
 import { PluginFunction } from './define';
@@ -29,6 +29,7 @@ const renderNode = (ctx: SceneContext, scheme: Scheme | string | ModelRef | Slot
     const { __ref, vIf, vModels, vShow: _vShow, component, events, props: _props, children: _children, slots: _slots } = scheme as Scheme;
     if (vIf?.value === false) return;
     const Component = ctx.getComponent(component);
+
     const props = { ...events, ref: __ref }; // 组件事件
     if (_props) {
         // 组件属性
@@ -40,9 +41,21 @@ const renderNode = (ctx: SceneContext, scheme: Scheme | string | ModelRef | Slot
     if (!isUndefined(vModels)) {
         Object.keys(vModels).forEach((key) => {
             const { ref, name } = (vModels as Record<string, ModelRef>)[key];
-            props[key] = ref[name];
+            props[key] = name ? unref(ref)[name] : unref(ref);
             props[`onUpdate:${key}`] = (value: unknown) => {
-                ref[name] = value;
+                if (isRef(ref)) {
+                    if (name) {
+                        (ref.value as any)[name] = value;
+                    } else {
+                        ref.value = value;
+                    }
+                } else {
+                    if (name) {
+                        ref[name] = value;
+                    } else {
+                        Object.assign(ref, value);
+                    }
+                }
             };
         });
     }

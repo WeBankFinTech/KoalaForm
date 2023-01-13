@@ -1,7 +1,7 @@
 import { getGlobalConfig, SceneConfig, SceneContext, useScene, useSceneContext } from '../base';
 import { ref, Ref, unref } from 'vue';
 import { PluginFunction } from '../plugins/define';
-import { mergeRefProps, useState } from '../helper';
+import { mergeRefProps } from '../helper';
 import { compileComponents, ComponentDesc, ComponentType, createScheme, Field, Scheme, SchemeChildren } from '../scheme';
 import { cloneDeep, isArray, isNumber, isUndefined } from 'lodash-es';
 import dayjs from 'dayjs';
@@ -26,7 +26,7 @@ const formPlugin: PluginFunction<FormSceneContext, FormSceneConfig> = (api) => {
 
     api.onSelfStart(({ ctx, config: { fields, form } }) => {
         if (!fields) return;
-        const { state, setState, empty } = useState({});
+        const { modelRef } = ctx;
         const initModel: Record<string, unknown> = {};
         const schemeChildren: SchemeChildren = [];
         const config = getGlobalConfig();
@@ -45,7 +45,7 @@ const formPlugin: PluginFunction<FormSceneContext, FormSceneConfig> = (api) => {
             if (scheme.children?.length && field.name) {
                 mergeRefProps(scheme.children[0], 'vModels', {
                     [config.modelValueName]: {
-                        ref: state,
+                        ref: modelRef,
                         name: field.name,
                     },
                 });
@@ -54,12 +54,11 @@ const formPlugin: PluginFunction<FormSceneContext, FormSceneConfig> = (api) => {
         });
         formScheme.children = schemeChildren;
         formScheme.component = ComponentType.Form;
-        mergeRefProps(formScheme, 'props', { model: state });
+        mergeRefProps(formScheme, 'props', { model: modelRef });
 
         // 重置
         ctx.resetFields = () => {
-            empty();
-            setState(initModel);
+            modelRef.value = { ...initModel };
             formScheme.__ref?.value?.resetFields?.();
         };
 
@@ -77,15 +76,14 @@ const formPlugin: PluginFunction<FormSceneContext, FormSceneConfig> = (api) => {
             ctx.resetFields();
             formScheme.__ref?.value?.resetFields?.();
             if (name) {
-                state[name] = values;
+                modelRef.value[name] = values;
             } else {
-                Object.assign(state, values);
+                Object.assign(modelRef.value, values);
             }
-            return state;
+            return modelRef.value;
         };
 
         ctx.initFields(initModel);
-        ctx.model = state;
         ctx.formRef = formScheme.__ref;
         if (ctx.schemes) {
             ctx.schemes.push(formScheme);
@@ -113,13 +111,13 @@ export const doSetFields = (ctx: FormSceneContext, values: Record<string, any>, 
 /**
  * 取from的model数据进行格式化，规则如下:
  * - 日期处理，当组件时时间组件，会转成时间戳；如果值是数组，那么会解析成${fieldName}Start和${fieldName}End字段
- * - 多选，当组件是Select或者CheckBox并值是数组时，转成用','分割，如[1,2,3] => '1,2,3'
+ * - 多选，当组件是Select或者CheckboxGroup并值是数组时，转成用','分割，如[1,2,3] => '1,2,3'
  * @param values form外的其他参数
  * @param ctx 指定上下文
  * @returns
  */
 export const doGetFormData = (ctx: FormSceneContext, values?: Record<string, any>) => {
-    const model = cloneDeep(unref(ctx.model) || {});
+    const model = cloneDeep(unref(ctx.modelRef) || {});
     const fields = (ctx?.__config as FormSceneConfig)?.fields || [];
     fields.forEach((field) => {
         let value = model[field.name || ''];
@@ -129,11 +127,10 @@ export const doGetFormData = (ctx: FormSceneContext, values?: Record<string, any
             if (isArray(value) && value.length) {
                 model[`${field.name}Start`] = dayjs(value[0]).valueOf();
                 model[`${field.name}End`] = dayjs(value[1]).valueOf();
-                value = undefined;
             } else if (!isNumber(value)) {
                 value = dayjs(value).valueOf();
             }
-        } else if ([ComponentType.Select, ComponentType.Checkbox].includes(compName) && isArray(value)) {
+        } else if ([ComponentType.Select, ComponentType.CheckboxGroup].includes(compName) && isArray(value)) {
             value = value.join(',');
         }
         model[field.name || ''] = value;

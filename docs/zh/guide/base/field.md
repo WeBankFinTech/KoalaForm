@@ -49,7 +49,7 @@ components - 指定字段的组件。
 const labelRef = ref('姓名')
 
 const nameField = {
-    name: 'name', // model.name可以访问到值
+    name: 'name', // modelRef.value.name可以访问到值
     label: labelRef, // 表单项的名称
     defaultValue: '蒙奇·D·路飞', // 默认值
     components: { // 如果components是数组，取第一个作为字段的组件
@@ -182,7 +182,7 @@ useTable({ fields: [
             events: {
                 onClick(record) { // 第一个参数是行数据
                     const { rowIndex } = record;
-                    table.model.value.splice(rowIndex, 1);
+                    table.modelRef.value.splice(rowIndex, 1);
                 },
             },
         },

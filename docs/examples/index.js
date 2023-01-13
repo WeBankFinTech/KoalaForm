@@ -6,8 +6,8 @@ import StartedUseTable from './started/useTable';
 import StartedUsePager from './started/usePager';
 import StartedUseModal from './started/useModal';
 import StartedUseCurd from './started/useCurd';
-import ComposeUseTableWithPager from './compose/useTableWithPager';
-import ComposeUseTableWithPager2 from './compose/useTableWithPager2';
+// import ComposeUseTableWithPager from './compose/useTableWithPager';
+// import ComposeUseTableWithPager2 from './compose/useTableWithPager2';
 
 import UseFormQuery from './useForm/query';
 import UseFormEdit from './useForm/edit';
@@ -20,6 +20,7 @@ import BaseField from './base/field';
 import BaseSlotRender from './base/slotRender.vue';
 
 import FesdCurd from './fesdCurd';
+import FesdUseCurd from './fesdUseCurd.vue';
 
 export default {
     // Test,
@@ -29,8 +30,8 @@ export default {
     StartedUsePager,
     StartedUseModal,
     StartedUseCurd,
-    ComposeUseTableWithPager,
-    ComposeUseTableWithPager2,
+    // ComposeUseTableWithPager,
+    // ComposeUseTableWithPager2,
     UseFormQuery,
     UseFormEdit,
     UseFormRelation,
@@ -40,6 +41,7 @@ export default {
     BaseField,
     BaseSlotRender,
     FesdCurd,
+    FesdUseCurd,
     // User,
     // UseForm,
     // UseFormSlots,

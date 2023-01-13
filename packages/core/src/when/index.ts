@@ -7,7 +7,7 @@ export const when: WhenPlugin<string | ((model?: Record<string, unknown>) => unk
     return (cxt, invoke) => {
         let code: any;
         if (isString(expression)) {
-            if (!cxt.model) {
+            if (!cxt.modelRef) {
                 console.warn('When: cxt.model not found!');
                 return;
             }
@@ -17,7 +17,7 @@ export const when: WhenPlugin<string | ((model?: Record<string, unknown>) => unk
         }
         if (!code) return;
         watch(
-            () => code(cxt.model),
+            () => code(cxt.modelRef.value),
             (value) => invoke(value),
             { immediate: true },
         );

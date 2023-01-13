@@ -304,6 +304,6 @@ const doBeforeQuery: (form: FormSceneContext, pager?: PagerSceneContext) => {
 ```ts
 const doAfterQuery: (table: TableSceneContext, pager?: PagerSceneContext, data?: {
     list: any[];
-    page: PagerSceneContext['model'];
+    page: PagerSceneContext['modelRef'];
 }) => void
 ```
