@@ -42,7 +42,7 @@ const renderNode = (ctx: SceneContext, scheme: Scheme | string | ModelRef | Slot
         Object.keys(vModels).forEach((key) => {
             const { ref, name } = (vModels as Record<string, ModelRef>)[key];
             props[key] = name ? unref(ref)[name] : unref(ref);
-            props[`onUpdate:${key}`] = (value: unknown) => {
+            props[`onUpdate:${key}`] = (value: any) => {
                 if (isRef(ref)) {
                     if (name) {
                         (ref.value as any)[name] = value;

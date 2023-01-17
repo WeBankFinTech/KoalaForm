@@ -16,7 +16,6 @@ import { ComponentType, KoalaRender, doGetFormData, useSceneContext } from '@koa
 import { useCurd, mapTableFields } from '@koala-form/fes-plugin';
 import { computed } from 'vue';
 import { FButton, FMessage } from '@fesjs/fes-design';
-
 const sexOptions = [
     { value: '0', label: '女' },
     { value: '1', label: '男' },
