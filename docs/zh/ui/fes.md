@@ -155,6 +155,7 @@ useCurd提供了字段配置和行为配置。
 interface Action extends ComponentDesc {
     api?: string; // 接口地址
     reqConfig?: any; // 请求配置
+    hidden: boolean; // 隐藏默认按钮 
     before?: (params: Record<string, any>, ...args: any[]) => Record<string, any>; // 请求前回调，修改请求参数
     after?: (params: Record<string, any>) => Record<string, any>; // 请求后回调，修改请求结果
     open?: (params: Record<string, any>) => Record<string, any>; // 打开modal之前回调
@@ -166,12 +167,12 @@ interface CurdConfig {
     query: FormSceneConfig & {
         /** 是否关闭首次自动查询 */
         firstClosed: boolean;
-        actionField?: Field | boolean; // 行为按钮域
+        actionField?: Field | boolean; // 行为按钮域，为false时隐藏按钮域
     };
     table: TableSceneConfig & {
         rowKey?: string; // 列表唯一值的字段，默认id
         selection?: Field | boolean; // 开启列表多选配置
-        actionField?: Field | boolean; // 行为按钮域
+        actionField?: Field | boolean; // 行为按钮域，为false时隐藏整个操作列
     };
     pager?: PagerSceneConfig;
     edit?: FormSceneConfig;
@@ -355,4 +356,47 @@ const { render } = useCurd({
 })
 
 
+```
+
+
+**6. 列表行按钮联动行数据**
+
+使用`Action.hidden`可以隐藏默认按钮的UI，但是可以使用按钮的逻辑。
+
+这个在控制列表的按钮状态时，常使用。
+
+```html
+<template>
+    <KoalaRender :render="render">
+        <template #tableActionsExtend="{ row }">
+            <!-- 在这里可以获取行数据，用于控制按钮的状态 -->
+            <FButton type="link" :disabled="row.id === '2'" @click="openModal('update', { row })">更新</FButton>
+        </template>
+    </KoalaRender>
+</template>
+```
+
+```js
+const { render, openModal } = useCurd({
+    actions: {
+        update: {
+            api: '/error.json'
+        }
+    }
+})
+
+
+```
+
+另外当`actionField === false`时，可以隐藏整个操作域，比如：
+```js
+const { render } = useCurd({
+    table: {
+        fields: [
+            ...,
+            { label: '操作', slotName: 'tableActions' }, // 自定义操作列
+        ],
+        actionField: false // 隐藏整个操作列
+    }
+})
 ```

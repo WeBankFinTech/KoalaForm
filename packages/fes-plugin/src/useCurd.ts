@@ -30,14 +30,19 @@ import {
     useTable,
 } from '@koala-form/core';
 import { cloneDeep, merge } from 'lodash-es';
-import { onMounted, Ref, ref, unref } from 'vue';
+import { computed, onMounted, Ref, ref, unref } from 'vue';
 import { genButton, genForm } from './preset';
 
 interface Action extends ComponentDesc {
     api?: string;
     reqConfig?: any;
+    /** 隐藏默认按钮 */
+    hidden?: boolean;
+    /** 请求前执行，可修改参数 */
     before?: (params: Record<string, any>, ...args: any[]) => Record<string, any>;
+    /** 请求后执行，可修改结果 */
     after?: (params: Record<string, any>) => Record<string, any>;
+    /** 打开modal前执行，可修改modal里表单的值 */
     open?: (params: Record<string, any>) => Record<string, any>;
 }
 
@@ -218,25 +223,27 @@ export const useCurd = (config: CurdConfig) => {
         form: merge(genForm('inline'), queryCfg.form),
         fields: [
             ...queryCfg.fields,
-            merge(
-                {
-                    components: {
-                        name: ComponentType.Space,
-                        children: [
-                            actions.query && merge(genButton('查询', doQuery, { type: 'primary' }), actions.query),
-                            actions.create &&
-                                merge(
-                                    genButton('新增', () => openModal('create'), { type: 'primary' }),
-                                    actions.create,
-                                ),
-                            { name: ComponentType.Space, slotName: 'queryActionsExtend' },
-                            actions.reset && merge(genButton('重置', doReset, { type: 'default' }), actions.reset),
-                        ].filter(Boolean) as ComponentDesc[],
+            queryCfg.actionField !== false &&
+                merge(
+                    {
+                        components: {
+                            name: ComponentType.Space,
+                            children: [
+                                actions.query && !actions.query.hidden && merge(genButton('查询', doQuery, { type: 'primary' }), actions.query),
+                                actions.create &&
+                                    !actions.create.hidden &&
+                                    merge(
+                                        genButton('新增', () => openModal('create'), { type: 'primary' }),
+                                        actions.create,
+                                    ),
+                                { name: ComponentType.Space, slotName: 'queryActionsExtend' },
+                                actions.reset && !actions.reset.hidden && merge(genButton('重置', doReset, { type: 'default' }), actions.reset),
+                            ].filter(Boolean) as ComponentDesc[],
+                        },
                     },
-                },
-                queryCfg.actionField,
-            ),
-        ],
+                    queryCfg.actionField,
+                ),
+        ].filter(Boolean) as Field[],
     });
 
     const rowKey = tableCfg.rowKey || 'id';
@@ -250,7 +257,8 @@ export const useCurd = (config: CurdConfig) => {
         fields: [
             tableCfg.selection && merge<Field, Field>({ props: { type: 'selection' } }, tableCfg.selection as Field),
             ...tableCfg.fields,
-            (actions.update || actions.delete || actions.view || tableCfg.actionField) &&
+            tableCfg.actionField !== false &&
+                ((actions.update && !actions.update.hidden) || (actions.delete && !actions.delete.hidden) || (actions.view && !actions.view.hidden) || tableCfg.actionField) &&
                 merge(
                     {
                         label: '操作',
@@ -259,16 +267,19 @@ export const useCurd = (config: CurdConfig) => {
                             name: ComponentType.Space,
                             children: [
                                 actions.update &&
+                                    !actions.update.hidden &&
                                     merge(
                                         genButton('更新', (record) => openModal('update', record), { type: 'link' }),
                                         actions.update,
                                     ),
                                 actions.view &&
+                                    !actions.view.hidden &&
                                     merge(
                                         genButton('详情', (record) => openModal('view', record), { type: 'link' }),
                                         actions.view,
                                     ),
                                 actions.delete &&
+                                    !actions.delete.hidden &&
                                     merge(
                                         {
                                             name: ComponentType.Tooltip,
@@ -342,6 +353,9 @@ export const useCurd = (config: CurdConfig) => {
         editTypeRef,
         /** 列表勾选，table.selection可开启 */
         selectedRows,
+        isCreate: computed(() => editTypeRef.value === 'create'),
+        isUpdate: computed(() => editTypeRef.value === 'update'),
+        isView: computed(() => editTypeRef.value === 'view'),
         render,
         /** 查询按钮调用，分页会重置 */
         doQuery,

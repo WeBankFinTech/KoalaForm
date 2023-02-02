@@ -7,6 +7,7 @@
         </template>
         <template #tableActionsExtend="{ row }">
             <FButton type="link" @click="doPass(row)">审核</FButton>
+            <FButton type="link" :disabled="row.id === '2'" @click="openModal('update', { row })">更新</FButton>
         </template>
     </KoalaRender>
 </template>
@@ -53,7 +54,7 @@ const { ctx: edit } = useSceneContext('edit');
 
 const showDegree = computed(() => ['2', '3', '4'].includes(edit.modelRef.value.education));
 
-const { render, editTypeRef, query, selectedRows } = useCurd({
+const { render, editTypeRef, query, selectedRows, openModal } = useCurd({
     name: '用户',
     query: {
         fields: [FIELDS.name, FIELDS.sex, FIELDS.birthday],
@@ -103,6 +104,7 @@ const { render, editTypeRef, query, selectedRows } = useCurd({
         },
         reset: {},
         update: {
+            hidden: true, // 更新按钮修改行数据判断时，可以隐藏默认更新按钮，在template实现
             api: '/error.json',
         },
         delete: {
