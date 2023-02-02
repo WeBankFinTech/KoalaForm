@@ -1,5 +1,6 @@
 import { isArray, isObject, mergeWith } from 'lodash-es';
 import { isReactive, isRef, ref, Ref, unref, watch } from 'vue';
+import { getGlobalConfig } from './base';
 
 export function concatCaseCamel(...args: string[]) {
     return args.map((str, index) => (index === 0 ? str : str.replace(/^[a-z]/, (s) => s.toLocaleUpperCase()))).join('');
@@ -90,4 +91,10 @@ export function mergeRefProps(ref: unknown, name: string, value: unknown) {
     const props = _ref[name] || {};
     mergeWithStrategy(props, value);
     _ref[name] = props;
+}
+
+export function debugLog(...args: any[]) {
+    const config = getGlobalConfig();
+    if (!config.debug) return;
+    console.log(...args);
 }

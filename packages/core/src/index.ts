@@ -9,5 +9,5 @@ export * from './useForm';
 export * from './useTable';
 export * from './usePager';
 export * from './useModal';
-export * from './helper';
+export { mergeRefProps, mergeWithStrategy, travelTree, turnArray } from './helper';
 export { KoalaRender };

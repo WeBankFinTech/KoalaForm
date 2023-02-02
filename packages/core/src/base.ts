@@ -1,6 +1,6 @@
 import { merge } from 'lodash-es';
 import { Ref, Slots, VNodeChild, Component, ref } from 'vue';
-import { turnArray } from './helper';
+import { debugLog, turnArray } from './helper';
 import { installIn, Plugin, PluginFunction, pluginInstalled } from './plugins/define';
 import { compileComponents, ComponentDesc, ComponentType, Field, Scheme } from './scheme';
 
@@ -32,9 +32,11 @@ export type WhenPlugin<T, K extends SceneContext = SceneContext> = (args: T) => 
 
 // 默认配置
 const defaultConfig: {
+    debug?: boolean;
     request?: (api: string, data?: unknown, config?: unknown) => Promise<any>;
     modelValueName: string;
 } = {
+    debug: false,
     modelValueName: 'modelValue',
 };
 
@@ -122,6 +124,6 @@ export function useScene<T extends SceneContext, K extends SceneConfig>(config: 
         .forEach((plugin) => {
             plugin.start(config);
         });
-    console.log(ctx);
+    debugLog('scene loaded ==> ', ctx);
     return ctx as T;
 }

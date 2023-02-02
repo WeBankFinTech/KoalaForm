@@ -5,6 +5,7 @@ import { FMessage } from '@fesjs/fes-design';
 installPluginPreset();
 
 setupGlobalConfig({
+    debug: true,
     // 实现网络请求的实现
     request(api, params, config) {
         console.log('request.params => ', params);
