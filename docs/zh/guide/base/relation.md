@@ -107,6 +107,24 @@ useForm({ ctx, fields: [
 
 ```
 
+## 规则校验联动
+使用Field的`required`、`rules`属性，可以做响应式联动
+
+```js
+
+const { ctx } = useSceneContext(['form']) 
+
+const required = computed(() =>(ctx.modelRef.value.age > 18))
+const rules = computed(() =>(ctx.modelRef.value.age > 18 ? [{ required: true }] : []))
+
+useForm({ ctx, fields: [
+    { label: '姓名', name: 'name', required, components: { name: ComponentType.Input}  },
+    { label: '年龄', name: 'age', components: { name: ComponentType.InputNumber }  },
+    { label: '职业', name: 'work', rules, components: { name: ComponentType.Input }, }
+] })
+
+```
+
 ## 联动扩展
 联动主要是靠响应式的实现，因此需要扩展其他方式的表单联动可以通过解析组件或者字段的定义来实现，具体可参考[插件]()
 

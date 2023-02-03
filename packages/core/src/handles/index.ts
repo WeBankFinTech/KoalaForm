@@ -1,74 +1,7 @@
-import { isArray } from 'lodash-es';
 import { getGlobalConfig } from '../base';
-import { turnArray } from '../helper';
 import { FormSceneContext, doGetFormData } from '../useForm';
 import { PagerSceneContext } from '../usePager';
 import { TableSceneContext } from '../useTable';
-
-// /**
-//  * 原子函数，为了方便复用，将表单中的操作分解成一些原子函数，由原子函数组可以装成执行链，按顺序执行，上一个原子的执行结果，将会传给下一个函数的最后一个参数。
-//  * @param args handler参数，最后一个参数是上一个原子函数的执行结果。
-//  */
-// declare function handler(): Promise<any> | any;
-
-// export type Handler = typeof handler;
-// export class LinkHandler<T extends (...args: any) => any = Handler> {
-//     handlers: Handler[] = [];
-//     args: Array<any[]> = [];
-
-//     constructor(handler: T, ...args: [...Parameters<typeof handler>]) {
-//         if (handler) {
-//             this.handlers.push(handler);
-//             this.args.push(args);
-//         }
-//     }
-
-//     next<T extends (...args: any) => any = Handler>(handler: T, ...args: [...Parameters<typeof handler>]) {
-//         this.handlers.push(handler);
-//         this.args.push(args);
-//         return this;
-//     }
-
-//     pre<T extends (...args: any) => any = Handler>(handler: T, ...args: [...Parameters<typeof handler>]) {
-//         this.handlers.unshift(handler);
-//         this.args.unshift(args);
-//         return this;
-//     }
-
-//     concat(link: LinkHandler) {
-//         this.handlers.push(...link.handlers);
-//         this.args.push(...link.args);
-//         return this;
-//     }
-// }
-
-// export const invokeHandler = async (handler: Handler | Handler[], arg: any[][] | any[], preVal?: any) => {
-//     let args: any[][] = [];
-//     const handlers = turnArray(handler);
-//     if (isArray(handler)) {
-//         args = arg;
-//     } else {
-//         args = [arg];
-//     }
-//     let nextVal: any = preVal;
-//     for (let index = 0; index < handlers.length; index++) {
-//         const handle = handlers[index];
-//         const params = args[index] || [];
-//         // if (params.length
-//         params.push(nextVal);
-//         console.log(`exec ==>【${handle.name}】==> `, ...params);
-//         nextVal = await handle(...params);
-//         console.log('----nextVal---', nextVal);
-//     }
-//     return nextVal;
-// };
-
-// export const proxyHandler = <T extends (...args: any) => any = Handler>(handler: T, ...args: [...Parameters<typeof handler>]) => {
-//     return (preVal: any) => {
-//         handler(...args, preVal);
-//     };
-// };
-
 /**
  * 网络接口请求
  */

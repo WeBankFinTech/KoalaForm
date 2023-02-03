@@ -39,8 +39,8 @@ export interface Field {
     options?: Ref<EnumOption[]> | EnumOption[] | ((model: any) => Promise<EnumOption[]>);
     props?: Reactive;
     defaultValue?: any;
-    rules?: Array<ValidateRule>;
-    required?: boolean;
+    rules?: Array<ValidateRule> | Ref<Array<ValidateRule>>;
+    required?: boolean | Ref<boolean>;
     components?: ComponentDesc | ComponentDesc[];
     slotName?: string;
     format?: (model: any, value: any, scheme: Scheme) => VNodeChild | string;

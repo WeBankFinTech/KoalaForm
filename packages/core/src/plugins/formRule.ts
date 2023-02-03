@@ -2,12 +2,15 @@ import { FormSceneConfig, FormSceneContext } from '../useForm';
 import { mergeRefProps } from '../helper';
 import { Field, findScheme, ValidateRule } from '../scheme';
 import { PluginFunction } from './define';
+import { computed, unref } from 'vue';
 
 const parseFieldRule = (field: Field): Array<ValidateRule> => {
-    if (field.rules && field.rules.some((rule) => rule.required)) {
-        return field.rules;
-    } else if (field.required) {
-        return [{ required: true, message: '必填项', type: field.type }, ...(field.rules || [])];
+    const rules = unref(field.rules) || [];
+    const required = unref(field.required);
+    if (rules.some((rule) => rule.required)) {
+        return rules;
+    } else if (required) {
+        return [{ required: true, message: '必填项', type: field.type }, ...rules];
     } else {
         return [];
     }
@@ -22,12 +25,10 @@ export const formRulePlugin: PluginFunction<FormSceneContext, FormSceneConfig> =
         fields.forEach((field) => {
             if (!field.name) return;
             const scheme = findScheme(ctx.schemes, field);
-            if (!scheme) return;
-            const rules = parseFieldRule(field);
-            if (rules.length) {
-                mergeRefProps(scheme, 'props', { rules, prop: field.name });
-                ruleMap[field.name];
-            }
+            if (!scheme || !(field.required || field.rules)) return;
+            const rules = computed(() => parseFieldRule(field));
+            mergeRefProps(scheme, 'props', { rules, prop: field.name });
+            ruleMap[field.name];
         });
 
         ctx.validate = async (names) => {
