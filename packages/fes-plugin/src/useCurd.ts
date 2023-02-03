@@ -30,7 +30,7 @@ import {
     useTable,
 } from '@koala-form/core';
 import { cloneDeep, merge } from 'lodash-es';
-import { computed, onMounted, Ref, ref, unref } from 'vue';
+import { computed, onMounted, Ref, ref, Slots, unref } from 'vue';
 import { genButton, genForm } from './preset';
 
 interface Action extends ComponentDesc {
@@ -107,6 +107,9 @@ export const useCurd = (config: CurdConfig) => {
     const pager = pagerCfg?.ctx || (ctxs[2] as PagerSceneContext);
     const edit = editCfg?.ctx || (ctxs[3] as FormSceneContext);
     const modal = modalCfg?.ctx || (ctxs[4] as ModalSceneContext);
+
+    const showQueryActionsExtend = ref(false);
+    const showTableActionsExtend = ref(false);
 
     const editTypeRef: Ref<'create' | 'update' | 'view'> = ref('create');
     /** 列表勾选，table.selection可开启 */
@@ -236,7 +239,7 @@ export const useCurd = (config: CurdConfig) => {
                                         genButton('新增', () => openModal('create'), { type: 'primary' }),
                                         actions.create,
                                     ),
-                                { name: ComponentType.Space, slotName: 'queryActionsExtend' },
+                                { name: ComponentType.Space, vIf: showQueryActionsExtend, slotName: 'queryActionsExtend' },
                                 actions.reset && !actions.reset.hidden && merge(genButton('重置', doReset, { type: 'default' }), actions.reset),
                             ].filter(Boolean) as ComponentDesc[],
                         },
@@ -291,7 +294,7 @@ export const useCurd = (config: CurdConfig) => {
                                         },
                                         actions.delete,
                                     ),
-                                { name: ComponentType.Space, slotName: 'tableActionsExtend', children: [''] },
+                                { name: ComponentType.Space, vIf: showTableActionsExtend, slotName: 'tableActionsExtend' },
                             ].filter(Boolean) as ComponentDesc[],
                         },
                     },
@@ -336,7 +339,12 @@ export const useCurd = (config: CurdConfig) => {
             ),
         });
 
-    const render = composeRender([query.render, table.render, pager.render, modalCfg && modal.render].filter(Boolean) as SceneContext['render'][]);
+    const render = (slots: Slots) => {
+        showQueryActionsExtend.value = !!slots?.queryActionsExtend;
+        showTableActionsExtend.value = !!slots?.tableActionsExtend;
+        const cr = composeRender([query.render, table.render, pager.render, modalCfg && modal.render].filter(Boolean) as SceneContext['render'][]);
+        return cr(slots);
+    };
 
     if (!queryCfg.firstClosed) {
         onMounted(() => {

@@ -124,7 +124,7 @@ const genTableAction: (handlers: {
 }, label?: string) => Field
 ```
 
-## 组合CURD
+## useCurd
 虽然有了基础场景可以自由组合，但是像CRUD这种组合逻辑也是大同小异，所以我们组合了`useCurd`的场景，更方便快捷的使用。
 
 <ExampleDoc>
