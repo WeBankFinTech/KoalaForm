@@ -34,12 +34,12 @@ ctx.use(plugin); // 安装插件到局部场景中
 ## 内置插件列表
 | 插件         |      插件说明               |
 | ------------ | ----------------------- |
-| [disabledPlugin]() | 组件disbaled支持 |
-| [eventsPlugin]() | 事件支持 |
-| [formatPlugin]() | 格式化解析支持 |
-| [formRule]() | 表单校验规则支持 |
-| [optionsPlugin]() | 枚举选项支持 |
-| [renderPlugin]() | 场景渲染 |
-| [slotPlugin]() | 插槽支持 |
-| [vIfPlugin]() | vIf支持 |
-| [vShowPlugin]() | vShow支持 |
+| [disabledPlugin] | 组件disbaled支持 |
+| [eventsPlugin] | 事件支持 |
+| [formatPlugin] | 格式化解析支持 |
+| [formRule] | 表单校验规则支持 |
+| [optionsPlugin] | 枚举选项支持 |
+| [renderPlugin] | 场景渲染 |
+| [slotPlugin] | 插槽支持 |
+| [vIfPlugin] | vIf支持 |
+| [vShowPlugin] | vShow支持 |

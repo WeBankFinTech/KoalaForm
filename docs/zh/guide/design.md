@@ -59,7 +59,7 @@ sidebarDepth: 3
 | 详情表单  | Y | Y  | Y
 
 每个地方使用的字段都有重复，只是某些字段在一些情况下不需要使用，例如：更新时id是必须要传递的，也不能变更的，在form中需要隐藏或者disabled；删除时只需要传递id给接口；新增时id会被忽略。
-仅仅这点差异并不值得每个地方都定义一次，我们提供了[Field](./field.html)来定义字段的规则，通过[Field](./field.html)规则的解析，就可以获取对应的model和render。
+仅仅这点差异并不值得每个地方都定义一次，我们提供了[Field](./base//field.md)来定义字段的规则，通过[Field](./base//field.md)规则的解析，就可以获取对应的model和render。
 
 
 ## 动作定义

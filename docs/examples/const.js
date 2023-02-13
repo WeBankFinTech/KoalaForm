@@ -1,5 +1,4 @@
-export const BASE_URL =
-    process.env.NODE_ENV === 'production' ? '/s/koala-form/' : '/';
+export const BASE_URL = process.env.NODE_ENV === 'production' ? '/s/koala-form/v2' : '/';
 
 export const LIST_API = BASE_URL + 'user.json';
 export const SUCCESS_API = BASE_URL + 'success.json';

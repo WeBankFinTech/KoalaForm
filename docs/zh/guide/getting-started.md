@@ -45,7 +45,7 @@ npm i @koala-form/fes-plugin
 
 `cxt.modelRef`可以直接访问到表单响应式的model，可以进行更多的操作
 
-了解更多关于useForm，请移步[这里](./useForm.md)
+了解更多关于useForm，请移步[这里](./scene/useForm.md)
 
 <ExampleDoc>
 <StartedUseForm>
@@ -80,7 +80,7 @@ events: {
 
 `cxt.modelRef`是table的响应式数据源，可以进赋值操作。
 
-了解更多关于useTable，请移步[这里](./useTable.md)
+了解更多关于useTable，请移步[这里](./scene/useTable.md)
 
 <ExampleDoc>
 <StartedUseTable>
@@ -99,7 +99,7 @@ events: {
 - totalCount 总数
 - pageSize 页数量 
 
-了解更多关于usePager，请移步[这里](./usePager.md)
+了解更多关于usePager，请移步[这里](./scene/usePager.md)
 
 <ExampleDoc>
 <StartedUsePager>
@@ -111,14 +111,13 @@ events: {
 </ExampleDoc>
 
 ## 弹窗这么写
-分页用usePager描述，属性pager是分页组件描述
+弹窗用useModal描述，
 
 `cxt.modelRef`是pager的响应式数据，可进行修改
-- currentPage 当前页码
-- totalCount 总数
-- pageSize 页数量 
+- show 是否显示
+- title 标题
 
-了解更多关于usePager，请移步[这里](./usePager.md)
+了解更多关于useModal，请移步[这里](./scene/useModal.md)
 
 <ExampleDoc>
 <StartedUseModal>
