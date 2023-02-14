@@ -7,6 +7,7 @@ export default defineComponent({
             components: [
                 {
                     name: 'div',
+                    props: { id: 'baseScene' },
                     children: [
                         { name: 'h3', children: ['基础场景'] },
                         {
