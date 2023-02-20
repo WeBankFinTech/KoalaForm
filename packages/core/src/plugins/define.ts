@@ -19,8 +19,9 @@ export const pluginInstalled: PluginFunction[] = [];
 
 export class Plugin<T = SceneContext, K = SceneConfig> {
     private scopeId: string | number;
-    private ctx: T;
+    private ctx?: T;
     private id: number;
+    private events: any[];
     name = '';
     config?: K;
 
@@ -28,6 +29,7 @@ export class Plugin<T = SceneContext, K = SceneConfig> {
         this.scopeId = scopeId;
         this.ctx = ctx;
         this.id = seed++;
+        this.events = [];
     }
 
     private getEventName(type: string) {
@@ -43,7 +45,6 @@ export class Plugin<T = SceneContext, K = SceneConfig> {
             throw new Error('plugin name is empty!');
         }
         this.name = name;
-        // this.config = config;
     }
 
     start(config: K) {
@@ -52,11 +53,15 @@ export class Plugin<T = SceneContext, K = SceneConfig> {
     }
 
     on(type: string, handler: PluginHook<T, K>) {
-        emitter.on(this.getEventName(type), handler as any);
+        const eventName = this.getEventName(type);
+        emitter.on(eventName, handler as any);
+        this.events.push([eventName, handler]);
     }
 
     onSelf(type: string, handler: PluginHook<T, K>) {
+        const eventName = this.getSelfEventName(type);
         emitter.on(this.getSelfEventName(type), handler as any);
+        this.events.push([eventName, handler]);
     }
 
     onSelfStart(handler: PluginHook<T, K>) {
@@ -79,6 +84,15 @@ export class Plugin<T = SceneContext, K = SceneConfig> {
         emitter.emit(this.getEventName(type), data);
         emitter.emit(this.getSelfEventName(type), data);
     }
+    destroy() {
+        this.events.forEach((event) => {
+            emitter.off(event[0], event[2]);
+        });
+        this.events.length = 0;
+        this.events;
+        delete this.ctx;
+        delete this.config;
+    }
 }
 
 export const installIn = (plugin: PluginFunction, where?: typeof pluginInstalled) => {
@@ -90,46 +104,3 @@ export const installInGlobal = (plugin: PluginFunction) => {
     installIn(plugin, pluginInstalled);
     return { append: installInGlobal };
 };
-
-// const pp: PluginFunction = (api) => {
-//     api.describe('pp');
-
-//     api.onSelf('start', ({ scopeId, name }) => {
-//         console.log(scopeId, name, '--------in pp');
-//         api.emit('started');
-//     });
-// };
-
-// const tt: PluginFunction = (api) => {
-//     api.describe('tt');
-
-//     api.on('start', ({ scopeId, name }) => {
-//         console.log(scopeId, name, '--------in tt');
-//     });
-
-//     api.on('started', (event) => {
-//         console.log('started', event, '----- in tt');
-//     });
-// };
-
-// installInGlobal(pp).append(tt);
-
-// pluginInstalled
-//     .map((define) => {
-//         const plugin = new Plugin(111111, {});
-//         define(plugin);
-//         return plugin;
-//     })
-//     .forEach((plugin) => {
-//         plugin.start();
-//     });
-
-// pluginInstalled
-//     .map((define) => {
-//         const plugin = new Plugin(2222222, {});
-//         define(plugin);
-//         return plugin;
-//     })
-//     .forEach((plugin) => {
-//         plugin.start();
-//     });

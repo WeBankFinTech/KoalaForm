@@ -1,6 +1,6 @@
 import { merge } from 'lodash-es';
-import { Ref, Slots, VNodeChild, Component, ref } from 'vue';
-import { debugLog, turnArray } from './helper';
+import { Ref, Slots, VNodeChild, Component, ref, onUnmounted } from 'vue';
+import { turnArray } from './helper';
 import { installIn, Plugin, PluginFunction, pluginInstalled } from './plugins/define';
 import { compileComponents, ComponentDesc, ComponentType, Field, Scheme } from './scheme';
 
@@ -114,16 +114,23 @@ export function useScene<T extends SceneContext, K extends SceneConfig>(config: 
     ctx.use(baseComPlugin);
 
     const pluginDefineList = [...pluginInstalled, ...ctx.__plugins];
+    const plugins = pluginDefineList.map((define) => {
+        const plugin = new Plugin(ctx.__scopedId, ctx);
+        define(plugin);
+        return plugin;
+    });
+    plugins.forEach((plugin) => {
+        plugin.start(config);
+    });
 
-    pluginDefineList
-        .map((define) => {
-            const plugin = new Plugin(ctx.__scopedId, ctx);
-            define(plugin);
-            return plugin;
-        })
-        .forEach((plugin) => {
-            plugin.start(config);
-        });
-    debugLog('scene loaded ==> ', ctx);
+    onUnmounted(() => {
+        const len = plugins.length;
+        for (let index = 0; index < len; index++) {
+            plugins[index].destroy();
+            delete plugins[index];
+        }
+        plugins.length = 0;
+        Object.keys(ctx).forEach((key) => delete ctx[key]);
+    });
     return ctx as T;
 }

@@ -108,8 +108,8 @@ export const useCurd = (config: CurdConfig) => {
     const edit = editCfg?.ctx || (ctxs[3] as FormSceneContext);
     const modal = modalCfg?.ctx || (ctxs[4] as ModalSceneContext);
 
-    const showQueryActionsExtend = ref(false);
-    const showTableActionsExtend = ref(false);
+    const showQueryActionsExtend = ref(true);
+    const showTableActionsExtend = ref(true);
 
     const editTypeRef: Ref<'create' | 'update' | 'view'> = ref('create');
     /** 列表勾选，table.selection可开启 */
@@ -340,8 +340,6 @@ export const useCurd = (config: CurdConfig) => {
         });
 
     const render = (slots: Slots) => {
-        showQueryActionsExtend.value = !!slots?.queryActionsExtend;
-        showTableActionsExtend.value = !!slots?.tableActionsExtend;
         const cr = composeRender([query.render, table.render, pager.render, modalCfg && modal.render].filter(Boolean) as SceneContext['render'][]);
         return cr(slots);
     };
@@ -361,6 +359,8 @@ export const useCurd = (config: CurdConfig) => {
         editTypeRef,
         /** 列表勾选，table.selection可开启 */
         selectedRows,
+        showQueryActionsExtend,
+        showTableActionsExtend,
         isCreate: computed(() => editTypeRef.value === 'create'),
         isUpdate: computed(() => editTypeRef.value === 'update'),
         isView: computed(() => editTypeRef.value === 'view'),
