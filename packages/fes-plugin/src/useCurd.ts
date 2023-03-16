@@ -16,6 +16,7 @@ import {
     FormSceneConfig,
     FormSceneContext,
     genFormatByDate,
+    getGlobalConfig,
     ModalSceneConfig,
     ModalSceneContext,
     PagerSceneConfig,
@@ -90,9 +91,11 @@ export const mapTableFields = (fields: Field[], comm?: Field) => {
         merge(field, _field);
         if (field.options && !field.format) {
             field.format = formatByOptions;
+            getGlobalConfig().debug && console.log(`字段${field.name}将默认加上formatByOptions`);
         }
         if (components?.['name'] === ComponentType.DatePicker && !field.format) {
             field.format = genFormatByDate();
+            getGlobalConfig().debug && console.log(`字段${field.name}将默认加上genFormatByDate()`);
         }
         return field;
     });
@@ -164,9 +167,11 @@ export const useCurd = (config: CurdConfig) => {
                 const comp = field.components?.[0] || field.components;
                 if (!comp) return;
                 if (comp.name === ComponentType.CheckboxGroup || (comp.name === ComponentType.Select && unref(comp.props)?.multiple)) {
-                    const text = data[field.name as string] as string;
-                    if (text) {
-                        data[field.name as string] = text.split(',');
+                    const text = data[field.name as string];
+                    if (typeof text === 'string') {
+                        const value = text ? text.split(',') : [];
+                        data[field.name as string] = value;
+                        getGlobalConfig().debug && console.log(`字段${field.name}多选，其值${text}解析将自动成数组`);
                     }
                 }
             });
