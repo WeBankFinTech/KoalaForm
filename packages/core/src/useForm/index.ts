@@ -35,7 +35,7 @@ const formPlugin: PluginFunction<FormSceneContext, FormSceneConfig> = (api) => {
         fields.forEach((field) => {
             if (field.name) {
                 // 初始值
-                initModel[field.name] = field.defaultValue || null;
+                initModel[field.name] = field.defaultValue || (field.type === 'array' ? [] : null);
             }
 
             const scheme: Scheme = createScheme(field);
@@ -58,7 +58,7 @@ const formPlugin: PluginFunction<FormSceneContext, FormSceneConfig> = (api) => {
 
         // 重置
         ctx.resetFields = () => {
-            modelRef.value = { ...initModel };
+            modelRef.value = cloneDeep(initModel);
             formScheme.__ref?.value?.resetFields?.();
         };
 
@@ -90,6 +90,7 @@ const formPlugin: PluginFunction<FormSceneContext, FormSceneConfig> = (api) => {
         } else {
             ctx.schemes = [formScheme];
         }
+        getGlobalConfig().debug && console.log(`【${ctx.name}】表单初始值`, initModel);
         api.emit('formSchemeLoaded');
         api.emit('schemeLoaded');
         api.emit('started');

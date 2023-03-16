@@ -2678,6 +2678,11 @@
     "@vue/compiler-dom" "3.2.45"
     "@vue/shared" "3.2.45"
 
+"@vue/devtools-api@^6.4.5":
+  version "6.5.0"
+  resolved "http://10.107.103.115:8001/@vue/devtools-api/download/@vue/devtools-api-6.5.0.tgz#98b99425edee70b4c992692628fa1ea2c1e57d07"
+  integrity sha1-mLmUJe3ucLTJkmkmKPoeosHlfQc=
+
 "@vue/reactivity-transform@3.2.31":
   version "3.2.31"
   resolved "https://registry.npmmirror.com/@vue/reactivity-transform/-/reactivity-transform-3.2.31.tgz#0f5b25c24e70edab2b613d5305c465b50fc00911"
@@ -8865,6 +8870,13 @@ vue-eslint-parser@^7.10.0, vue-eslint-parser@^7.6.0:
     esquery "^1.4.0"
     lodash "^4.17.21"
     semver "^6.3.0"
+
+vue-router@^4.1.6:
+  version "4.1.6"
+  resolved "http://10.107.103.115:8001/vue-router/download/vue-router-4.1.6.tgz#b70303737e12b4814578d21d68d21618469375a1"
+  integrity sha1-twMDc34StIFFeNIdaNIWGEaTdaE=
+  dependencies:
+    "@vue/devtools-api" "^6.4.5"
 
 vue-types@^3.0.0:
   version "3.0.2"

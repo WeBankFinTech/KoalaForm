@@ -15,6 +15,7 @@ export interface SceneContext {
     getComponent: (name: keyof typeof ComponentType | String | Component) => Component | string;
     render: (slots?: Slots) => VNodeChild;
     __config?: SceneConfig;
+    __pluginStarted?: boolean;
     readonly __scopedId: string | number;
     readonly __plugins: PluginFunction[];
     /** 插件 */
@@ -36,7 +37,7 @@ const defaultConfig: {
     request?: (api: string, data?: unknown, config?: unknown) => Promise<any>;
     modelValueName: string;
 } = {
-    debug: false,
+    debug: process.env.NODE_ENV !== 'production',
     modelValueName: 'modelValue',
 };
 
@@ -51,23 +52,24 @@ export const useSceneContext = (names: string[] | string) => {
     const ctxs: SceneContext[] = [];
     const ctxMap: Record<string, SceneContext> = {};
 
-    const createContext = (cxtName: string): SceneContext => {
+    const createContext = (ctxName: string): SceneContext => {
         const __plugins: PluginFunction[] = [];
         scopeId++;
-        const cxt: SceneContext = {
-            name: cxtName,
+        const ctx: SceneContext = {
+            name: ctxName,
             modelRef: ref(null),
             schemes: [],
             getComponent: (name) => name as string,
             render: () => [],
             use: (plugin) => {
+                ctx.__pluginStarted && console.warn(`【${ctx.name}】插件添加不能在场景执行后`);
                 installIn(plugin, __plugins);
-                return cxt;
+                return ctx;
             },
             __scopedId: scopeId,
             __plugins,
         };
-        return cxt;
+        return ctx;
     };
 
     turnArray(names)?.forEach((name) => {
@@ -110,6 +112,7 @@ export function useScene<T extends SceneContext, K extends SceneConfig>(config: 
         config.ctx = ctx;
     }
     const { ctx } = config;
+    getGlobalConfig().debug && console.log(`【${ctx.name}】场景上下文`, ctx);
     ctx.__config = config;
     ctx.use(baseComPlugin);
 
@@ -122,6 +125,7 @@ export function useScene<T extends SceneContext, K extends SceneConfig>(config: 
     plugins.forEach((plugin) => {
         plugin.start(config);
     });
+    ctx.__pluginStarted = true;
 
     onUnmounted(() => {
         const len = plugins.length;
@@ -130,6 +134,7 @@ export function useScene<T extends SceneContext, K extends SceneConfig>(config: 
             delete plugins[index];
         }
         plugins.length = 0;
+        getGlobalConfig().debug && console.log(`【${ctx.name}】卸载场景及插件`);
         Object.keys(ctx).forEach((key) => delete ctx[key]);
     });
     return ctx as T;

@@ -1,5 +1,5 @@
 import { computed, ref, Ref } from 'vue';
-import { SceneConfig, SceneContext, useScene, useSceneContext } from '../base';
+import { getGlobalConfig, SceneConfig, SceneContext, useScene, useSceneContext } from '../base';
 import { mergeRefProps } from '../helper';
 import { PluginFunction } from '../plugins';
 import { compileComponents, ComponentDesc, ComponentType, createScheme } from '../scheme';

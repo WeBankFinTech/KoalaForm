@@ -1,17 +1,9 @@
 <script setup>
-import { FButton } from '@fesjs/fes-design';
-import { ref } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
-import Test from './components/Test';
-
-const show = ref(false);
+import { RouterView } from 'vue-router';
 </script>
 
 <template>
-    <div>
-        <FButton @click="show = !show">切换显示</FButton>
-        <HelloWorld v-if="show" />
-    </div>
+    <RouterView></RouterView>
 </template>
 
 <style scoped>

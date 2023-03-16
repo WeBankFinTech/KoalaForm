@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
-import { isFunction, split } from 'lodash-es';
+import { isFunction } from 'lodash-es';
 import { Slot, unref, VNode } from 'vue';
-import { EnumOption } from '../base';
+import { EnumOption, getGlobalConfig } from '../base';
 import { mergeRefProps } from '../helper';
 import { Field, findScheme } from '../scheme';
 import { FormSceneConfig, FormSceneContext } from '../useForm';
@@ -21,6 +21,7 @@ const format = (ctx: FormSceneContext, config: FormSceneConfig, type: string) =>
             defaultSlot = ({ row, cellValue }) => field.format?.(row, cellValue, scheme) as VNode[];
         }
         if (defaultSlot) {
+            getGlobalConfig().debug && console.log(`【${ctx.name}】字段(${field.name})指定的format函数将会会覆盖default slot`);
             mergeRefProps(scheme, 'slots', { default: defaultSlot });
         }
     });

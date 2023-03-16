@@ -6,11 +6,10 @@ import { BASE_URL } from './const';
 installPluginPreset();
 
 setupGlobalConfig({
-    debug: true,
     // 实现网络请求的实现
     request(api, params, config) {
         console.log('request.params => ', params);
-        return fetch(BASE_URL + api)
+        return fetch(location.origin + BASE_URL + api)
             .then((res) => {
                 return res.json();
             })

@@ -1,7 +1,7 @@
 import { isString } from 'lodash-es';
 import { DefineComponent, Ref, Slot, Slots, VNodeChild } from 'vue';
 import { EnumOption, Reactive, SceneContext, When } from './base';
-import { travelTree, turnArray } from './helper';
+import { mergeRefProps, travelTree, turnArray } from './helper';
 
 export interface ComponentDesc {
     name: string;
@@ -74,6 +74,7 @@ export const ComponentType = {
     Checkbox: 'Checkbox',
     CheckboxGroup: 'CheckboxGroup',
     Radio: 'Radio',
+    RadioGroup: 'RadioGroup',
     Select: 'Select',
     Switch: 'Switch',
     TimePicker: 'TimePicker',
@@ -109,7 +110,9 @@ export const createScheme = (node: ComponentDesc | string | Field | SceneContext
     } else if ((node as SceneContext).schemes) {
         return { __node: node, component: '', children: (node as SceneContext).schemes };
     } else {
-        return { __node: node, component: node.name || '', props: (node as ComponentDesc).props };
+        const scheme = { __node: node, component: node.name || '', props: {} };
+        mergeRefProps(scheme, 'props', (node as ComponentDesc).props);
+        return scheme;
     }
 };
 

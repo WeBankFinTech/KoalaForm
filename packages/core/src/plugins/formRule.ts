@@ -12,7 +12,7 @@ const parseFieldRule = (field: Field): Array<ValidateRule> => {
     } else if (required) {
         return [{ required: true, message: '必填项', type: field.type }, ...rules];
     } else {
-        return [];
+        return rules || [];
     }
 };
 

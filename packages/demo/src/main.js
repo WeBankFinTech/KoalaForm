@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import { installPluginPreset, setupGlobalConfig } from '@koala-form/core';
+import { createMemoryHistory, createRouter } from 'vue-router'
 import './style.css';
 import App from './App.vue';
 installPluginPreset();
@@ -24,4 +25,18 @@ setupGlobalConfig({
     },
 });
 
-createApp(App).mount('#app');
+const app = createApp(App)
+
+app.use(createRouter({
+    history: createMemoryHistory(),
+    routes: [
+        {
+            path: '/home',
+            components: {
+                
+            }
+        }
+    ]
+}))
+
+app.mount('#app');
