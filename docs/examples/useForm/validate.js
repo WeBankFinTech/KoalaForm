@@ -1,9 +1,4 @@
-import {
-    ComponentType,
-    useForm,
-    doValidate,
-    doClearValidate,
-} from '@koala-form/core';
+import { ComponentType, useForm, doValidate, doClearValidate } from '@koala-form/core';
 import { genForm } from '@koala-form/fes-plugin';
 import { defineComponent } from 'vue';
 

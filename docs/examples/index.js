@@ -1,6 +1,7 @@
 import './main';
 // import Test from './Test';
 import StartedScene from './started/useScene';
+import StartedSceneVue from './started/useScene.vue';
 import StartedUseForm from './started/useForm';
 import StartedUseTable from './started/useTable';
 import StartedUsePager from './started/usePager';
@@ -24,6 +25,7 @@ import FesdUseCurd from './fesdUseCurd.vue';
 
 export default {
     // Test,
+    StartedSceneVue,
     StartedScene,
     StartedUseForm,
     StartedUseTable,

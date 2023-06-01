@@ -8,9 +8,12 @@ sidebarDepth: 2
 <<< @/examples/main.js
 
 ## 使用表单场景
-表单抽象为一个场景，使用useForm，可以快速的建立一个表单。
+表单抽象为一个场景，使用useForm，可以快速的建立一个表单。返回上下文对象
 ```js
-useForm({ fields: [] })
+const ctx = useForm({ fields: [] })
+// ctx.render // 渲染方法
+// ctx.modelRef // form响应对象
+// ...更多操作表单的方法
 ```
 
 ## 添加字段
@@ -63,15 +66,15 @@ useForm返回场景上下文，可以进行表单重置、校验、渲染等。
 ```js
 // ...
 
-const form = useForm({});
+const ctx = useForm({});
 
-form.initFields({name: 'aring'}) // 初始默认值
+ctx.initFields({name: 'aring'}) // 初始默认值
 
-form.resetFields() // 重置
+ctx.resetFields() // 重置
 
-form.validate() // 校验
+ctx.validate() // 校验
 
-form.render() // 渲染
+ctx.render() // 渲染
 
 ```
 
@@ -95,6 +98,3 @@ useForm({ cxt: form2 });
 
 </template>
 </ExampleDoc>
-
-
-

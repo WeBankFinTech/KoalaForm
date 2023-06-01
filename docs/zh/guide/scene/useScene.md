@@ -4,7 +4,7 @@ sidebarDepth: 3
 # 基础场景
 基础场景使用`useScene`。用ComponentDesc描述一段组件树，通过场景上下文返回的render方法，即可将组件树渲染成VNode树。
 
-插件是扩展useScene功能的途径，为了将一些重复的功能更好的复用，通过插件修改场景的上下文（SceneContext）定制出一些特定的场景：useForm、useTable、usePager、useModal。
+插件是扩展useScene功能的途径，通过插件可以修改场景的上下文（SceneContext），可以将一些功能模块进行场景化复用，比如：useForm、useTable、usePager、useModal。
 
 <ExampleDoc>
 <StartedScene>

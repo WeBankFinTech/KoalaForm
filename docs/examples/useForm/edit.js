@@ -1,5 +1,5 @@
 import { ComponentType, useForm, useSceneContext, doResetFields, doGetFormData } from '@koala-form/core';
-import { genForm, genSubmitAction } from '@koala-form/fes-plugin';
+import { genSubmitAction } from '@koala-form/fes-plugin';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -7,7 +7,6 @@ export default defineComponent({
         const { ctx } = useSceneContext('form');
         const { render } = useForm({
             ctx,
-            form: genForm(),
             fields: [
                 {
                     name: 'name',

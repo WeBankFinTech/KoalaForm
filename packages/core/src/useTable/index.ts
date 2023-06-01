@@ -1,4 +1,4 @@
-import { getGlobalConfig, SceneConfig, SceneContext, useScene, useSceneContext } from '../base';
+import { SceneConfig, SceneContext, useScene, useSceneContext } from '../base';
 import { ref, Ref } from 'vue';
 import { compileComponents, ComponentDesc, ComponentType, createScheme, Field, Scheme, SchemeChildren } from '../scheme';
 import { PluginFunction } from '../plugins';

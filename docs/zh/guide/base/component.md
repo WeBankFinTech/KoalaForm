@@ -11,6 +11,7 @@ export interface ComponentDesc {
     props?: Reactive;
     vIf?: Ref<boolean> | When | boolean;
     vShow?: Ref<boolean> | When | boolean;
+    vModels?: Record<string, ModelRef>;
     disabled?: Ref<boolean> | When;
     events?: Record<string, (value: any, ...args: any[]) => void>;
     slotName?: string;
@@ -31,12 +32,14 @@ export interface ComponentDesc {
 </ExampleDoc>
 
 ## 类型
-通过name指定组件的节点类型，可以是标准的dom元素类型，如a、div，也可以是组件库的组件名，由ComponentType提供支持。
+通过name指定组件的节点类型，可以是标准的dom元素类型，如a、div，也可以是组件库的组件名，由ComponentType提供支持。还可以组件
 ```js
 
 const div = { name: 'div' }
 
 const btn = { name:  ComponentType.Button }
+
+const btn2 = { name: FButton } 
 
 ```
 
@@ -85,7 +88,7 @@ const input = {
 ## 插槽
 slotName可指定插槽，实现自定义的扩展内容，slots对象有上下文render传入
 ::: tip
-slotName指向的是默认插槽，如果需要传入组件的其他名称插槽，那么通过`[slotName]__[组件的插槽名]`规则传入，所以`[slotName]`也等价于`[slotName]__default`
+slotName指向的是默认插槽，如果需要传入组件的其他名称插槽，那么通过`[slotName]__[组件的插槽名]`规则传入，所以`[slotName]`也等价于`[slotName]__default`，注意是双下划线"__"
 :::
 
 ```jsx

@@ -7,16 +7,17 @@ sidebarDepth: 3
 在表单和列表场景中，关键的定义就是字段，用Field来描述字段。
 ```ts
 export interface Field {
+    type?: ValueType;
     label?: string;
     name?: string;
-    type?: ValueType;
     vIf?: Ref<boolean> | boolean | When;
     vShow?: Ref<boolean> | boolean | When;
+    vModels?: Record<string, ModelRef>;
     options?: Ref<EnumOption[]> | EnumOption[] | ((model: any) => Promise<EnumOption[]>);
     props?: Reactive;
     defaultValue?: any;
-    rules?: Array<ValidateRule>;
-    required?: boolean;
+    rules?: Array<ValidateRule> | Ref<Array<ValidateRule>>;
+    required?: boolean | Ref<boolean>;
     components?: ComponentDesc | ComponentDesc[];
     slotName?: string;
     format?: (model: any, value: any, scheme: Scheme) => VNodeChild | string;
@@ -103,6 +104,7 @@ form.clearValidate() // 清空校验态
 而在列表或者在查看字段的时，需要把字段的值映射成枚举的描述，format可以返回渲染的结果。
 
 ```js
+import { formatByOptions } from '@koala-form/core'
 
 const options = [
     { value: '0', label: '女' },
@@ -138,6 +140,7 @@ format > slotName > components
 :::
 
 ```jsx
+import { formatByOptions, genFormatByDate } from '@koala-form/core'
 
 // 枚举
 const sexField = {

@@ -6,7 +6,7 @@ const ssrTransformCustomDir = () => ({
     needRuntime: true,
 });
 
-const BASE_URL = process.env.NODE_ENV === 'production' ? '/code/koala-form/docs/.vitepress/dist/' : '/';
+const BASE_URL = process.env.NODE_ENV === 'production' ? '/s/koala-form/v2/' : '/';
 
 export default {
     lang: 'zh-CN',
@@ -99,7 +99,7 @@ function getGuideSidebar() {
         children: [
           { text: 'Koala Form是什么', link: '/zh/guide/' },
           { text: '快速上手', link: '/zh/guide/getting-started' },
-          // { text: '设计原理', link: '/zh/guide/design' },
+          { text: 'V1到V2迁移指南', link: '/zh/guide/upgrade' },
         ]
       },
       {
@@ -128,12 +128,7 @@ function getGuideSidebar() {
       {
         text: '深入插件',
         children: [
-          // { text: 'useScene', link: '/zh/guide/useScene' },
-          // { text: 'useForm', link: '/zh/guide/useForm' },
-          // { text: 'useTable', link: '/zh/guide/useTable' },
-          // { text: 'useModal', link: '/zh/guide/useModal' },
-          // { text: 'useQuery', link: '/zh/guide/useQuery' },
-          // { text: 'usePage', link: '/zh/guide/usePage' },
+          { text: '设计原理', link: '/zh/guide/plugin/design' },
         ]
       },
     ]

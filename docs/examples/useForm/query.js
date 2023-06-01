@@ -1,10 +1,5 @@
 import { FMessage } from '@fesjs/fes-design';
-import {
-    ComponentType,
-    useForm,
-    useSceneContext,
-    doResetFields,
-} from '@koala-form/core';
+import { ComponentType, useForm, useSceneContext, doResetFields } from '@koala-form/core';
 import { genForm, genQueryAction } from '@koala-form/fes-plugin';
 import { defineComponent } from 'vue';
 

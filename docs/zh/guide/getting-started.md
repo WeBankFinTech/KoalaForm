@@ -3,6 +3,19 @@ sidebarDepth: 3
 ---
 # 快速上手
 
+## 创建vue3应用
+```bash
+npm init vue@latest
+```
+在项目被创建后，通过以下步骤安装依赖并启动开发服务器：
+```bash
+cd <your-project-name>
+npm install
+npm run dev
+```
+
+或者这里下载[Demo项目](index.md)
+
 ## 安装
 安装`@koala-form/core`、`@koala-form/fes-plugin`
 ::: tip
@@ -10,24 +23,36 @@ sidebarDepth: 3
 :::
 
 ```bash
-npm i vue@3.0.7
 npm i @koala-form/core
 npm i @fesjs/fes-design
 npm i @koala-form/fes-plugin
 ```
 
 ## 全局设置
-在入口文件中
+在入口app.js文件中
 
 <<< @/examples/main.js
 
 ## 基础场景
-<ExampleDoc>
+<ExampleDoc expanded>
 <StartedScene>
 </StartedScene>
 <template #code>
 
 <<< @/examples/started/useScene.js
+</template>
+</ExampleDoc>
+
+场景返回的render，会渲染场景定义的内容。
+
+也在template中，可以使用KoalaRender组件渲染render。
+
+<ExampleDoc expanded>
+<StartedSceneVue>
+</StartedSceneVue>
+<template #code>
+
+<<< @/examples/started/useScene.vue
 </template>
 </ExampleDoc>
 
@@ -47,7 +72,7 @@ npm i @koala-form/fes-plugin
 
 了解更多关于useForm，请移步[这里](./scene/useForm.md)
 
-<ExampleDoc>
+<ExampleDoc expanded>
 <StartedUseForm>
 </StartedUseForm>
 <template #code>
@@ -129,6 +154,9 @@ events: {
 </ExampleDoc>
 
 ## 组合CURD
+通过useForm、useTable、usePager、useModal基础场景可以组合出场景的curd表单页面。
+
+为了使curd上手更容易，在@koala-form/fes-plugin中也提供了组合场景 [useCurd](../ui/fes.md#usecurd)
 
 <ExampleDoc>
 <StartedUseCurd>

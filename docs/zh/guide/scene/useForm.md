@@ -2,7 +2,22 @@
 sidebarDepth: 3
 ---
 # useForm
-在curd中出现表单场景是查询表单、新增表单、更新表单。表单的关键就是字段，所以useForm通过传入的字段定义`Filed`，就可以获得表单的render函数，并对表单的常见操作提供了支持，比如
+在curd中出现表单场景是查询表单、新增表单、更新表单。
+
+useForm根据传入的字段定义创建表单场景
+
+```js
+const ctx = useForm({ fields: [ { name: 'user', label: '用户' } ] })
+ctx.initFields({ user: 'test' })
+
+ctx.modelRef.value.user; // test
+
+ctx.render // 渲染函数
+
+```
+
+对表单的常见操作也提供了支持，比如：
+
 - 表单布局
 - 表单校验
 - 表单重置
@@ -10,11 +25,41 @@ sidebarDepth: 3
 - 表单初始化
 - 表单联动
 
-## 表单配置
+## API
 
-## Handler
+### 参数
 
-## Context
+- ctx：指定上下文
+- form：form组件
+- fields：表单字段定义
+
+```js
+export interface FormSceneConfig extends SceneConfig {
+    ctx: FormSceneContext;
+    form?: ComponentDesc;
+    fields: Field[];
+}
+```
+
+### 返回
+
+- formRef：表单组件实例引用
+- initFields：初始化字段值
+- resetFields：重置为最近一次初始化的值
+- setFields： 设置表单值
+- clearValidate：清空校验
+- validate：校验
+
+```js
+export interface FormSceneContext extends SceneContext {
+    formRef: Ref;
+    initFields: (values: Record<string, unknown>, name?: string) => void;
+    resetFields: () => void;
+    setFields: (values: Record<string, unknown>, name?: string) => Record<string, unknown>;
+    clearValidate: () => void;
+    validate: (names?: string[]) => Promise<unknown>;
+}
+```
 
 ## 查询表单
 查询表单一般是横向排列的，常见的操作是查询和重置
@@ -44,19 +89,6 @@ sidebarDepth: 3
 </ExampleDoc>
 
 ## 表单校验
-
-<ExampleDoc>
-<UseFormValidate>
-</UseFormValidate>
-<template #code>
-
-<<< @/examples/useForm/validate.js
-
-</template>
-</ExampleDoc>
-
-
-## 表单操作
 
 <ExampleDoc>
 <UseFormValidate>
