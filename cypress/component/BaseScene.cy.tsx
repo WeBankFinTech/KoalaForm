@@ -1,5 +1,4 @@
-import { FButton } from '@fesjs/fes-design';
-import { useScene } from '@koala-form/core';
+import { ComponentType, useScene } from '@koala-form/core';
 import { defineComponent, reactive, ref } from 'vue';
 
 const Test = defineComponent({
@@ -26,7 +25,7 @@ const Test = defineComponent({
                     ],
                 },
                 {
-                    name: FButton,
+                    name: ComponentType.Button,
                     props: { type: 'primary' },
                     children: ['ClickMe'],
                     events: {

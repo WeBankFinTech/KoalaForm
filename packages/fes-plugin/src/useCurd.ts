@@ -259,7 +259,7 @@ export const useCurd = (config: CurdConfig) => {
     useTable({
         ctx: table,
         table: merge<ComponentDesc, ComponentDesc>(
-            { name: ComponentType.Table, vModels: { checkedKeys: { name: 'value', ref: selectedRows } }, props: { rowKey } },
+            { name: ComponentType.Table, vModels: { checkedKeys: { name: '__value', ref: selectedRows } }, props: { rowKey } },
             tableCfg.table,
         ),
         fields: [

@@ -16,7 +16,7 @@ export interface FormSceneContext extends SceneContext {
 }
 
 export interface FormSceneConfig extends SceneConfig {
-    ctx: FormSceneContext;
+    ctx?: FormSceneContext;
     form?: ComponentDesc;
     fields: Field[];
 }

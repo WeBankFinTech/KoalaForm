@@ -1,5 +1,5 @@
 import { isString } from 'lodash-es';
-import { DefineComponent, Ref, Slot, Slots, VNodeChild } from 'vue';
+import { DefineComponent, Ref, Slot, Slots, VNodeChild, reactive } from 'vue';
 import { EnumOption, Reactive, SceneContext, When } from './base';
 import { mergeRefProps, travelTree, turnArray } from './helper';
 
@@ -110,8 +110,7 @@ export const createScheme = (node: ComponentDesc | string | Field | SceneContext
     } else if ((node as SceneContext).schemes) {
         return { __node: node, component: '', children: (node as SceneContext).schemes };
     } else {
-        const scheme = { __node: node, component: node.name || '', props: {} };
-        mergeRefProps(scheme, 'props', (node as ComponentDesc).props);
+        const scheme = { __node: node, component: node.name || '', props: (node as ComponentDesc).props || reactive({}) };
         return scheme;
     }
 };

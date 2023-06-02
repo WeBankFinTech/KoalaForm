@@ -37,30 +37,46 @@ Cypress.Commands.add('mount', mount);
 
 import '@koala-form/fes-plugin';
 import { setupGlobalConfig, installPluginPreset } from '@koala-form/core';
+import { FMessage } from '@fesjs/fes-design';
 // import { FMessage } from '@fesjs/fes-design';
 // 将依赖的插件安装到全局
 installPluginPreset();
-
 setupGlobalConfig({
     debug: true,
     modelValueName: 'modelValue',
     // 实现网络请求的实现
-    // request(api, params, config) {
-    //     console.log('request.params => ', params);
-    //     return fetch(BASE_URL + api)
-    //         .then((res) => {
-    //             return res.json();
-    //         })
-    //         .then((data) => {
-    //             console.log('request.data => ', data);
-    //             if (data.code !== 0) {
-    //                 const msg = `${data.message}(${data.code})`;
-    //                 FMessage.error(msg);
-    //                 throw new Error(msg);
-    //             }
-    //             return data?.result;
-    //         });
-    // },
+    request: async (api, params) => {
+        console.log('request.params => ', api, params);
+        return {
+            list: [
+                {
+                    id: '1',
+                    name: '蒙奇·D·路飞',
+                    age: 16,
+                    sex: '1',
+                    hobby: '2,3',
+                    birthday: 1115251200000,
+                    idCard: '440223198310130033',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    education: '1',
+                },
+                {
+                    id: '2',
+                    name: '罗罗诺亚·索隆',
+                    age: 18,
+                    sex: '1',
+                    birthday: 1115251200000,
+                    idCard: '440223193110130024',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    education: '2',
+                },
+            ],
+            page: {
+                currentPage: 1,
+                totalCount: 23,
+            },
+        };
+    },
 });
 
 // Example use:
