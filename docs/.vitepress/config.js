@@ -6,7 +6,7 @@ const ssrTransformCustomDir = () => ({
     needRuntime: true,
 });
 
-const BASE_URL = process.env.NODE_ENV === 'production' ? '/s/koala-form/' : '/';
+const BASE_URL = process.env.NODE_ENV === 'production' ? '/s/koala-form/v2/' : '/';
 
 export default {
     lang: 'zh-CN',
@@ -33,9 +33,8 @@ export default {
               '.vue',
           ],
           alias: {
-              '@koala-form/core': path.resolve('packages/koala-form/src/index.ts'),
-              '@koala-form/preset-antd': path.resolve('packages/koala-form-preset-antd'),
-              '@koala-form/preset-fesd': path.resolve('packages/preset-fesd/src'),
+              '@koala-form/core': path.resolve('packages/core/src/index.ts'),
+              '@koala-form/fes-plugin': path.resolve('packages/fes-plugin/src/index.ts'),
           },
       },
         json: {
@@ -61,24 +60,25 @@ export default {
         logo: '/logo.png',
         nav: [
             { text: '教程', link: '/zh/guide/', activeMatch: '^/zh/guide' },
-            { text: '精彩示例', link: '/zh/demos/', activeMatch: '^/zh/demos' },
             {
-              text: '集成Preset',
-              link: '/preset',
+              text: 'UI库插件',
+              link: '/zh/ui',
+              activeMatch: '^/zh/ui',
               items: [
-                { text: 'Ant Design Preset', link: '/preset' },
-                { text: 'Fes Design Preset', link: '/preset' },
+                { text: 'Fes Plugin', link: '/zh/ui/fes' },
               ]
             },
+            // { text: '精彩示例', link: '/zh/demos/', activeMatch: '^/zh/demos' },
             {
               text: 'Github',
-              link: 'https://github.com/vuejs/vitepress/releases'
+              link: 'https://github.com/WeBankFinTech/KoalaForm'
             }
         ],
         sidebar: {
-            '/config/': getConfigSidebar(),
             '/zh/guide/': getGuideSidebar(),
-            '/zh/preset/': getGuideSidebar(),
+            '/zh/ui/fes': [
+              { text: 'Fes Plugin', link: '/zh/ui/fes' },
+            ],
             '/zh/demos/': getDemosSidebar(),
         }
     }
@@ -99,29 +99,41 @@ function getGuideSidebar() {
         children: [
           { text: 'Koala Form是什么', link: '/zh/guide/' },
           { text: '快速上手', link: '/zh/guide/getting-started' },
-          { text: '设计原理', link: '/zh/guide/design' },
+          { text: 'V1到V2迁移指南', link: '/zh/guide/upgrade' },
         ]
       },
       {
-        text: 'API',
+        text: '基础',
         children: [
-          { text: 'Field', link: '/zh/guide/field' },
-          { text: 'Config', link: '/zh/guide/config' },
-          { text: 'useForm', link: '/zh/guide/useForm' },
-          { text: 'useTable', link: '/zh/guide/useTable' },
-          { text: 'useFormAction', link: '/zh/guide/useFormAction' },
-          { text: 'useModal', link: '/zh/guide/useModal' },
-          { text: 'useQuery', link: '/zh/guide/useQuery' },
-          { text: 'usePage', link: '/zh/guide/usePage' },
-          { text: 'KoalaForm组件', link: '/zh/guide/koalaForm' },
+          { text: '写一个表单', link: '/zh/guide/base/form' },
+          { text: '组件描述', link: '/zh/guide/base/component' },
+          { text: '字段描述', link: '/zh/guide/base/field' },
+          { text: '联动基础', link: '/zh/guide/base/relation' },
+          { text: '自定义渲染', link: '/zh/guide/base/slots' },
+          { text: '事件基础', link: '/zh/guide/base/event' },
+          { text: '行为函数', link: '/zh/guide/base/handler' },
+          { text: '插件基础', link: '/zh/guide/base/plugin' },
         ]
       },
       {
-        text: 'Preset进阶',
+        text: '场景',
         children: [
-          { text: 'Preset', link: '/zh/preset/index' }
+          { text: '基础场景', link: '/zh/guide/scene/useScene' },
+          { text: 'useForm', link: '/zh/guide/scene/useForm' },
+          { text: 'useTable', link: '/zh/guide/scene/useTable' },
+          { text: 'usePager', link: '/zh/guide/scene/usePager' },
+          { text: 'useModal', link: '/zh/guide/scene/useModal' },
         ]
-      }
+      },
+      {
+        text: '深入插件',
+        children: [
+          { text: '自定义插件', link: '/zh/guide/plugin/how' },
+          { text: '设计原理', link: '/zh/guide/plugin/design' },
+          { text: '事件汇总', link: '/zh/guide/plugin/hooks' },
+          { text: 'API', link: '/zh/guide/plugin/api' },
+        ]
+      },
     ]
   }
   

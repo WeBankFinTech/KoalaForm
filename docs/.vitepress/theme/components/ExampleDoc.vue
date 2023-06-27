@@ -1,7 +1,7 @@
 <template>
     <div class="example-doc">
         <div class="example-header">
-            <a @click="showCode = !showCode">{{ showCode ? '隐藏代码' : '查看代码' }}</a>
+            <a href="#" @click="showCode = !showCode">{{ showCode ? '隐藏代码' : '查看代码' }}</a>
         </div>
         <div class="example-case"><slot/></div>
         <div v-show="showCode" class="example-code">
@@ -14,8 +14,11 @@
 import { ref } from 'vue'
 
 export default {
-    setup() {
-        const showCode = ref(false)
+    props: {
+        expanded: Boolean, 
+    },
+    setup(props) {
+        const showCode = ref(props.expanded)
         return {
             showCode
         }

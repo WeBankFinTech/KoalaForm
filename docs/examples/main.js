@@ -1,42 +1,26 @@
-import { usePreset } from '@koala-form/core';
-// import antdPreset from '@koala-form/preset-antd';
-import fesdPreset from '@koala-form/preset-fesd';
+import '@koala-form/fes-plugin';
+import { setupGlobalConfig, installPluginPreset } from '@koala-form/core';
+import { FMessage } from '@fesjs/fes-design';
+import { BASE_URL } from './const';
+// 将依赖的插件安装到全局
+installPluginPreset();
 
-const enumsMap = {
-    sex: [
-        { value: 1, label: '男' },
-        { value: 0, label: '女' },
-    ],
-    reward: [
-        { value: 1, label: '15亿贝里' },
-        { value: 2, label: '8亿贝里' },
-        { value: 3, label: '2亿贝里' },
-    ],
-    awaken: [
-        { value: true, label: '开' },
-        { value: false, label: '关' },
-    ],
-};
-
-usePreset({
-    // ...antdPreset,
-    ...fesdPreset,
-    //可以自由覆盖antd preset的方法
-    getEnums(key) {
-        return enumsMap[key] || [];
-    },
+setupGlobalConfig({
+    // 实现网络请求的实现
     request(api, params, config) {
-        const paramStr = Object.keys(params)
-            .map((key) => `${key}=${params[key] || ''}`)
-            .join('&');
-        return fetch(`${api}?${paramStr}`, {
-            cache: 'no-cache',
-            headers: {
-                'content-type': 'application/json',
-            },
-            method: 'GET',
-        }).then((res) => {
-            return res.json();
-        });
+        console.log('request.params => ', params);
+        return fetch(location.origin + BASE_URL + api)
+            .then((res) => {
+                return res.json();
+            })
+            .then((data) => {
+                console.log('request.data => ', data);
+                if (data.code !== 0) {
+                    const msg = `${data.message}(${data.code})`;
+                    FMessage.error(msg);
+                    throw new Error(msg);
+                }
+                return data?.result;
+            });
     },
 });

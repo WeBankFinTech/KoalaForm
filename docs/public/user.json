@@ -6,30 +6,28 @@
                 "id": "1",
                 "name": "蒙奇·D·路飞",
                 "age": 16,
-                "sex": 1,
-                "awaken": true,
-                "reward": 1,
+                "sex": "1",
                 "hobby": "2,3",
                 "birthday": 1115251200000,
-                "birthdayTime": "08:20:00",
-                "dateTime": 1576498525635,
-                "dateRangeStart": 1576498525635,
-                "dateRangeEnd": 1609910925635,
-                "dateTimeRangeStart": 1576498525635,
-                "dateTimeRangeEnd": 1609910925635,
-                "desc": "外号“草帽”路飞，是草帽一伙、草帽大船团的船长，极恶的世代之一。橡胶果实能力者，悬赏金15亿贝里。梦想是找到传说中的One Piece，成为海贼王。"
+                "idCard": "440223198310130033",
+                "address": "上海市普陀区金沙江路 1518 弄",
+                "education": "1"
                 
             },
             {
                 "id": "2",
                 "name": "罗罗诺亚·索隆",
                 "age": 18,
-                "sex": 1
+                "sex": "1",
+                "birthday": 1115251200000,
+                "idCard": "440223193110130024",
+                "address": "上海市普陀区金沙江路 1518 弄",
+                "education": "2"
             }
         ],
-        "pager": {
-            "current": 1,
-            "total": 23
+        "page": {
+            "currentPage": 1,
+            "totalCount": 23
         }
     }
 }

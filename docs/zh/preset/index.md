@@ -60,6 +60,3 @@ export default definePreset({
 3. 发布到npm
 
 ## 使用技巧
-
-## preset.d.ts
-<<< @/../packages/koala-form/dist/preset.d.ts

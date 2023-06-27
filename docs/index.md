@@ -16,10 +16,10 @@ features:
   - title: Low Code
     details: 减少你80%重复的工作量，提升你的生产效率
   - title: Easier
-    details: 快速上手，简单的配置即可完成完整的表单页面
+    details: 快速上手，提供常见的基础的场景，只要简单的配置即可完成CURD的表单页面
   - title: Flexible
-    details: 完美的伸缩性，提供常见UI库的Preset，可自定义自己的Preset
+    details: 提供插件扩展功能，如扩展UI库支持。
 footer: MIT Licensed | Copyright © 2019-present aring lai
 ---
-<h3 style="text-align: center;">KoalaForm 原理架构图</h3>
-<img src="/KoalaForm.png"/>
+<!-- <h3 style="text-align: center;">KoalaForm 原理架构图</h3>
+<img src="/KoalaForm.png"/> -->

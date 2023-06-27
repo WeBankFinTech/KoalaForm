@@ -7,13 +7,10 @@ const fse = require('fs-extra');
 const compiler = require('./esm-jsc');
 const { compilerStyleDir } = require('./compilerCss');
 
-
-
 const target = process.argv[2].split('=')[1];
 const SOURCE = path.resolve('packages', target, 'src');
 const OUTPUT_DIR = path.resolve('packages', target, 'dist');
 fse.removeSync(OUTPUT_DIR);
-
 
 async function main(source, outputDir) {
     const files = fs.readdirSync(source);
@@ -36,5 +33,3 @@ async function main(source, outputDir) {
 }
 
 main(SOURCE, OUTPUT_DIR);
-
-

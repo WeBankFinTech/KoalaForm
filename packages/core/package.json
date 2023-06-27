@@ -1,0 +1,35 @@
+{
+  "name": "@koala-form/core",
+  "version": "2.0.0-rc.8",
+  "description": "vue form helper",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "aringlai",
+  "license": "MIT",
+  "files": [
+    "dist/"
+  ],
+  "peerDependencies": {
+    "vue": "^3.0.7"
+  },
+  "dependencies": {
+    "lodash-es": "^4.17.21",
+    "dayjs": "^1.11.5",
+    "mitt": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.5"
+  },
+  "keywords": [
+    "koala-form"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WeBankFinTech/KoalaForm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/WeBankFinTech/KoalaForm/issues"
+  },
+  "homepage": "https://github.com/WeBankFinTech/KoalaForm#readme"
+}

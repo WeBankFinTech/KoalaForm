@@ -1,0 +1,44 @@
+{
+  "hash": "1d52eabc",
+  "browserHash": "4a7a1aa0",
+  "optimized": {
+    "vue": {
+      "src": "../../../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
+      "file": "vue.js",
+      "fileHash": "819cf8ff",
+      "needsInterop": false
+    },
+    "@fesjs/fes-design": {
+      "src": "../../../../node_modules/@fesjs/fes-design/es/index.js",
+      "file": "@fesjs_fes-design.js",
+      "fileHash": "d6c9fced",
+      "needsInterop": false
+    },
+    "lodash-es": {
+      "src": "../../../../packages/core/node_modules/lodash-es/lodash.js",
+      "file": "lodash-es.js",
+      "fileHash": "7a5cd7c5",
+      "needsInterop": false
+    },
+    "dayjs": {
+      "src": "../../../../node_modules/dayjs/dayjs.min.js",
+      "file": "dayjs.js",
+      "fileHash": "4c2f0edd",
+      "needsInterop": true
+    },
+    "mitt": {
+      "src": "../../../../node_modules/mitt/dist/mitt.mjs",
+      "file": "mitt.js",
+      "fileHash": "70ccbc39",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-265XQW5X": {
+      "file": "chunk-265XQW5X.js"
+    },
+    "chunk-DFKQJ226": {
+      "file": "chunk-DFKQJ226.js"
+    }
+  }
+}
