@@ -6,7 +6,8 @@ const ssrTransformCustomDir = () => ({
     needRuntime: true,
 });
 
-const BASE_URL = process.env.NODE_ENV === 'production' ? '/s/koala-form/v2/' : '/';
+// const BASE_URL = process.env.NODE_ENV === 'production' ? '/s/koala-form/v2/' : '/';
+const BASE_URL = '/'
 
 export default {
     lang: 'zh-CN',
