@@ -49,7 +49,7 @@ const { ctx } = useSceneContext(['form'])
 const isForUpdate = computed(() => ctx.modelRef.value.id)
 
 // 是否成人
-const isAdult = computed(() => cxt.modelRef.value.age >= 18)
+const isAdult = computed(() => ctx.modelRef.value.age >= 18)
 
 useForm({ ctx, fields: [
     { label: 'ID', name: 'id', vIf: isForUpdate }, // 更新表单才显示
@@ -76,7 +76,7 @@ const { ctx } = useSceneContext(['form'])
 const isForUpdate = when('!!id');
 
 // 是否成人
-const isAdult = when(() => cxt.modelRef.value.age >= 18);
+const isAdult = when(() => ctx.modelRef.value.age >= 18);
 
 useForm({ ctx, fields: [
     { label: 'ID', name: 'id', vIf: isForUpdate }, // 更新表单才显示
@@ -96,7 +96,7 @@ const { ctx } = useSceneContext(['form'])
 const styleRef = computed(() =>( { color: ctx.modelRef.value.age >= 18 'red' : '' })) // 单个属性值响应式
 
 const propsRef = computed(() => ({ // 整个属性响应式
-    disabled: !cxt.modelRef.value.name
+    disabled: !ctx.modelRef.value.name
 }));
 
 useForm({ ctx, fields: [

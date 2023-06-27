@@ -20,7 +20,7 @@ import '@koala-form/fes-plugin';
 ```js
 import { useSceneContext } '@koala-form/core';
 import { componentPlugin } '@koala-form/fes-plugin';
-const cxt = useSceneContext('name')
+const ctx = useSceneContext('name')
 ctx.use(componentPlugin);
 ```
 

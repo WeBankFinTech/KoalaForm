@@ -14,5 +14,16 @@
     "vue": "^3.0.7",
     "@koala-form/core": "^2.0.0-rc.8",
     "@fesjs/fes-design": "^0.7.15"
-  }
+  },
+  "keywords": [
+    "koala-form"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WeBankFinTech/KoalaForm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/WeBankFinTech/KoalaForm/issues"
+  },
+  "homepage": "https://github.com/WeBankFinTech/KoalaForm#readme"
 }

@@ -23,6 +23,8 @@ import BaseSlotRender from './base/slotRender.vue';
 import FesdCurd from './fesdCurd';
 import FesdUseCurd from './fesdUseCurd.vue';
 
+import LabelPlugin from './labelPlugin';
+
 export default {
     // Test,
     StartedSceneVue,
@@ -44,6 +46,7 @@ export default {
     BaseSlotRender,
     FesdCurd,
     FesdUseCurd,
+    LabelPlugin,
     // User,
     // UseForm,
     // UseFormSlots,

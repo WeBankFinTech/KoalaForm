@@ -68,14 +68,14 @@ export default {
                 { text: 'Fes Plugin', link: '/zh/ui/fes' },
               ]
             },
-            { text: '精彩示例', link: '/zh/demos/', activeMatch: '^/zh/demos' },
+            // { text: '精彩示例', link: '/zh/demos/', activeMatch: '^/zh/demos' },
             {
               text: 'Github',
-              link: 'https://github.com/vuejs/vitepress/releases'
+              link: 'https://github.com/WeBankFinTech/KoalaForm'
             }
         ],
         sidebar: {
-            'zh/guide/': getGuideSidebar(),
+            '/zh/guide/': getGuideSidebar(),
             '/zh/ui/fes': [
               { text: 'Fes Plugin', link: '/zh/ui/fes' },
             ],
@@ -128,7 +128,10 @@ function getGuideSidebar() {
       {
         text: '深入插件',
         children: [
+          { text: '自定义插件', link: '/zh/guide/plugin/how' },
           { text: '设计原理', link: '/zh/guide/plugin/design' },
+          { text: '事件汇总', link: '/zh/guide/plugin/hooks' },
+          { text: 'API', link: '/zh/guide/plugin/api' },
         ]
       },
     ]

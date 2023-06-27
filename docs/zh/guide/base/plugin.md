@@ -43,7 +43,7 @@ const plugin = (api) => {
     // do something
 }
 
-const cxt = useSceneContext('name');
+const ctx = useSceneContext('name');
 ctx.use(plugin); // 安装插件到局部场景中
 ```
 

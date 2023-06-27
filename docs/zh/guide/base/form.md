@@ -82,8 +82,8 @@ ctx.render() // 渲染
 useSceneContext可以预创建上下文，同时有多个表单时，可以先创建上下文。
 ```js
 const [form1, form2] = useSceneContext(['form1', 'form2']);
-useForm({ cxt: form1 });
-useForm({ cxt: form2 });
+useForm({ ctx: form1 });
+useForm({ ctx: form2 });
 ```
 
 ## 完整表单

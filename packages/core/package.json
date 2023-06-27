@@ -20,5 +20,16 @@
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.5"
-  }
+  },
+  "keywords": [
+    "koala-form"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WeBankFinTech/KoalaForm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/WeBankFinTech/KoalaForm/issues"
+  },
+  "homepage": "https://github.com/WeBankFinTech/KoalaForm#readme"
 }

@@ -71,14 +71,14 @@ export const doRemoteOptions = async (
 
 /**
  * 获取字段的响应式options
- * @param cxt 上下文
+ * @param ctx 上下文
  * @param fieldName 字段名
  * @returns
  */
-export const doComputedOptions = (cxt: FormSceneContext, fieldName: string): Ref<EnumOption[]> => {
-    const fields = (cxt?.__config as FormSceneConfig).fields || [];
+export const doComputedOptions = (ctx: FormSceneContext, fieldName: string): Ref<EnumOption[]> => {
+    const fields = (ctx?.__config as FormSceneConfig).fields || [];
     const scheme = findScheme(
-        cxt.schemes,
+        ctx.schemes,
         fields.find((field) => field.name === fieldName),
     );
     return computed(() => unref(scheme?.props || {})?.options || []);
@@ -86,13 +86,13 @@ export const doComputedOptions = (cxt: FormSceneContext, fieldName: string): Ref
 
 /**
  * 获取字段的响应式枚举
- * @param cxt 上下文
+ * @param ctx 上下文
  * @param value 枚举值
  * @param config 配置
  * @returns 枚举描述
  */
-export const doComputedLabels = (cxt: FormSceneContext, value: any, config: { fieldName: string; split?: string }): Ref<string> => {
-    const optionsRef = doComputedOptions(cxt, config.fieldName);
+export const doComputedLabels = (ctx: FormSceneContext, value: any, config: { fieldName: string; split?: string }): Ref<string> => {
+    const optionsRef = doComputedOptions(ctx, config.fieldName);
     const values = turnArray(value);
     return computed(() => {
         const options = optionsRef.value;

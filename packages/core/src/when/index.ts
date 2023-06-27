@@ -4,11 +4,11 @@ import { WhenPlugin } from '../base';
 
 export const when: WhenPlugin<string | ((model?: Record<string, unknown>) => unknown)> = (expression) => {
     if (!expression) return;
-    return (cxt, invoke) => {
+    return (ctx, invoke) => {
         let code: any;
         if (isString(expression)) {
-            if (!cxt.modelRef) {
-                console.warn('When: cxt.model not found!');
+            if (!ctx.modelRef) {
+                console.warn('When: ctx.model not found!');
                 return;
             }
             code = Function('state', `with(state){ return ${expression}}`);
@@ -17,7 +17,7 @@ export const when: WhenPlugin<string | ((model?: Record<string, unknown>) => unk
         }
         if (!code) return;
         watch(
-            () => code(cxt.modelRef.value),
+            () => code(ctx.modelRef.value),
             (value) => invoke(value),
             { immediate: true },
         );

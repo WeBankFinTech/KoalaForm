@@ -61,7 +61,7 @@ const doRequest: (
 重置表单字段，由 **【表单场景】** 提供
 
 **参数**
-- cxt：表单场景上下文
+- ctx：表单场景上下文
 
 ```ts
 const doResetFields: (ctx: FormSceneContext) => void
@@ -71,7 +71,7 @@ const doResetFields: (ctx: FormSceneContext) => void
 设置表单字段初始值，由 **【表单场景】** 提供
 
 **参数**
-- cxt：表单场景上下文
+- ctx：表单场景上下文
 - values: 对象值或者是指定name的值
 - name：指定values更新到那个字段更新。
 
@@ -93,7 +93,7 @@ doInitFields(ctx, 'aring', 'name') // 单个字段更新
 更新表单字段值，由 **【表单场景】** 提供
 
 **参数**
-- cxt：表单场景上下文
+- ctx：表单场景上下文
 - values: 对象值或者是指定name的值
 - name：指定values更新到那个字段更新。
 
@@ -238,18 +238,18 @@ const doRemoteOptions: (api: string, data?: Record<string, any>, config?: {
 ## doComputedOptions
 由 **【options插件】** 提供，获取字段的响应式options
 
-@param cxt — 上下文
+@param ctx — 上下文
 
 @param fieldName — 字段名
 
 ```ts
-const doComputedOptions: (cxt: FormSceneContext, fieldName: string) => Ref<EnumOption[]>
+const doComputedOptions: (ctx: FormSceneContext, fieldName: string) => Ref<EnumOption[]>
 ```
 
 ## doComputedLabels
 由 **【options插件】** 获取字段的响应式枚举
 
-@param cxt — 上下文
+@param ctx — 上下文
 
 @param value — 枚举值
 
@@ -260,7 +260,7 @@ const doComputedOptions: (cxt: FormSceneContext, fieldName: string) => Ref<EnumO
 @returns — 枚举描述
 
 ```ts
-const doComputedLabels: (cxt: FormSceneContext, value: any, config: {
+const doComputedLabels: (ctx: FormSceneContext, value: any, config: {
     fieldName: string;
     split?: string;
 }) => Ref<string>

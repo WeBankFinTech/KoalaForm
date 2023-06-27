@@ -27,7 +27,7 @@ export interface SceneConfig {
     components?: ComponentDesc[] | ComponentDesc;
 }
 
-export type When<T extends SceneContext = SceneContext> = (cxt: T, invoke: (...args: unknown[]) => void, field?: Field) => void;
+export type When<T extends SceneContext = SceneContext> = (ctx: T, invoke: (...args: unknown[]) => void, field?: Field) => void;
 
 export type WhenPlugin<T, K extends SceneContext = SceneContext> = (args: T) => When<K> | undefined;
 
@@ -83,8 +83,8 @@ export const useSceneContext = (names: string[] | string) => {
     };
 
     const setContext = <T extends SceneContext>(name: string, values: T) => {
-        const cxt = getContext(name);
-        Object.assign(cxt, values);
+        const ctx = getContext(name);
+        Object.assign(ctx, values);
     };
     return {
         ctxs,
