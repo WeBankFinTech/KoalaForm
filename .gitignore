@@ -4,3 +4,5 @@ packages/**/dist
 .cache
 .DS_Store
 dist
+yarn-error.log
+packages/**/.fes

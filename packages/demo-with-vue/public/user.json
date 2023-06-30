@@ -1,0 +1,33 @@
+{
+    "code": 0,
+    "result": {
+        "list": [
+            {
+                "id": "1",
+                "name": "蒙奇·D·路飞",
+                "age": 16,
+                "sex": "1",
+                "hobby": "2,3",
+                "birthday": 1115251200000,
+                "idCard": "440223198310130033",
+                "address": "上海市普陀区金沙江路 1518 弄",
+                "education": "1"
+                
+            },
+            {
+                "id": "2",
+                "name": "罗罗诺亚·索隆",
+                "age": 18,
+                "sex": "1",
+                "birthday": 1115251200000,
+                "idCard": "440223193110130024",
+                "address": "上海市普陀区金沙江路 1518 弄",
+                "education": "2"
+            }
+        ],
+        "page": {
+            "currentPage": 1,
+            "totalCount": 23
+        }
+    }
+}
