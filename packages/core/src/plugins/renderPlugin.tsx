@@ -79,7 +79,7 @@ const renderNode = (ctx: SceneContext, scheme: Scheme | string | ModelRef | Slot
     }
     const newChildren: any = { ...(children || {}) };
     if (slotParam?.__koalaColFlag && children) {
-        // 列表的childrenslot加上列表的slot参数
+        // 列表的children slot加上列表的slot参数
         Object.keys(children).forEach((key) => {
             const slot = children?.[key];
             if (isFunction(slot)) {

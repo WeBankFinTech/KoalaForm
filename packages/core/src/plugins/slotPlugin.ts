@@ -30,6 +30,9 @@ export const slotPlugin: PluginFunction<SceneContext, SceneConfig> = (api) => {
             const render = ctx.render;
             ctx.render = (slots) => {
                 travelTree(ctx.schemes, (scheme) => {
+                    if ((scheme?.__node as ComponentDesc)?.slots) {
+                        mergeRefProps(scheme, 'slots', (scheme?.__node as ComponentDesc)?.slots);
+                    }
                     if (slots && (scheme?.__node as ComponentDesc)?.slotName) {
                         parseSlotName(slots, scheme, scheme.__node as ComponentDesc, ctx);
                     }
