@@ -14,7 +14,7 @@ npm install
 npm run dev
 ```
 
-或者这里下载[Demo项目](index.md)
+或者这里下载[Vue Demo项目](https://github.com/WeBankFinTech/KoalaForm/tree/main/packages/demo-with-vue)、[Fes Demo项目](https://github.com/WeBankFinTech/KoalaForm/tree/main/packages/demo-with-fes)
 
 ## 安装
 安装`@koala-form/core`、`@koala-form/fes-plugin`
