@@ -15,6 +15,7 @@ export interface ComponentDesc {
     disabled?: Ref<boolean> | When;
     events?: Record<string, (value: any, ...args: any[]) => void>;
     slotName?: string;
+    slots?: Slots; // version >= 2.0.1
     children?: Array<string | ComponentDesc | SceneContext> | string | ComponentDesc | SceneContext;
 }
 ```

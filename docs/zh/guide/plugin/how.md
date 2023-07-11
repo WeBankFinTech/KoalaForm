@@ -80,6 +80,11 @@ import { useSceneContext } from '@koala-form/core';
 const { ctx } = useSceneContext(['form'])
 
 ctx.use(formLabelColonPlugin)
+
+
+// 多场景安装 version >= 2.0.1
+useSceneContext(['form', 'table'], [formLabelColonPlugin])
+
 ```
 
 运行示例效果
