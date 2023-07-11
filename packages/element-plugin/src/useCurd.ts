@@ -1,4 +1,4 @@
-import { FMessage } from '@fesjs/fes-design';
+import { ElButton, ElMessage, ElPopconfirm } from 'element-plus';
 import {
     ComponentDesc,
     ComponentType,
@@ -31,7 +31,7 @@ import {
     useTable,
 } from '@koala-form/core';
 import { cloneDeep, merge } from 'lodash-es';
-import { computed, onMounted, Ref, ref, Slots, unref } from 'vue';
+import { computed, h, onMounted, Ref, ref, Slots, unref, watch } from 'vue';
 import { genButton, genForm } from './preset';
 
 interface Action extends ComponentDesc {
@@ -116,7 +116,7 @@ export const useCurd = (config: CurdConfig) => {
 
     const editTypeRef: Ref<'create' | 'update' | 'view'> = ref('create');
     /** 列表勾选，table.selection可开启 */
-    const selectedRows = ref([]);
+    const selectedRows = ref<any>([]);
     /** 分页改变时调用查询 */
     const doPagerChange = async () => {
         if (!actions.query?.api) {
@@ -201,7 +201,7 @@ export const useCurd = (config: CurdConfig) => {
         if (after) {
             after(data);
         } else {
-            FMessage.success(`${actionTypeMap[editTypeRef.value]}成功！`);
+            ElMessage.success(`${actionTypeMap[editTypeRef.value]}成功！`);
             doClose(modal);
             doQuery();
         }
@@ -221,14 +221,14 @@ export const useCurd = (config: CurdConfig) => {
         if (after) {
             after(data);
         } else {
-            FMessage.success('删除成功！');
+            ElMessage.success('删除成功！');
             doQuery();
         }
     };
 
     useForm({
         ctx: query,
-        form: merge(genForm('inline'), queryCfg.form),
+        form: merge(genForm(true), queryCfg.form),
         fields: [
             ...queryCfg.fields,
             queryCfg.actionField !== false &&
@@ -256,10 +256,28 @@ export const useCurd = (config: CurdConfig) => {
 
     const rowKey = tableCfg.rowKey || 'id';
 
+    const doSelectionChange = (selection = []) => {
+        selectedRows.value = selection.map((item) => item[rowKey]);
+    };
+
+    watch(selectedRows, (newVal, oldVal) => {
+        if (newVal.toString() !== oldVal.toString()) {
+            table.modelRef.value?.forEach((row: any) => {
+                table.ref.value.toggleRowSelection(row, selectedRows.value.includes(row[rowKey]));
+            });
+        }
+    });
+
     useTable({
         ctx: table,
         table: merge<ComponentDesc, ComponentDesc>(
-            { name: ComponentType.Table, vModels: { checkedKeys: { name: '__value', ref: selectedRows } }, props: { rowKey } },
+            {
+                name: ComponentType.Table,
+                props: { rowKey },
+                events: {
+                    onSelectionChange: doSelectionChange,
+                },
+            },
             tableCfg.table,
         ),
         fields: [
@@ -277,25 +295,27 @@ export const useCurd = (config: CurdConfig) => {
                                 actions.update &&
                                     !actions.update.hidden &&
                                     merge(
-                                        genButton('更新', (record) => openModal('update', record), { type: 'link' }),
+                                        genButton('更新', (record) => openModal('update', record), { link: true }),
                                         actions.update,
                                     ),
                                 actions.view &&
                                     !actions.view.hidden &&
                                     merge(
-                                        genButton('详情', (record) => openModal('view', record), { type: 'link' }),
+                                        genButton('详情', (record) => openModal('view', record), { link: true }),
                                         actions.view,
                                     ),
                                 actions.delete &&
                                     !actions.delete.hidden &&
                                     merge(
                                         {
-                                            name: ComponentType.Tooltip,
-                                            props: { mode: 'confirm', title: '是否删除该记录？' },
+                                            name: ElPopconfirm,
+                                            props: { title: '是否删除该记录？', width: 200 },
                                             events: {
-                                                onOk: doDelete,
+                                                onConfirm: doDelete,
                                             },
-                                            children: genButton('删除', undefined, { type: 'link' }),
+                                            slots: {
+                                                reference: () => h(ElButton, { link: true, type: 'primary' }, () => '删除'),
+                                            },
                                         },
                                         actions.delete,
                                     ),
@@ -315,7 +335,7 @@ export const useCurd = (config: CurdConfig) => {
                 {
                     name: ComponentType.Pagination,
                     events: {
-                        onChange: doPagerChange,
+                        onCurrentChange: doPagerChange,
                     },
                 },
                 pagerCfg.pager,
@@ -325,7 +345,7 @@ export const useCurd = (config: CurdConfig) => {
     editCfg &&
         useForm({
             ctx: edit,
-            form: merge(genForm('horizontal', { labelWidth: '80px', labelPosition: 'right' }), editCfg.form),
+            form: merge(genForm(false, { labelWidth: '80px', labelPosition: 'right' }), editCfg.form),
             fields: editCfg.fields,
         });
 

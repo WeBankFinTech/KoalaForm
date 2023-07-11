@@ -3,25 +3,42 @@ sidebarDepth: 3
 ---
 
 # Element Plus Plugin
-此插件依赖`@fesjs/fes-design`，提供了以下功能：
+此插件依赖`element-plus`，提供了以下功能：
 
 - 将组件名解析到响应的组件
 - 提供场景的的预设配置
 
+::: warning
+组件映射说明
+
+- Modal使用的是Dialog组件，Dialog组件默认不提供footer按钮，useModal的场景会添加默认的取消/确定按钮，支持解析属性cancelText, okText，事件onOk，onCancel
+
+- Select使用的是ElSelectV2组件
+
+- CheckboxGroup可根据options渲染Checkbox
+
+- RadioGroup可根据options渲染Radio
+:::
+
 ## 使用插件
 
-直接引用默认安装到全局
+安装到全局
 
 ```js
-import '@koala-form/fes-plugin';
+import { installInGlobal } '@koala-form/core';
+import { componentPlugin } '@koala-form/element-plugin';
+installInGlobal(componentPlugin);
 ```
 
 在场景上下文安装
 ```js
 import { useSceneContext } '@koala-form/core';
-import { componentPlugin } '@koala-form/fes-plugin';
+import { componentPlugin } '@koala-form/element-plugin';
 const ctx = useSceneContext('name')
 ctx.use(componentPlugin);
+
+// const ctx = useSceneContext('name', componentPlugin)
+
 ```
 
 
@@ -50,25 +67,25 @@ preset是提供一些方便快捷的方法去生成场景的配置，比如按�
 - props — 部分属性
 
 ```js
-const genButton: (name: string, handler: (rowData?: Record<string, any>) => void, props?: {
-    type?: 'primary' | 'text' | 'link' | 'info' | 'success' | 'warning' | 'danger' | 'default';
-    size?: 'small' | 'middle' | 'large';
+const genButton: (name: string, handler?: ((rowData?: any) => void) | undefined, props?: {
+    [key: string]: any;
+    type?: "default" | "success" | "warning" | "info" | "primary" | "danger" | undefined;
+    size?: "default" | "small" | "large" | undefined;
     disabled?: ComponentDesc['disabled'];
     vIf?: ComponentDesc['vIf'];
     vShow?: ComponentDesc['vShow'];
-}) => ComponentDesc
+} | undefined) => ComponentDesc
 ```
 
 ### genForm
 生成表单配置，返回一个form组件的`ComponentDesc`
 
 ***@param*** 
-- layout — 表单布局方式，默认是垂直horizontal
+- inline — 表单布局方式，默认是false
 - props — form组件属性
 
 ```js
-const genForm: (layout?: 'horizontal' | 'inline', props?: {
-    inlineItemWidth?: number | string;
+const genForm: (inline?: boolean, props?: {
     labelWidth?: number | string;
     labelPosition?: 'left' | 'top' | 'right';
 }) => ComponentDesc
@@ -127,15 +144,15 @@ const genTableAction: (handlers: {
 ## useCurd
 虽然有了基础场景可以自由组合，但是像CRUD这种组合逻辑也是大同小异，所以我们组合了`useCurd`的场景，更方便快捷的使用。
 
-<!-- <ExampleDoc>
-<FesdUseCurd>
-</FesdUseCurd>
+<ExampleDoc>
+<ElementUseCurd>
+</ElementUseCurd>
 <template #code>
 
-<<< @/examples/fesdUseCurd.vue
+<<< @/examples/elementUseCurd.vue
 
 </template>
-</ExampleDoc> -->
+</ExampleDoc>
 
 ### 配置说明
 useCurd提供了字段配置和行为配置。
@@ -311,7 +328,7 @@ useCurd({
         form: { props: { labelWidth: '100px' } }
     },
     pager: {
-        pager: { props: { showSizeChanger: true } }
+        pager: { props: { background: false } }
     },
     actions: {
         create: { props: { type: 'success' } }

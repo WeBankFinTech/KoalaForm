@@ -1,6 +1,6 @@
 {
   "name": "@koala-form/element-plugin",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "KoalaForm element plus ui插件",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -12,7 +12,7 @@
   ],
   "peerDependencies": {
     "vue": "^3.0.7",
-    "@koala-form/core": "^2.0.0"
+    "@koala-form/core": "^2.0.1"
   },
   "dependencies": {
     "element-plus": "^2.3.7"

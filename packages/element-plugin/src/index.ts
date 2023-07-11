@@ -1,20 +1,8 @@
-import {
-    ComponentDesc,
-    ComponentType,
-    Field,
-    installInGlobal,
-    isComponent,
-    mergeRefProps,
-    PluginFunction,
-    SceneConfig,
-    SceneContext,
-    setupGlobalConfig,
-    travelTree,
-} from '@koala-form/core';
+import { ComponentType, Field, installInGlobal, isComponent, mergeRefProps, PluginFunction, SceneConfig, SceneContext, setupGlobalConfig, travelTree } from '@koala-form/core';
 import * as ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
-import { unref, VNode } from 'vue';
-import { genSelectSlots } from './slots';
+import { computed, Slot, unref, VNode } from 'vue';
+import { genModalFooter, genOptions } from './slots';
 export * from './preset';
 export * from './useCurd';
 
@@ -43,33 +31,49 @@ export const componentPlugin: PluginFunction<SceneContext, SceneConfig> = (api) 
     api.on('modalSchemeLoaded', ({ ctx }) => {
         const modalScheme = ctx.schemes[0];
         mergeRefProps(modalScheme.vModels, 'modelValue', modalScheme.vModels?.show);
-    });
-
-    api.on('modalSchemeLoaded', ({ ctx }) => {
-        const modalScheme = ctx.schemes[0];
-        mergeRefProps(modalScheme.vModels, 'modelValue', modalScheme.vModels?.show);
+        if (!modalScheme.slots) {
+            modalScheme.slots = {};
+        }
+        modalScheme.slots = {
+            footer: genModalFooter(modalScheme, ctx) as Slot,
+            ...modalScheme.slots,
+        };
     });
 
     api.on('pagerSchemeLoaded', ({ ctx }) => {
         const pagerScheme = ctx.schemes[0];
-        mergeRefProps(pagerScheme, 'props', { layout: 'prev, pager, next' });
+        mergeRefProps(pagerScheme, 'props', {
+            layout: 'prev, pager, next',
+            total: computed(() => ctx.modelRef?.value?.totalCount),
+            background: true,
+        });
     });
 
     api.on('started', ({ ctx, name }) => {
-        if (name === 'format-plugin') {
+        if (['format-plugin', 'options-plugin'].includes(name)) {
             travelTree(ctx.schemes, (scheme) => {
                 const field = scheme.__node as Field;
-                if (scheme.component === ComponentType.TableColumn && field?.format) {
-                    scheme.slots = {
-                        ...scheme.slots,
-                        default: ({ row, column }) => {
-                            return field.format?.(row, row[column.property], scheme) as VNode[];
-                        },
-                    };
+                if (name === 'format-plugin') {
+                    if (scheme.component === ComponentType.TableColumn && field?.format) {
+                        scheme.slots = {
+                            ...scheme.slots,
+                            default: ({ row, column }) => {
+                                return field.format?.(row, row[column.property], scheme) as VNode[];
+                            },
+                        };
+                    }
+                }
+                if (name === 'options-plugin') {
+                    // options渲染
+                    const { component, props } = scheme;
+                    if ([ComponentType.CheckboxGroup, ComponentType.RadioGroup].includes(component as string)) {
+                        scheme.slots = {
+                            ...scheme.slots,
+                            default: genOptions(component as string, props),
+                        };
+                    }
                 }
             });
         }
     });
 };
-
-installInGlobal(componentPlugin);

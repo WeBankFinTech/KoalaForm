@@ -9,17 +9,19 @@
 
 ```bash
 npm i @koala-form/core
-npm i @koala-form/fes-plugin
+npm i @koala-form/element-plugin
 ```
 
 ## Usage
 注册全局插件
 ```js
-import '@koala-form/fes-plugin';
-import { installPluginPreset } from '@koala-form/core';
+import { componentPlugin } '@koala-form/element-plugin';
+import { installPluginPreset, installInGlobal } from '@koala-form/core';
 
 // 将依赖的插件安装到全局
 installPluginPreset();
+
+installInGlobal(componentPlugin)
 ```
 写一个简单的表单
 ```html

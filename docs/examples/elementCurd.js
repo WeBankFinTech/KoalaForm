@@ -13,8 +13,8 @@ import {
     useSceneContext,
     useTable,
 } from '@koala-form/core';
-import { genForm, genQueryAction, genTableAction } from '@koala-form/element-plugin';
-import { FMessage } from '@fesjs/fes-design';
+import { genForm, genQueryAction, genTableAction, componentPlugin } from '@koala-form/element-plugin';
+import { ElMessage } from 'element-plus';
 
 const name = { name: 'name', label: '姓名' };
 const age = { name: 'age', label: '年龄' };
@@ -37,7 +37,7 @@ export default defineComponent({
     setup() {
         const {
             ctxs: [query, table, pager, modal, edit],
-        } = useSceneContext(['query', 'table', 'pager', 'modal', 'edit']);
+        } = useSceneContext(['query', 'table', 'pager', 'modal', 'edit'], [componentPlugin]);
 
         let isCreate = false;
         const queryActions = genQueryAction({
@@ -50,9 +50,9 @@ export default defineComponent({
             },
         });
         const tableAction = genTableAction({
-            view: ({ row }) => FMessage.info(row.name),
+            view: ({ row }) => ElMessage.info(row.name),
             delete: ({ row }) => {
-                FMessage.success('删除 ' + row.name);
+                ElMessage.success('删除 ' + row.name);
             },
             update: ({ row }) => {
                 doOpenModal({ modal, form: edit, row });
@@ -62,7 +62,7 @@ export default defineComponent({
         });
         useForm({ ctx: query, fields: [...formFileds, queryActions], form: genForm(true) });
         useTable({ ctx: table, fields: [name, age, { ...sex, format: formatByOptions }, tableAction] });
-        usePager({ ctx: pager, pager: { events: { onChange: () => doRefresh({ api: '/user.json', form: query, table, pager }) } } });
+        usePager({ ctx: pager, pager: { events: { onCurrentChange: () => doRefresh({ api: '/user.json', form: query, table, pager }) } } });
         useForm({ ctx: edit, fields: formFileds });
         useModal({
             ctx: modal,
@@ -76,7 +76,7 @@ export default defineComponent({
                             api = '/error.json';
                         }
                         await doCloseModal({ api, form: edit, modal });
-                        FMessage.success('保存成功');
+                        ElMessage.success('保存成功');
                     },
                 },
             },

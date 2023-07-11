@@ -1,7 +1,7 @@
 import { isString } from 'lodash-es';
 import { DefineComponent, Ref, Slot, Slots, VNodeChild, reactive } from 'vue';
 import { EnumOption, Reactive, SceneContext, When } from './base';
-import { mergeRefProps, travelTree, turnArray } from './helper';
+import { travelTree, turnArray } from './helper';
 
 export interface ComponentDesc {
     name: string;
