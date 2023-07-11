@@ -67,7 +67,7 @@ export default {
               link: '/zh/ui',
               activeMatch: '^/zh/ui',
               items: [
-                { text: 'Fes Plugin', link: '/zh/ui/fes' },
+                { text: 'Fes Design Plugin', link: '/zh/ui/fes' },
                 { text: 'Element Plus Plugin', link: '/zh/ui/element' },
               ]
             },
@@ -80,7 +80,7 @@ export default {
         sidebar: {
             '/zh/guide/': getGuideSidebar(),
             '/zh/ui/fes': [
-              { text: 'Fes Plugin', link: '/zh/ui/fes' },
+              { text: 'Fes Design Plugin', link: '/zh/ui/fes' },
             ],
             '/zh/ui/element': [
               { text: 'Element Plus Plugin', link: '/zh/ui/element' },
