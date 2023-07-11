@@ -1,19 +1,21 @@
 {
   "name": "koala-form",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "vue form helper",
   "author": "aringlai",
   "license": "MIT",
   "scripts": {
-    "build:core": "lerna exec --scope @koala-form/core tsc",
-    "build:fes": "lerna exec --scope @koala-form/fes-plugin tsc",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs",
     "cypress:open": "cypress open",
+    "build:core": "lerna exec --scope @koala-form/core tsc",
+    "build:fes": "lerna exec --scope @koala-form/fes-plugin tsc",
+    "build:element": "lerna exec --scope @koala-form/element-plugin tsc",
     "publish:core": "cd packages/core && npm publish",
     "publish:fes": "cd packages/fes-plugin && npm publish",
-    "publish": "npm-run-all build:core build:fes publish:core publish:fes"
+    "publish:element": "cd packages/element-plugin && npm publish",
+    "publish": "npm-run-all build:core build:fes build:element publish:core publish:fes publish:element"
   },
   "dependencies": {
     "@fesjs/fes-design": "0.7.15",

@@ -36,6 +36,7 @@ export default {
           alias: {
               '@koala-form/core': path.resolve('packages/core/src/index.ts'),
               '@koala-form/fes-plugin': path.resolve('packages/fes-plugin/src/index.ts'),
+              '@koala-form/element-plugin': path.resolve('packages/element-plugin/src/index.ts'),
           },
       },
         json: {
@@ -66,7 +67,8 @@ export default {
               link: '/zh/ui',
               activeMatch: '^/zh/ui',
               items: [
-                { text: 'Fes Plugin', link: '/zh/ui/fes' },
+                { text: 'Fes Design Plugin', link: '/zh/ui/fes' },
+                { text: 'Element Plus Plugin', link: '/zh/ui/element' },
               ]
             },
             // { text: '精彩示例', link: '/zh/demos/', activeMatch: '^/zh/demos' },
@@ -78,7 +80,10 @@ export default {
         sidebar: {
             '/zh/guide/': getGuideSidebar(),
             '/zh/ui/fes': [
-              { text: 'Fes Plugin', link: '/zh/ui/fes' },
+              { text: 'Fes Design Plugin', link: '/zh/ui/fes' },
+            ],
+            '/zh/ui/element': [
+              { text: 'Element Plus Plugin', link: '/zh/ui/element' },
             ],
             '/zh/demos/': getDemosSidebar(),
         }

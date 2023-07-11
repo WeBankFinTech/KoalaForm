@@ -1,7 +1,7 @@
 {
   "name": "@koala-form/core",
-  "version": "2.0.0",
-  "description": "vue form helper",
+  "version": "2.0.1",
+  "description": "基于Vue3的中后台表单解决方案",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",

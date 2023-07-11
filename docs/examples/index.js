@@ -25,6 +25,9 @@ import FesdUseCurd from './fesdUseCurd.vue';
 
 import LabelPlugin from './labelPlugin';
 
+import ElementCurd from './elementCurd';
+import ElementUseCurd from './elementUseCurd.vue';
+
 export default {
     // Test,
     StartedSceneVue,
@@ -47,6 +50,8 @@ export default {
     FesdCurd,
     FesdUseCurd,
     LabelPlugin,
+    ElementCurd,
+    ElementUseCurd,
     // User,
     // UseForm,
     // UseFormSlots,

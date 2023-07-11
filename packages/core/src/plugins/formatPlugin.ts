@@ -5,9 +5,9 @@ import { EnumOption, getGlobalConfig } from '../base';
 import { mergeRefProps } from '../helper';
 import { Field, findScheme } from '../scheme';
 import { FormSceneConfig, FormSceneContext } from '../useForm';
-import { PluginFunction } from './define';
+import { Plugin, PluginFunction } from './define';
 
-const format = (ctx: FormSceneContext, config: FormSceneConfig, type: string) => {
+const format = (ctx: FormSceneContext, config: FormSceneConfig, type: string, api: Plugin) => {
     const fields = (config as FormSceneConfig).fields;
     if (!fields) return;
     fields.forEach((field) => {
@@ -25,14 +25,15 @@ const format = (ctx: FormSceneContext, config: FormSceneConfig, type: string) =>
             mergeRefProps(scheme, 'slots', { default: defaultSlot });
         }
     });
+    api.emit('started');
 };
 
 export const formatPlugin: PluginFunction<FormSceneContext, FormSceneConfig> = (api) => {
     api.describe('format-plugin');
 
-    api.on('formSchemeLoaded', ({ ctx, config }) => format(ctx, config, 'form'));
+    api.on('formSchemeLoaded', ({ ctx, config }) => format(ctx, config, 'form', api));
 
-    api.on('tableSchemeLoaded', ({ ctx, config }) => format(ctx, config, 'table'));
+    api.on('tableSchemeLoaded', ({ ctx, config }) => format(ctx, config, 'table', api));
 };
 
 export const formatByOptions: Field['format'] = (model, value, scheme) => {

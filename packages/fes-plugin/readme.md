@@ -1,9 +1,23 @@
+<p align="center">
+  <a href="../../">
+    <img alt="koala" width="250" src="https://koala-form.mumblefe.cn/logo.png
+">
+  </a>
+</p>
 <h1 align="center">Koala-Form</h1>
 
 <div align="center">
 
 低代码表单解决方案，让你跟考拉一样“懒”
+
+[![GitHub issues](https://img.shields.io/github/issues/WeBankFinTech/KoalaForm.svg?style=flat-square)](../../issues)
+[![MIT](https://img.shields.io/dub/l/vibe-d.svg?style=flat-square)](http://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](../../pulls)
+[![Page Views Count](https://badges.toozhao.com/badges/01H51S4REBN596ZZ2BTNVV6566/green.svg)](https://badges.toozhao.com/stats/01H51S4REBN596ZZ2BTNVV6566 "Get your own page views count badge on badges.toozhao.com")
+
 </div>
+
+-   使用文档 - [https://koala-form.mumblefe.cn/zh/ui/fes.html](https://koala-form.mumblefe.cn/zh/ui/fes.html)
 
 ## Install
 

@@ -48,12 +48,12 @@ export const setupGlobalConfig = (config: typeof defaultConfig) => {
 export const getGlobalConfig = () => defaultConfig;
 
 let scopeId = 0;
-export const useSceneContext = (names: string[] | string) => {
+export const useSceneContext = (names: string[] | string, plugins?: PluginFunction[]) => {
     const ctxs: SceneContext[] = [];
     const ctxMap: Record<string, SceneContext> = {};
 
     const createContext = (ctxName: string): SceneContext => {
-        const __plugins: PluginFunction[] = [];
+        const __plugins: PluginFunction[] = [...(plugins || [])];
         scopeId++;
         const ctx: SceneContext = {
             name: ctxName,

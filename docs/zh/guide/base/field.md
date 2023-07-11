@@ -20,6 +20,7 @@ export interface Field {
     required?: boolean | Ref<boolean>;
     components?: ComponentDesc | ComponentDesc[];
     slotName?: string;
+    slots?: Slots; // version >= 2.0.1
     format?: (model: any, value: any, scheme: Scheme) => VNodeChild | string;
 }
 ```
