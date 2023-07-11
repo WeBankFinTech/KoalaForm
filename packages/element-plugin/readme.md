@@ -1,9 +1,16 @@
+<p align="center">
+  <a href="../../">
+    <img alt="koala" width="250" src="https://koala-form.mumblefe.cn/logo.png
+">
+  </a>
+</p>
 <h1 align="center">Koala-Form</h1>
-
 <div align="center">
 
 低代码表单解决方案，让你跟考拉一样“懒”
 </div>
+
+-   使用文档 - [https://koala-form.mumblefe.cn/zh/ui/element.html](https://koala-form.mumblefe.cn/zh/ui/element.html)
 
 ## Install
 
