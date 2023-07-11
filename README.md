@@ -1,9 +1,9 @@
 <p align="center">
   <a href="../../">
-    <img alt="koala" width="250" src="https://koala-form.mumblefe.cn/logo.png
-">
+    <img alt="koala" width="250" src="./docs/public/logo.png">
   </a>
 </p>
+
 <h1 align="center">Koala-Form</h1>
 
 <div align="center">
