@@ -1,38 +1,32 @@
 <template>
-    <!-- <FTable :data="dataList">
-        <FTableColumn label="ID" prop="id"></FTableColumn>
-    </FTable> -->
-    <FButton v-for="(item, index) in dataList">{{ index }}</FButton>
+    <Test></Test>
 </template>
 
-<script setup>
-import { FButton } from '@fesjs/fes-design';
-import { onUnmounted, ref } from 'vue';
-
-const dataList = ref([]);
-for (let index = 0; index < 1; index++) {
-    dataList.value.push({ name: index });
-}
-
-const columns = [
-    {
-        title: '姓名',
-        dataIndex: 'name',
-        key: 'name',
+<script>
+import { defineComponent, onUnmounted, ref } from 'vue';
+const Test = defineComponent({
+    name: 'Test',
+    data() {
+        return {
+            name: 'aring',
+        };
     },
-    {
-        title: '年龄',
-        dataIndex: 'age',
-        key: 'age',
+    methods: {
+        hello: () => {
+            console.log('hello');
+        },
     },
-    {
-        title: '住址',
-        dataIndex: 'address',
-        key: 'address',
+    render() {
+        // debugger;
+        this.hello();
+        return '11111';
     },
-];
+});
 
-onUnmounted(() => {
-    console.log('------');
+export default defineComponent({
+    components: { Test },
+    setup() {
+        // to do
+    },
 });
 </script>

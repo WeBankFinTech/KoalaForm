@@ -2,21 +2,22 @@
     <KoalaRender :render="render">
         <!-- 扩展查询操作 -->
         <template #queryActionsExtend>
-            <ElButton type="primary" @click="doExport">导出</ElButton>
-            <ElButton type="primary" @click="doBatch">批量</ElButton>
+            <Button type="primary" @click="doExport">导出</Button>
+            <Button type="primary" @click="doBatch">批量</Button>
         </template>
-        <template #tableActionsExtend="{ row }">
-            <ElButton type="primary" link @click="doPass(row)">审核</ElButton>
-            <ElButton type="primary" link :disabled="row.id === '2'" @click="openModal('update', { row })">更新</ElButton>
+        <template #tableActionsExtend="{ record }">
+            <Button type="link" @click="doPass(record)">审核</Button>
+            <Button type="link" :disabled="record.id === '2'" @click="openModal('update', { record })">更新</Button>
         </template>
     </KoalaRender>
 </template>
 
 <script setup>
 import { ComponentType, KoalaRender, doGetFormData, useSceneContext } from '@koala-form/core';
-import { useCurd, mapTableFields, componentPlugin } from '@koala-form/element-plugin';
+import { useCurd, mapTableFields, componentPlugin } from '@koala-form/antd-plugin';
 import { computed } from 'vue';
-import { ElButton, ElMessage } from 'element-plus';
+import { Button, message } from 'ant-design-vue';
+import dayjs from 'dayjs';
 
 const sexOptions = [
     { value: '0', label: '女' },
@@ -66,6 +67,7 @@ const { render, editTypeRef, selectedRows, openModal } = useCurd({
     table: {
         ctx: table,
         rowKey: 'id',
+        table: { props: { scroll: { x: 1300, y: 1000 } } },
         selection: { props: { fixed: true, width: 50 } },
         actionField: { props: { fixed: 'right', width: 320 } },
         fields: mapTableFields(
@@ -111,6 +113,12 @@ const { render, editTypeRef, selectedRows, openModal } = useCurd({
         update: {
             hidden: true, // 更新按钮修改行数据判断时，可以隐藏默认更新按钮，在template实现
             api: '/error.json',
+            open: (data) => {
+                if (data.birthday) {
+                    data.birthday = dayjs(data.birthday);
+                }
+                return data;
+            },
         },
         delete: {
             api: '/success.json',
@@ -120,21 +128,21 @@ const { render, editTypeRef, selectedRows, openModal } = useCurd({
 });
 
 const doExport = () => {
-    ElMessage.success('导出');
+    message.success('导出');
     console.log('导出', doGetFormData(query));
 };
 
 const doBatch = () => {
     if (!selectedRows.value?.length) {
-        ElMessage.error('至少选择一条记录');
+        message.error('至少选择一条记录');
         return;
     }
-    ElMessage.success('批量操作 ==> ids: ' + selectedRows.value);
+    message.success('批量操作 ==> ids: ' + selectedRows.value);
     console.log('批量操作', selectedRows.value);
 };
 
 const doPass = (record) => {
-    ElMessage.success('审核 ===> ' + record.name);
+    message.success('审核 ===> ' + record.name);
     console.log(record);
 };
 </script>

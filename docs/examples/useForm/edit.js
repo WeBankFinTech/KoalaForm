@@ -1,7 +1,6 @@
 import { ComponentType, useForm, useSceneContext, doResetFields, doGetFormData } from '@koala-form/core';
 import { genSubmitAction } from '@koala-form/fes-plugin';
 import { defineComponent } from 'vue';
-
 export default defineComponent({
     setup() {
         const { ctx } = useSceneContext('form');

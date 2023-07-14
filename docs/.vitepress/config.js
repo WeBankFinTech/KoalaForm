@@ -16,7 +16,7 @@ export default {
     description: 'Koala Form',
     vite: {
         define: {
-            __VUE_OPTIONS_API__: false
+            __VUE_OPTIONS_API__: true
         },
         ssr: {
           // esm，ssr 渲染的时候编译成 cjs 的引入方式，会引发 nodejs 的模块加载异常错误
@@ -37,6 +37,7 @@ export default {
               '@koala-form/core': path.resolve('packages/core/src/index.ts'),
               '@koala-form/fes-plugin': path.resolve('packages/fes-plugin/src/index.ts'),
               '@koala-form/element-plugin': path.resolve('packages/element-plugin/src/index.ts'),
+              '@koala-form/antd-plugin': path.resolve('packages/antd-plugin/src/index.ts'),
           },
       },
         json: {
@@ -69,6 +70,7 @@ export default {
               items: [
                 { text: 'Fes Design Plugin', link: '/zh/ui/fes' },
                 { text: 'Element Plus Plugin', link: '/zh/ui/element' },
+                { text: 'Ant-Design-Vue Plugin', link: '/zh/ui/antd' },
               ]
             },
             // { text: '精彩示例', link: '/zh/demos/', activeMatch: '^/zh/demos' },
@@ -84,6 +86,9 @@ export default {
             ],
             '/zh/ui/element': [
               { text: 'Element Plus Plugin', link: '/zh/ui/element' },
+            ],
+            '/zh/ui/antd': [
+              { text: 'Ant-Design-Vue Plugin', link: '/zh/ui/antd' },
             ],
             '/zh/demos/': getDemosSidebar(),
         }

@@ -1,0 +1,29 @@
+
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "es6",
+    "strict": true,
+    "jsx": "preserve",
+    "noImplicitAny": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "preserveConstEnums": false,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": false,
+    "downlevelIteration": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "ignoreDeprecations": "5.0",
+    "removeComments": false,
+    "declaration": true,
+    "declarationMap": false,
+    "outDir": "./dist",
+    "moduleResolution": "Node"
+    //支持set等的迭代
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx"
+  ]
+}
