@@ -1,4 +1,4 @@
-import { defineComponent, h } from 'vue';
+import { defineComponent } from 'vue';
 import {
     ComponentType,
     doCloseModal,

@@ -33,6 +33,7 @@ import {
 import { cloneDeep, merge } from 'lodash-es';
 import { computed, h, onMounted, Ref, ref, Slots, unref, watch } from 'vue';
 import { genButton, genForm } from './preset';
+import { TableRowSelection } from 'ant-design-vue/lib/table/interface';
 
 interface Action extends ComponentDesc {
     api?: string;
@@ -56,7 +57,7 @@ interface CurdConfig {
     };
     table: TableSceneConfig & {
         rowKey?: string;
-        selection?: Field | boolean;
+        selection?: TableRowSelection | boolean;
         actionField?: Field | boolean;
     };
     pager?: PagerSceneConfig;
@@ -209,13 +210,14 @@ export const useCurd = (config: CurdConfig) => {
 
     /** 删除记录 */
     const doDelete = async (record: any) => {
+        debugger;
         const { api, after, before, reqConfig } = (actions.delete || {}) as Action;
         if (!api) {
             throw new Error(`action.delete.api required!`);
         }
-        let params: any = { id: record?.row[rowKey] };
+        let params: any = { id: record?.record[rowKey] };
         if (before) {
-            params = before(params, record?.row);
+            params = before(params, record?.record);
         }
         const data = await doRequest(api, params, reqConfig);
         if (after) {
@@ -256,16 +258,19 @@ export const useCurd = (config: CurdConfig) => {
 
     const rowKey = tableCfg.rowKey || 'id';
 
-    const doSelectionChange = (selection = []) => {
-        selectedRows.value = selection.map((item) => item[rowKey]);
+    const doSelectionChange = (selections = []) => {
+        selectedRows.value = selections;
     };
 
-    watch(selectedRows, (newVal, oldVal) => {
-        if (newVal.toString() !== oldVal.toString()) {
-            table.modelRef.value?.forEach((row: any) => {
-                table.ref.value.toggleRowSelection(row, selectedRows.value.includes(row[rowKey]));
-            });
-        }
+    const rowSelection = computed(() => {
+        if (!tableCfg.selection) return {};
+        return merge(
+            {
+                selectedRowKeys: unref(selectedRows),
+                onChange: doSelectionChange,
+            },
+            tableCfg.selection,
+        );
     });
 
     useTable({
@@ -273,15 +278,12 @@ export const useCurd = (config: CurdConfig) => {
         table: merge<ComponentDesc, ComponentDesc>(
             {
                 name: ComponentType.Table,
-                props: { rowKey },
-                events: {
-                    onSelectionChange: doSelectionChange,
-                },
+                props: { rowKey, rowSelection },
             },
             tableCfg.table,
         ),
         fields: [
-            tableCfg.selection && merge<Field, Field>({ props: { type: 'selection' } }, tableCfg.selection as Field),
+            // tableCfg.selection && merge<Field, Field>({ props: { type: 'selection' } }, tableCfg.selection as Field),
             ...tableCfg.fields,
             tableCfg.actionField !== false &&
                 ((actions.update && !actions.update.hidden) || (actions.delete && !actions.delete.hidden) || (actions.view && !actions.view.hidden) || tableCfg.actionField) &&
@@ -311,7 +313,7 @@ export const useCurd = (config: CurdConfig) => {
                                             name: Popconfirm,
                                             props: { mode: 'confirm', title: '是否删除该记录？' },
                                             events: {
-                                                onOk: doDelete,
+                                                onConfirm: doDelete,
                                             },
                                             children: genButton('删除', undefined, { type: 'link' }),
                                         },
@@ -333,7 +335,7 @@ export const useCurd = (config: CurdConfig) => {
                 {
                     name: ComponentType.Pagination,
                     events: {
-                        onCurrentChange: doPagerChange,
+                        onChange: doPagerChange,
                     },
                 },
                 pagerCfg.pager,

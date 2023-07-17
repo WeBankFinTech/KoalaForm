@@ -1,15 +1,17 @@
 <template>
-    <KoalaRender :render="render">
-        <!-- 扩展查询操作 -->
-        <template #queryActionsExtend>
-            <Button type="primary" @click="doExport">导出</Button>
-            <Button type="primary" @click="doBatch">批量</Button>
-        </template>
-        <template #tableActionsExtend="{ record }">
-            <Button type="link" @click="doPass(record)">审核</Button>
-            <Button type="link" :disabled="record.id === '2'" @click="openModal('update', { record })">更新</Button>
-        </template>
-    </KoalaRender>
+    <div class="curd">
+        <KoalaRender :render="render">
+            <!-- 扩展查询操作 -->
+            <template #queryActionsExtend>
+                <Button type="primary" @click="doExport">导出</Button>
+                <Button type="primary" @click="doBatch">批量</Button>
+            </template>
+            <template #tableActionsExtend="{ record }">
+                <Button type="link" @click="doPass(record)">审核</Button>
+                <Button type="link" :disabled="record.id === '2'" @click="openModal('update', { record })">更新</Button>
+            </template>
+        </KoalaRender>
+    </div>
 </template>
 
 <script setup>
@@ -123,7 +125,14 @@ const { render, editTypeRef, selectedRows, openModal } = useCurd({
         delete: {
             api: '/success.json',
         },
-        view: {},
+        view: {
+            open: (data) => {
+                if (data.birthday) {
+                    data.birthday = dayjs(data.birthday);
+                }
+                return data;
+            },
+        },
     },
 });
 
@@ -146,3 +155,9 @@ const doPass = (record) => {
     console.log(record);
 };
 </script>
+
+<style>
+.curd .ant-form-inline .ant-form-item {
+    margin-bottom: 10px;
+}
+</style>

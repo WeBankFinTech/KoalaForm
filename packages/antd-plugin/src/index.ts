@@ -1,20 +1,7 @@
-import {
-    ComponentType,
-    Field,
-    installInGlobal,
-    isComponent,
-    mergeRefProps,
-    PluginFunction,
-    SceneConfig,
-    SceneContext,
-    Scheme,
-    setupGlobalConfig,
-    travelTree,
-} from '@koala-form/core';
+import { ComponentType, Field, mergeRefProps, PluginFunction, SceneConfig, SceneContext, Scheme, setupGlobalConfig, travelTree } from '@koala-form/core';
 import * as Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
-import { computed, Slot, unref, VNode } from 'vue';
-import { genModalFooter, genOptions } from './slots';
+import { computed, VNode } from 'vue';
 export * from './preset';
 export * from './useCurd';
 
@@ -72,7 +59,7 @@ export const componentPlugin: PluginFunction<SceneContext, SceneConfig> = (api) 
     });
 
     api.on('started', ({ ctx, name }) => {
-        if (['format-plugin', 'options-plugin'].includes(name)) {
+        if (['format-plugin'].includes(name)) {
             travelTree(ctx.schemes, (scheme) => {
                 const field = scheme.__node as Field;
                 if (name === 'format-plugin') {
@@ -85,16 +72,6 @@ export const componentPlugin: PluginFunction<SceneContext, SceneConfig> = (api) 
                         };
                     }
                 }
-                // if (name === 'options-plugin') {
-                //     // options渲染
-                //     const { component, props } = scheme;
-                //     if ([ComponentType.CheckboxGroup, ComponentType.RadioGroup].includes(component as string)) {
-                //         scheme.slots = {
-                //             ...scheme.slots,
-                //             default: genOptions(component as string, props),
-                //         };
-                //     }
-                // }
             });
         }
     });
