@@ -8,5 +8,5 @@
       "jsx": "preserve",
       "allowSyntheticDefaultImports": true,
       "moduleResolution": "Node"
-    }
+    },
 }

@@ -15,7 +15,8 @@
     "publish:core": "cd packages/core && npm publish",
     "publish:fes": "cd packages/fes-plugin && npm publish",
     "publish:element": "cd packages/element-plugin && npm publish",
-    "publish": "npm-run-all build:core build:fes build:element publish:core publish:fes publish:element"
+    "publish": "npm-run-all build:core build:fes build:element publish:core publish:fes publish:element",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "dependencies": {
     "@fesjs/fes-design": "0.7.15",
@@ -60,6 +61,9 @@
     "vitepress": "0.21.6",
     "cypress": "12.13.0",
     "@vitejs/plugin-vue": "^4.2.3",
-    "npm-run-all": "4.1.5"
+    "npm-run-all": "4.1.5",
+    "commitizen": "^4.2.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "conventional-changelog-cli": "^2.2.2"
   }
 }
