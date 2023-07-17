@@ -2,22 +2,18 @@
 sidebarDepth: 3
 ---
 
-# Element Plus Plugin
-此插件依赖`element-plus`，提供了以下功能：
+# Ant Design Vue Plugin
+此插件依赖`ant-design-vue`，提供了以下功能：
 
 - 将组件名解析到响应的组件
 - 提供场景的的预设配置
 
 ::: warning
-组件映射说明
 
-- Modal使用的是Dialog组件，Dialog组件默认不提供footer按钮，useModal的场景会添加默认的取消/确定按钮，支持解析属性cancelText, okText，事件onOk，onCancel
+- Antd Table组件列的slot参数是`({ text, record, index, column })`
 
-- Select使用的是ElSelectV2组件
+- 表单日期组件接受的值是dayjs类型
 
-- CheckboxGroup可根据options渲染Checkbox
-
-- RadioGroup可根据options渲染Radio
 :::
 
 ## 使用插件
@@ -26,14 +22,14 @@ sidebarDepth: 3
 
 ```js
 import { installInGlobal } '@koala-form/core';
-import { componentPlugin } '@koala-form/element-plugin';
+import { componentPlugin } '@koala-form/antd-plugin';
 installInGlobal(componentPlugin);
 ```
 
 在场景上下文安装
 ```js
 import { useSceneContext } '@koala-form/core';
-import { componentPlugin } '@koala-form/element-plugin';
+import { componentPlugin } '@koala-form/antd-plugin';
 const ctx = useSceneContext('name')
 ctx.use(componentPlugin);
 
@@ -69,8 +65,8 @@ preset是提供一些方便快捷的方法去生成场景的配置，比如按�
 ```js
 const genButton: (name: string, handler?: ((rowData?: any) => void) | undefined, props?: {
     [key: string]: any;
-    type?: "default" | "success" | "warning" | "info" | "primary" | "danger" | undefined;
-    size?: "default" | "small" | "large" | undefined;
+    type?: "primary" | "ghost" | "dashed" | "link" | "text" | "default" | undefined;
+    size?: "small" | "middle" | "large" | undefined;
     disabled?: ComponentDesc['disabled'];
     vIf?: ComponentDesc['vIf'];
     vShow?: ComponentDesc['vShow'];
@@ -81,13 +77,20 @@ const genButton: (name: string, handler?: ((rowData?: any) => void) | undefined,
 生成表单配置，返回一个form组件的`ComponentDesc`
 
 ***@param*** 
-- inline — 表单布局方式，默认是false
+- layout — 表单布局方式
 - props — form组件属性
 
 ```js
-const genForm: (inline?: boolean, props?: {
-    labelWidth?: number | string;
-    labelPosition?: 'left' | 'top' | 'right';
+const genForm: (layout?: 'horizontal' | 'vertical' | 'inline', props?: {
+    labelCol?: {
+        span?: number;
+        offset?: number;
+    };
+    wrapperCol?: {
+        span?: number;
+        offset?: number;
+    };
+    labelAlign?: 'left' | 'right';
 }) => ComponentDesc
 ```
 
@@ -188,7 +191,7 @@ interface CurdConfig {
     };
     table: TableSceneConfig & {
         rowKey?: string; // 列表唯一值的字段，默认id
-        selection?: Field | boolean; // 开启列表多选配置
+        selection?: TableRowSelection | boolean; // 开启列表多选配置
         actionField?: Field | boolean; // 行为按钮域，为false时隐藏整个操作列
     };
     pager?: PagerSceneConfig;
@@ -328,7 +331,7 @@ useCurd({
         form: { props: { labelWidth: '100px' } }
     },
     pager: {
-        pager: { props: { background: false } }
+        pager: { props: { showQuickJumper: true } }
     },
     actions: {
         create: { props: { type: 'success' } }
@@ -385,9 +388,9 @@ const { render } = useCurd({
 ```html
 <template>
     <KoalaRender :render="render">
-        <template #tableActionsExtend="{ row }">
+        <template #tableActionsExtend="{ record }">
             <!-- 在这里可以获取行数据，用于控制按钮的状态 -->
-            <FButton type="link" :disabled="row.id === '2'" @click="openModal('update', { row })">更新</FButton>
+            <FButton type="link" :disabled="record.id === '2'" @click="openModal('update', { record })">更新</FButton>
         </template>
     </KoalaRender>
 </template>

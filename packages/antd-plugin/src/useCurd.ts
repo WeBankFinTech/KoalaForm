@@ -31,9 +31,10 @@ import {
     useTable,
 } from '@koala-form/core';
 import { cloneDeep, merge } from 'lodash-es';
-import { computed, h, onMounted, Ref, ref, Slots, unref, watch } from 'vue';
+import { computed, onMounted, Ref, ref, Slots, unref } from 'vue';
 import { genButton, genForm } from './preset';
 import { TableRowSelection } from 'ant-design-vue/lib/table/interface';
+import dayjs from 'dayjs';
 
 interface Action extends ComponentDesc {
     api?: string;
@@ -161,22 +162,34 @@ export const useCurd = (config: CurdConfig) => {
         }
         doResetFields(edit);
         let data = record && { ...record.record };
-        const open = actions[type]?.open;
-        if (open) data = open(data);
         if (data) {
             editCfg?.fields.forEach((field) => {
                 const comp = (field.components as any)?.[0] || field.components;
                 if (!comp) return;
-                if (comp.name === ComponentType.CheckboxGroup || (comp.name === ComponentType.Select && unref(comp.props)?.multiple)) {
-                    const text = data[field.name as string];
+                const text = data[field.name as string];
+                if (comp.name === ComponentType.CheckboxGroup || (comp.name === ComponentType.Select && unref(comp.props)?.mode === 'multiple')) {
                     if (typeof text === 'string') {
                         const value = text ? text.split(',') : [];
                         data[field.name as string] = value;
                         getGlobalConfig().debug && console.log(`字段${field.name}多选，其值${text}解析将自动成数组`);
                     }
                 }
+                if (comp.name === ComponentType.DatePicker && text) {
+                    let value;
+                    if (Array.isArray(text)) {
+                        value = [];
+                        text[0] && (value[0] = dayjs(text[0]));
+                        text[1] && (value[1] = dayjs(text[1]));
+                    } else {
+                        value = dayjs(text);
+                    }
+                    data[field.name as string] = value;
+                    getGlobalConfig().debug && console.log(`字段${field.name}是日期类型，其值${text}解析将自动成dayjs`);
+                }
             });
         }
+        const open = actions[type]?.open;
+        if (open) data = open(data);
         if (type !== 'create') {
             doSetFields(edit, data);
         }

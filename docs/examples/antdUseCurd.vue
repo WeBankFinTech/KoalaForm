@@ -19,7 +19,6 @@ import { ComponentType, KoalaRender, doGetFormData, useSceneContext } from '@koa
 import { useCurd, mapTableFields, componentPlugin } from '@koala-form/antd-plugin';
 import { computed } from 'vue';
 import { Button, message } from 'ant-design-vue';
-import dayjs from 'dayjs';
 
 const sexOptions = [
     { value: '0', label: '女' },
@@ -115,24 +114,11 @@ const { render, editTypeRef, selectedRows, openModal } = useCurd({
         update: {
             hidden: true, // 更新按钮修改行数据判断时，可以隐藏默认更新按钮，在template实现
             api: '/error.json',
-            open: (data) => {
-                if (data.birthday) {
-                    data.birthday = dayjs(data.birthday);
-                }
-                return data;
-            },
         },
         delete: {
             api: '/success.json',
         },
-        view: {
-            open: (data) => {
-                if (data.birthday) {
-                    data.birthday = dayjs(data.birthday);
-                }
-                return data;
-            },
-        },
+        view: {},
     },
 });
 
