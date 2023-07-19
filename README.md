@@ -48,6 +48,7 @@
 | ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | [@koala-form/fes-plugin](https://koala-form.mumblefe.cn/zh/ui/fes.html)                                        | Fes Design组件库的桥接插件                                            |
 | [@koala-form/element-plugin](https://koala-form.mumblefe.cn/zh/ui/element.html)                       | Element Plus组件库的桥接插件                                |
+| [@koala-form/antd-plugin](https://koala-form.mumblefe.cn/zh/ui/antd.html)                       | Ant Design Vue组件库的桥接插件                                |
 
 ## Install
 
