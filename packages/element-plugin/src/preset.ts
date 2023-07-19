@@ -1,5 +1,7 @@
 import { ComponentDesc, ComponentType, Field } from '@koala-form/core';
 import { ElButton, ElPopconfirm } from 'element-plus';
+import { h } from 'vue';
+
 /**
  * 生成按钮配置
  * @param name 按钮名称
@@ -107,11 +109,7 @@ export const genTableAction = (handlers: { update?: () => void; delete?: () => v
                         onConfirm: handlers.delete,
                     },
                     slots: {
-                        reference: () => (
-                            <ElButton type="primary" link>
-                                删除
-                            </ElButton>
-                        ),
+                        reference: () => h(ElButton, { type: 'primary', link: true }, () => '删除'),
                     },
                 },
             ].filter(Boolean) as ComponentDesc[],
