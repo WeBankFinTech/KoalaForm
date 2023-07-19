@@ -1,3 +1,12 @@
+## [2.0.2](https://github.com/WeBankFinTech/KoalaForm/compare/v2.0.1...v2.0.2) (2023-07-17)
+
+
+### Features
+
+* add and design vue plugn ([758ad02](https://github.com/WeBankFinTech/KoalaForm/commit/758ad02944731a0937674588ff531f8798ea3215))
+
+
+
 ## 2.0.1 (2023-07-11)
 
 

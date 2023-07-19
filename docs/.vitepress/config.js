@@ -7,7 +7,7 @@ const ssrTransformCustomDir = () => ({
 });
 
 // const BASE_URL = process.env.NODE_ENV === 'production' ? '/s/koala-form/v2/' : '/';
-const BASE_URL = '/'
+const BASE_URL = '/docs/.vitepress/dist/'
 
 export default {
     lang: 'zh-CN',
