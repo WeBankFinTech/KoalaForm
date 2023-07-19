@@ -18,8 +18,8 @@ import '@koala-form/fes-plugin';
 
 在场景上下文安装
 ```js
-import { useSceneContext } '@koala-form/core';
-import { componentPlugin } '@koala-form/fes-plugin';
+import { useSceneContext } from '@koala-form/core';
+import { componentPlugin } from '@koala-form/fes-plugin';
 const ctx = useSceneContext('name')
 ctx.use(componentPlugin);
 ```
