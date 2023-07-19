@@ -4,7 +4,7 @@
 ">
   </a>
 </p>
-<h1 align="center">Koala-Form</h1>
+<h1 align="center">Koala-Form Ant Design Vue插件</h1>
 <div align="center">
 
 低代码表单解决方案，让你跟考拉一样“懒”
@@ -16,19 +16,19 @@
 
 </div>
 
--   使用文档 - [https://koala-form.mumblefe.cn/zh/ui/element.html](https://koala-form.mumblefe.cn/zh/ui/element.html)
+-   使用文档 - [https://koala-form.mumblefe.cn/zh/ui/antd.html](https://koala-form.mumblefe.cn/zh/ui/antd.html)
 
 ## Install
 
 ```bash
 npm i @koala-form/core
-npm i @koala-form/element-plugin
+npm i @koala-form/antd-plugin
 ```
 
 ## Usage
 注册全局插件
 ```js
-import { componentPlugin } '@koala-form/element-plugin';
+import { componentPlugin } from '@koala-form/antd-plugin';
 import { installPluginPreset, installInGlobal } from '@koala-form/core';
 
 // 将依赖的插件安装到全局

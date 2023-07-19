@@ -1,4 +1,9 @@
-## [2.0.2](https://github.com/WeBankFinTech/KoalaForm/compare/v2.0.1...v2.0.2) (2023-07-17)
+## [2.0.2](https://github.com/WeBankFinTech/KoalaForm/compare/v2.0.1...v2.0.2) (2023-07-19)
+
+
+### Bug Fixes
+
+* jsx ([ea7d986](https://github.com/WeBankFinTech/KoalaForm/commit/ea7d986b4ff65d0b83bc93181acc07c9e721f4b9))
 
 
 ### Features

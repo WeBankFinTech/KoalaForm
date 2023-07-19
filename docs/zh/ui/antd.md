@@ -21,15 +21,15 @@ sidebarDepth: 3
 安装到全局
 
 ```js
-import { installInGlobal } '@koala-form/core';
-import { componentPlugin } '@koala-form/antd-plugin';
+import { installInGlobal } from '@koala-form/core';
+import { componentPlugin } from '@koala-form/antd-plugin';
 installInGlobal(componentPlugin);
 ```
 
 在场景上下文安装
 ```js
-import { useSceneContext } '@koala-form/core';
-import { componentPlugin } '@koala-form/antd-plugin';
+import { useSceneContext } from '@koala-form/core';
+import { componentPlugin } from '@koala-form/antd-plugin';
 const ctx = useSceneContext('name')
 ctx.use(componentPlugin);
 

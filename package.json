@@ -9,13 +9,8 @@
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs",
     "cypress:open": "cypress open",
-    "build:core": "lerna exec --scope @koala-form/core tsc",
-    "build:fes": "lerna exec --scope @koala-form/fes-plugin tsc",
-    "build:element": "lerna exec --scope @koala-form/element-plugin tsc",
-    "publish:core": "cd packages/core && npm publish",
-    "publish:fes": "cd packages/fes-plugin && npm publish",
-    "publish:element": "cd packages/element-plugin && npm publish",
-    "publish": "npm-run-all build:core build:fes build:element publish:core publish:fes publish:element",
+    "build": "lerna exec --scope @koala-form/$PKG tsc",
+    "publish": "cd packages/$PKG && npm publish",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "dependencies": {
