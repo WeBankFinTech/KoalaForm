@@ -25,7 +25,7 @@ importers:
       '@vue/theme': 0.1.16
       '@webank/eslint-config-ts': 1.0.0
       '@webank/eslint-config-webank': 1.1.1
-      ant-design-vue: ^3.2.20
+      ant-design-vue: ^4.0.0
       commitizen: ^4.2.1
       conventional-changelog-cli: ^2.2.2
       cypress: 12.13.0
@@ -50,7 +50,7 @@ importers:
       '@koala-form/core': link:packages/core
       '@koala-form/element-plugin': link:packages/element-plugin
       '@koala-form/fes-plugin': link:packages/fes-plugin
-      ant-design-vue: 3.2.20_vue@3.3.4
+      ant-design-vue: 4.0.0_vue@3.3.4
       dayjs: 1.11.9
       element-plus: 2.3.7_vue@3.3.4
       less: 4.1.2
@@ -88,10 +88,7 @@ importers:
       vitepress: 0.21.6_less@4.1.2
 
   packages/antd-plugin:
-    specifiers:
-      ant-design-vue: ^3.2.20
-    dependencies:
-      ant-design-vue: 3.2.20_vue@3.3.4
+    specifiers: {}
 
   packages/core:
     specifiers:
@@ -1652,6 +1649,14 @@ packages:
       vue: 3.3.4
     dev: false
 
+  /@emotion/hash/0.9.1:
+    resolution: {integrity: sha512-gJB6HLm5rYwSLI6PQa+X1t5CFGrv1J1TWG+sOyMCeKz2ojaj6Fnl/rZEspogG+cvqbt4AE/2eIyD2QfLKTBNlQ==}
+    dev: false
+
+  /@emotion/unitless/0.8.1:
+    resolution: {integrity: sha512-KOEGMu6dmJZtpadb476IsZBclKvILjopjUii3V+7MnXIQCYh8W3NgNcgwo21n9LXZX6EDIKvqfjYxXebDwxKmQ==}
+    dev: false
+
   /@esbuild/linux-loong64/0.14.54:
     resolution: {integrity: sha512-bZBrLAIX1kpWelV0XemxBZllyRmM6vgFQQG2GdNb+r3Fkp0FOh1NJSvekXDs7jq70k4euu1cryLMfU+mTXlEpw==}
     engines: {node: '>=12'}
@@ -3167,8 +3172,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /ant-design-vue/3.2.20_vue@3.3.4:
-    resolution: {integrity: sha512-YWpMfGaGoRastIXEYfCoJiaRiDHk4chqtYhlKQM5GqPt6NfvrM1Vg2e60yHtjxlZjed91wCMm0rAmyUr7Hwzdg==}
+  /ant-design-vue/4.0.0_vue@3.3.4:
+    resolution: {integrity: sha512-6V8DxHPv3HJYDdv48W/KFOUjeZDsYJhFlk13HFSKCJSR2MQs4YnPIAC+rWie9vYcVEKbO+cQDqiOM3cBoHMNUQ==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       vue: '>=3.2.0'
@@ -3177,9 +3182,12 @@ packages:
       '@ant-design/icons-vue': 6.1.0_vue@3.3.4
       '@babel/runtime': 7.22.6
       '@ctrl/tinycolor': 3.6.0
+      '@emotion/hash': 0.9.1
+      '@emotion/unitless': 0.8.1
       '@simonwep/pickr': 1.8.2
       array-tree-filter: 2.1.0
       async-validator: 4.2.5
+      csstype: 3.1.2
       dayjs: 1.11.9
       dom-align: 1.12.4
       dom-scroll-into-view: 2.0.1
@@ -3188,6 +3196,8 @@ packages:
       resize-observer-polyfill: 1.5.1
       scroll-into-view-if-needed: 2.2.31
       shallow-equal: 1.2.1
+      stylis: 4.3.0
+      throttle-debounce: 5.0.0
       vue: 3.3.4
       vue-types: 3.0.2_vue@3.3.4
       warning: 4.0.3
@@ -9632,6 +9642,10 @@ packages:
       postcss-selector-parser: 6.0.13
     dev: true
 
+  /stylis/4.3.0:
+    resolution: {integrity: sha512-E87pIogpwUsUwXw7dNyU4QDjdgVMy52m+XEOPEKUn161cCzWjjhPSQhByfd1CcNvrOLnXQ6OnnZDwnJrz/Z4YQ==}
+    dev: false
+
   /supports-color/5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
     engines: {node: '>=4'}
@@ -9747,6 +9761,11 @@ packages:
   /text-table/0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
     dev: true
+
+  /throttle-debounce/5.0.0:
+    resolution: {integrity: sha512-2iQTSgkkc1Zyk0MeVrt/3BvuOXYPl/R8Z0U2xxo9rjwNciaHDG3R+Lm6dh4EeUci49DanvBnuqI6jshoQQRGEg==}
+    engines: {node: '>=12.22'}
+    dev: false
 
   /throttleit/1.0.0:
     resolution: {integrity: sha512-rkTVqu6IjfQ/6+uNuuc3sZek4CEYxTJom3IktzgdSxcZqdARuebbA/f4QmAxMQIxqq9ZLEUkSYqvuk1I6VKq4g==}

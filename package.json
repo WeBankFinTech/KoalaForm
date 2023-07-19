@@ -18,7 +18,7 @@
     "less": "4.1.2",
     "lodash-es": "4.17.15",
     "vue": "^3.2.27",
-    "ant-design-vue": "^3.2.20",
+    "ant-design-vue": "^4.0.0",
     "element-plus": "^2.3.7",
     "dayjs": "^1.11.9",
     "@koala-form/core": "^2.0.0-rc.8",

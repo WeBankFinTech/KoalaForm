@@ -1,6 +1,6 @@
 {
   "name": "@koala-form/antd-plugin",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "KoalaForm Ant Design Vue ui插件",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -12,10 +12,10 @@
   ],
   "peerDependencies": {
     "vue": "^3.0.7",
-    "@koala-form/core": "^2.0.1"
+    "@koala-form/core": "^2.0.1",
+    "ant-design-vue": "^3.2.20"
   },
   "dependencies": {
-    "ant-design-vue": "^3.2.20"
   },
   "keywords": [
     "koala-form"

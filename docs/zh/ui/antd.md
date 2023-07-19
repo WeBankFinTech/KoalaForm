@@ -14,6 +14,8 @@ sidebarDepth: 3
 
 - 表单日期组件接受的值是dayjs类型
 
+- 当前例子使用时ant-design-vue@4.0，使用3.x版本，请主动引人样式`ant-design-vue/dist/antd.css`
+
 :::
 
 ## 使用插件

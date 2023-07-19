@@ -1,6 +1,5 @@
 import { ComponentType, Field, mergeRefProps, PluginFunction, SceneConfig, SceneContext, Scheme, setupGlobalConfig, travelTree } from '@koala-form/core';
 import * as Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css';
 import { computed, VNode } from 'vue';
 export * from './preset';
 export * from './useCurd';
@@ -43,7 +42,9 @@ export const componentPlugin: PluginFunction<SceneContext, SceneConfig> = (api) 
 
     api.on('modalSchemeLoaded', ({ ctx }) => {
         const modal = ctx.schemes[0];
-        mergeRefProps(modal, 'vModels', { visible: modal.vModels?.show });
+        mergeRefProps(modal, 'vModels', { visible: modal.vModels?.show }); // 3.x
+
+        mergeRefProps(modal, 'vModels', { open: modal.vModels?.show }); // 4.x
     });
 
     api.on('pagerSchemeLoaded', ({ ctx }) => {
