@@ -9,23 +9,22 @@
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs",
     "cypress:open": "cypress open",
-    "build:core": "lerna exec --scope @koala-form/core tsc",
-    "build:fes": "lerna exec --scope @koala-form/fes-plugin tsc",
-    "build:element": "lerna exec --scope @koala-form/element-plugin tsc",
-    "publish:core": "cd packages/core && npm publish",
-    "publish:fes": "cd packages/fes-plugin && npm publish",
-    "publish:element": "cd packages/element-plugin && npm publish",
-    "publish": "npm-run-all build:core build:fes build:element publish:core publish:fes publish:element"
+    "build": "lerna exec --scope @koala-form/$PKG tsc",
+    "publish": "cd packages/$PKG && npm publish",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "dependencies": {
     "@fesjs/fes-design": "0.7.15",
-    "ant-design-vue": "2.2.8",
     "less": "4.1.2",
     "lodash-es": "4.17.15",
-    "vue": "3.2.31",
+    "vue": "^3.2.27",
+    "ant-design-vue": "^3.2.20",
+    "element-plus": "^2.3.7",
+    "dayjs": "^1.11.9",
     "@koala-form/core": "^2.0.0-rc.8",
-    "@koala-form/fes-plugin": "^2.0.0-rc.6"
-
+    "@koala-form/fes-plugin": "^2.0.0",
+    "@koala-form/element-plugin": "^2.0.0",
+    "@koala-form/antd-plugin": "^2.0.0"
   },
   "workspaces": [
     "packages/*"
@@ -56,8 +55,10 @@
     "typescript": "4.5.2",
     "vitepress": "0.21.6",
     "cypress": "12.13.0",
-    "vue-common-ui": "0.7.0",
     "@vitejs/plugin-vue": "^4.2.3",
-    "npm-run-all": "4.1.5"
+    "npm-run-all": "4.1.5",
+    "commitizen": "^4.2.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "conventional-changelog-cli": "^2.2.2"
   }
 }

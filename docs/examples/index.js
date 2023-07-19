@@ -1,5 +1,4 @@
 import './main';
-// import Test from './Test';
 import StartedScene from './started/useScene';
 import StartedSceneVue from './started/useScene.vue';
 import StartedUseForm from './started/useForm';
@@ -28,8 +27,10 @@ import LabelPlugin from './labelPlugin';
 import ElementCurd from './elementCurd';
 import ElementUseCurd from './elementUseCurd.vue';
 
+import AntdCurd from './antdCurd';
+import antdUseCurd from './antdUseCurd.vue';
+
 export default {
-    // Test,
     StartedSceneVue,
     StartedScene,
     StartedUseForm,
@@ -37,8 +38,6 @@ export default {
     StartedUsePager,
     StartedUseModal,
     StartedUseCurd,
-    // ComposeUseTableWithPager,
-    // ComposeUseTableWithPager2,
     UseFormQuery,
     UseFormEdit,
     UseFormRelation,
@@ -52,14 +51,6 @@ export default {
     LabelPlugin,
     ElementCurd,
     ElementUseCurd,
-    // User,
-    // UseForm,
-    // UseFormSlots,
-    // UseTable,
-    // UseFormAction,
-    // UseQuery,
-    // UseModal,
-    // UsePage,
-    // MultipleTable,
-    // KoalaFormDemo
+    AntdCurd,
+    antdUseCurd,
 };
