@@ -3,10 +3,11 @@ import './assets/main.css'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import { installPluginPreset, setupGlobalConfig } from '@koala-form/core';
-import '@koala-form/fes-plugin';
+import { installPluginPreset, setupGlobalConfig, installInGlobal } from '@koala-form/core';
+import { componentPlugin } from '@koala-form/element-plugin';
 import { FMessage } from '@fesjs/fes-design';
 
+installInGlobal(componentPlugin);
 const BASE_URL = '/'
 
 installPluginPreset();

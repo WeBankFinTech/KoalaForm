@@ -16,7 +16,7 @@
 
 <script setup>
 import { ComponentType, KoalaRender, doGetFormData, useSceneContext } from '@koala-form/core';
-import { useCurd, mapTableFields } from '@koala-form/fes-plugin';
+import { useCurd, mapTableFields } from '@koala-form/element-plugin';
 import { computed } from 'vue';
 import { FButton, FMessage } from '@fesjs/fes-design';
 
