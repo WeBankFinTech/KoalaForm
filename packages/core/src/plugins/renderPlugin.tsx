@@ -6,9 +6,9 @@ import { PluginFunction } from './define';
 
 const wrapProps = (props: Record<string, any>, slotParams?: any) => {
     const _props = { ...props };
-    if (slotParams) {
+    if (slotParams?.__koalaColFlag) {
         Object.keys(props).forEach((key) => {
-            if (isFunction(props[key]) && !key.startsWith('onUpdate')) {
+            if (isFunction(props[key]) && key.startsWith('on') && !key.startsWith('onUpdate:')) {
                 _props[key] = (...args: any[]) => props[key](slotParams, ...args);
             }
         });
