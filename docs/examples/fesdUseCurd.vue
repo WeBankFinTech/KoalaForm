@@ -83,7 +83,7 @@ const { render, editTypeRef, query, selectedRows, openModal } = useCurd({
         ctx: edit,
         fields: [
             { ...FIELDS.id, vIf: computed(() => editTypeRef.value !== 'create') },
-            { ...FIELDS.name, required: true },
+            { ...FIELDS.name, required: true, disabled: computed(() => editTypeRef.value !== 'create') },
             FIELDS.age,
             FIELDS.sex,
             FIELDS.education,

@@ -10,16 +10,18 @@ export const disabledPlugin: PluginFunction<SceneContext, SceneConfig> = (api) =
 
     api.on('schemeLoaded', ({ ctx }) => {
         travelTree(ctx.schemes, (scheme) => {
-            const disabled = (scheme?.__node as ComponentDesc)?.disabled;
-            if (isUndefined(disabled)) return;
-            if (isFunction(disabled)) {
+            const node = scheme.__node as ComponentDesc;
+            if (!node || isUndefined(node.disabled)) return;
+            if (isFunction(node.disabled)) {
                 const _disabled = ref(true);
-                disabled(ctx, (value: any) => {
+                node.disabled(ctx, (value: any) => {
                     _disabled.value = !!value;
                 });
                 mergeRefProps(scheme, 'props', { disabled: _disabled });
             } else {
-                mergeRefProps(scheme, 'props', { disabled: disabled });
+                const props: any = scheme.props || {};
+                props.disabled = node.disabled;
+                scheme.props = props;
             }
         });
         api.emit('started');
