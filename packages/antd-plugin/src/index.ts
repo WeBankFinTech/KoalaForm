@@ -1,6 +1,7 @@
 import { ComponentType, Field, mergeRefProps, PluginFunction, SceneConfig, SceneContext, Scheme, setupGlobalConfig, travelTree } from '@koala-form/core';
 import * as Antd from 'ant-design-vue';
-import { computed, VNode } from 'vue';
+import { isUndefined } from 'lodash-es';
+import { computed, unref, VNode } from 'vue';
 export * from './preset';
 export * from './useCurd';
 
@@ -53,7 +54,7 @@ export const componentPlugin: PluginFunction<SceneContext, SceneConfig> = (api) 
         mergeRefProps(pagerScheme, 'props', {
             total: computed(() => ctx.modelRef?.value?.totalCount),
         });
-        if (pagerScheme.props) {
+        if (isUndefined(unref(pagerScheme.props)?.style?.textAlign)) {
             mergeRefProps(pagerScheme.props, 'style', { textAlign: 'right' });
         }
         mergeRefProps(pagerScheme, 'vModels', { current: pagerScheme.vModels?.currentPage });

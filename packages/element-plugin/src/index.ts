@@ -3,6 +3,7 @@ import * as ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
 import { computed, Slot, unref, VNode } from 'vue';
 import { genModalFooter, genOptions } from './slots';
+import { isUndefined } from 'lodash-es';
 export * from './preset';
 export * from './useCurd';
 
@@ -35,18 +36,24 @@ export const componentPlugin: PluginFunction<SceneContext, SceneConfig> = (api) 
             modalScheme.slots = {};
         }
         modalScheme.slots = {
-            footer: genModalFooter(modalScheme, ctx) as Slot,
+            footer: genModalFooter(modalScheme, ctx) as unknown as Slot,
             ...modalScheme.slots,
         };
     });
 
     api.on('pagerSchemeLoaded', ({ ctx }) => {
         const pagerScheme = ctx.schemes[0];
-        mergeRefProps(pagerScheme, 'props', {
+        const defaultProps = {
             layout: 'prev, pager, next',
             total: computed(() => ctx.modelRef?.value?.totalCount),
             background: true,
+        };
+        Object.keys(defaultProps).forEach((key) => {
+            if (!isUndefined(unref(pagerScheme.props)?.[key])) {
+                delete defaultProps[key];
+            }
         });
+        mergeRefProps(pagerScheme, 'props', defaultProps);
     });
 
     api.on('started', ({ ctx, name }) => {
