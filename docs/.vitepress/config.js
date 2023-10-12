@@ -73,7 +73,7 @@ export default {
                 { text: 'Ant-Design-Vue Plugin', link: '/zh/ui/antd' },
               ]
             },
-            // { text: '精彩示例', link: '/zh/demos/', activeMatch: '^/zh/demos' },
+            { text: '经典Demo', link: '/zh/demos/', activeMatch: '^/zh/demos' },
             {
               text: 'Github',
               link: 'https://github.com/WeBankFinTech/KoalaForm'
@@ -98,8 +98,8 @@ export default {
 
 function getDemosSidebar() {
   return [
-    { text: '示例说明', link: '/zh/demos/' },
-    { text: '示例1', link: '/zh/demos/demo1' }
+    { text: '登录', link: '/zh/demos/login' },
+    { text: '如何贡献Demo', link: '/zh/demos/' },
   ]
 }
 

@@ -270,7 +270,7 @@ export const useCurd = (config: CurdConfig) => {
 
     useTable({
         ctx: table,
-        table: merge<ComponentDesc, ComponentDesc>(
+        table: merge<ComponentDesc, any>(
             {
                 name: ComponentType.Table,
                 props: { rowKey },

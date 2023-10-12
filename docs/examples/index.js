@@ -30,6 +30,8 @@ import ElementUseCurd from './elementUseCurd.vue';
 import AntdCurd from './antdCurd';
 import antdUseCurd from './antdUseCurd.vue';
 
+import Demos from './demos/index';
+
 export default {
     StartedSceneVue,
     StartedScene,
@@ -53,4 +55,5 @@ export default {
     ElementUseCurd,
     AntdCurd,
     antdUseCurd,
+    ...Demos,
 };
