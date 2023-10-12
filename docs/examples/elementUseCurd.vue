@@ -83,7 +83,7 @@ const { render, editTypeRef, selectedRows, openModal } = useCurd({
             { props: { width: 150 } },
         ),
     },
-    pager: { ctx: pager },
+    pager: { ctx: pager, pager: { props: { background: false } } },
     edit: {
         ctx: edit,
         fields: [
