@@ -10,7 +10,7 @@
 pnpm i
 pnpm run docs:dev
 ```
-启动后可访问文档地址：http://localhost:3000/
+启动后可访问文档地址：`http://localhost:3000/`
 
 ### 2. 新建demo的md文件
 
@@ -28,7 +28,7 @@ function getDemosSidebar() {
 }
 ```
 
-保存后，访问：http://localhost:3000/zh/demos/login 可以看到配置的md文件
+保存后，访问：`http://localhost:3000/zh/demos/login` 可以看到配置的md文件
 
 ### 4. 开发demo示例
 
