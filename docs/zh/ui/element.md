@@ -15,6 +15,10 @@ sidebarDepth: 3
 
 - Select使用的是ElSelectV2组件
 
+- SelectCascader使用的是ElCascader组件
+
+- SelectTree使用的是ElTreeSelect组件
+
 - CheckboxGroup可根据options渲染Checkbox
 
 - RadioGroup可根据options渲染Radio

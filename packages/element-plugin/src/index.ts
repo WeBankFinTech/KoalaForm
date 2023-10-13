@@ -1,4 +1,4 @@
-import { ComponentType, Field, installInGlobal, isComponent, mergeRefProps, PluginFunction, SceneConfig, SceneContext, setupGlobalConfig, travelTree } from '@koala-form/core';
+import { ComponentType, Field, isComponent, mergeRefProps, PluginFunction, SceneConfig, SceneContext, setupGlobalConfig, travelTree } from '@koala-form/core';
 import * as ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
 import { computed, Slot, unref, VNode } from 'vue';
@@ -18,6 +18,8 @@ export const componentPlugin: PluginFunction<SceneContext, SceneConfig> = (api) 
         ctx.getComponent = (name) => {
             if (typeof name === 'string') {
                 if (name === 'Select') return ElementPlus.ElSelectV2;
+                if (name === 'SelectCascader') return ElementPlus.ElCascader;
+                if (name === ComponentType.SelectTree) return ElementPlus.ElTreeSelect;
                 if (name === 'Modal') name = 'Dialog';
                 const comp = ElementPlus[`El${name}`];
                 if (isComponent(comp)) return comp;
