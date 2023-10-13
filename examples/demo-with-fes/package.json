@@ -24,10 +24,12 @@
     "@fesjs/plugin-request": "3.0.0",
     "@fesjs/fes-design": "^0.7.23",
     "@fesjs/builder-webpack": "^3.0.0",
-    "@koala-form/core": "^2.0.0",
-    "@koala-form/fes-plugin": "2.0.0",
     "vue": "^3.2.47",
-    "core-js": "^3.29.1"
+    "core-js": "^3.29.1",
+    "@koala-form/core": "^2.0.5",
+    "@koala-form/fes-plugin": "2.0.0",
+    "@koala-form/element-plugin": "2.0.5",
+    "element-plus": "2.3.8"
   },
   "private": true
 }

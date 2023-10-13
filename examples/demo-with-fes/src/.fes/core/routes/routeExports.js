@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import { createRouter as createVueRouter, createWebHashHistory, ApplyPluginsType } from '/Users/aring/code/koala-form/packages/demo-with-fes/node_modules/.pnpm/@fesjs+runtime@3.0.0_vue@3.3.4/node_modules/@fesjs/runtime';
+import { createRouter as createVueRouter, createWebHashHistory, ApplyPluginsType } from '/Users/aring/code/koala-form/examples/demo-with-fes/node_modules/@fesjs/runtime';
 import { plugin } from '../plugin';
 import { updateInitialState } from '../../initialState';
 

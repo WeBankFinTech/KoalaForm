@@ -1,5 +1,5 @@
 import { plugin } from './plugin';
-import * as Plugin_0 from '/Users/aring/code/koala-form/packages/demo-with-fes/src/app.jsx';
+import * as Plugin_0 from '/Users/aring/code/koala-form/examples/demo-with-fes/src/app.jsx';
 import * as Plugin_1 from '@@/core/routes/runtime.js';
 import * as Plugin_2 from '@@/plugin-access/runtime.js';
 import * as Plugin_3 from '@@/plugin-layout/runtime.js';
@@ -19,7 +19,7 @@ function handleDefaultExport(pluginExports) {
 
   plugin.register({
     apply: handleDefaultExport(Plugin_0),
-    path: '/Users/aring/code/koala-form/packages/demo-with-fes/src/app.jsx',
+    path: '/Users/aring/code/koala-form/examples/demo-with-fes/src/app.jsx',
   });
   plugin.register({
     apply: handleDefaultExport(Plugin_1),

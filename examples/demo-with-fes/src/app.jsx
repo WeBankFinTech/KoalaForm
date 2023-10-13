@@ -1,13 +1,14 @@
 import { access, defineRuntimeConfig, request } from '@fesjs/fes';
-
+import { installInGlobal, installPluginPreset, setupGlobalConfig } from '@koala-form/core';
+import { componentPlugin } from '@koala-form/element-plugin';
 import PageLoading from '@/components/pageLoading.vue';
 import UserCenter from '@/components/userCenter.vue';
-import { installInGlobal, installPluginPreset, setupGlobalConfig } from '@koala-form/core';
 
 installPluginPreset();
+installInGlobal(componentPlugin);
 setupGlobalConfig({
-    request: request
-})
+    request,
+});
 
 export default defineRuntimeConfig({
     beforeRender: {
@@ -34,7 +35,7 @@ export default defineRuntimeConfig({
         method: 'get', // 默认 post
         mergeRequest: false, // 是否合并请求
         cacheData: false, // 是否缓存
-        dataHandler(data, response) {
+        dataHandler(data) {
             // 处理响应内容异常
             if (data.code === '10000') {
                 return Promise.reject(data);

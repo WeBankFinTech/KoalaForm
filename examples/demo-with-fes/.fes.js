@@ -14,7 +14,17 @@ export default defineBuildConfig({
         multiTabs: false,
         menus: [
             {
-                name: 'index',
+                name: 'comp',
+                title: '组件',
+                children: [
+                    {
+                        name: 'basic',
+                        title: '基本使用',
+                    },
+                    {
+                        name: 'reactive',
+                    },
+                ],
             },
         ],
     },

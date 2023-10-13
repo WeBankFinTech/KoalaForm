@@ -4,7 +4,7 @@ import {
 } from 'vue';
 import { plugin } from './core/plugin';
 import './core/pluginRegister';
-import { ApplyPluginsType } from '/Users/aring/code/koala-form/packages/demo-with-fes/node_modules/.pnpm/@fesjs+runtime@3.0.0_vue@3.3.4/node_modules/@fesjs/runtime';
+import { ApplyPluginsType } from '/Users/aring/code/koala-form/examples/demo-with-fes/node_modules/@fesjs/runtime';
 import { getRoutes } from './core/routes/routes';
 import DefaultContainer from './defaultContainer.jsx';
 

@@ -1,6 +1,6 @@
 
 
-import initialState from '/Users/aring/code/koala-form/packages/demo-with-fes/src/.fes/plugin-model/models/initialState';
+import initialState from '/Users/aring/code/koala-form/examples/demo-with-fes/src/.fes/plugin-model/models/initialState';
 
 export const models = {
     '@@initialState': initialState,
