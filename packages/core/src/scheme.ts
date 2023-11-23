@@ -1,5 +1,5 @@
 import { isString } from 'lodash-es';
-import { DefineComponent, Ref, Slot, Slots, VNodeChild, reactive } from 'vue';
+import { DefineComponent, Ref, Slot, Slots, VNodeChild, isReactive, reactive } from 'vue';
 import { EnumOption, Reactive, SceneContext, When } from './base';
 import { travelTree, turnArray } from './helper';
 
@@ -9,7 +9,7 @@ export interface ComponentDesc {
     vIf?: Ref<boolean> | When | boolean;
     vShow?: Ref<boolean> | When | boolean;
     vModels?: Record<string, ModelRef>;
-    disabled?: Ref<boolean> | When;
+    disabled?: Ref<boolean> | When | boolean;
     events?: Record<string, (value: any, ...args: any[]) => void>;
     slotName?: string;
     slots?: Slots;
@@ -112,7 +112,11 @@ export const createScheme = (node: ComponentDesc | string | Field | SceneContext
     } else if ((node as SceneContext).schemes) {
         return { __node: node, component: '', children: (node as SceneContext).schemes };
     } else {
-        const scheme = { __node: node, component: node.name || '', props: (node as ComponentDesc).props || reactive({}) };
+        let props = (node as ComponentDesc).props;
+        if (!isReactive(props)) {
+            props = reactive({ ...(props || {}) });
+        }
+        const scheme = { __node: node, component: node.name || '', props };
         return scheme;
     }
 };

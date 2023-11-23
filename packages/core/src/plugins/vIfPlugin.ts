@@ -1,5 +1,5 @@
 import { isFunction, isUndefined } from 'lodash-es';
-import { Ref, ref } from 'vue';
+import { Ref, computed, ref, unref } from 'vue';
 import { SceneConfig, SceneContext } from '../base';
 import { travelTree } from '../helper';
 import { ComponentDesc } from '../scheme';
@@ -19,7 +19,7 @@ export const vIfPlugin: PluginFunction<SceneContext, SceneConfig> = (api) => {
                 });
                 scheme.vIf = vIf;
             } else {
-                scheme.vIf = node.vIf as Ref<boolean>;
+                scheme.vIf = computed(() => unref(node.vIf)) as Ref<boolean>;
             }
         });
         api.emit('started');
