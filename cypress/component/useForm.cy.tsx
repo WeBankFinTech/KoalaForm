@@ -1,4 +1,4 @@
-import { ComponentType, EnumOption, FormSceneContext, doInitFields, doValidate, useForm, useSceneContext } from '@koala-form/core';
+import { ComponentType, EnumOption, FormSceneContext, composeRender, doInitFields, doValidate, useForm, useSceneContext } from '@koala-form/core';
 import { defineComponent, reactive, ref } from 'vue';
 
 const Test = defineComponent({
@@ -13,10 +13,12 @@ const Test = defineComponent({
         const vIf = ref(true);
         const vShow = ref(true);
 
+        const name = { name: 'name', label: '姓名', props: { id: 'name' }, components: { name: ComponentType.Input } };
+
         const form = useForm({
             ctx: ctx as FormSceneContext,
             fields: [
-                { name: 'name', label: '姓名', props: { id: 'name' }, required: true, components: { name: ComponentType.Input } },
+                { ...name, required: true },
                 { name: 'sex', label: '性别', vIf, vShow, props: { id: 'sex' }, options: sexOptions, components: { name: ComponentType.Select } },
                 {
                     label: ' ',
@@ -68,7 +70,12 @@ const Test = defineComponent({
                 },
             ],
         });
-        return form.render;
+
+        const form2 = useForm({
+            fields: [{ ...name, label: '姓名2' }],
+        });
+
+        return composeRender([form.render, form2.render]);
     },
 });
 
