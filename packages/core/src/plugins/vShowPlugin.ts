@@ -1,5 +1,5 @@
 import { isFunction, isUndefined } from 'lodash-es';
-import { Ref, ref } from 'vue';
+import { Ref, computed, ref, unref } from 'vue';
 import { SceneConfig, SceneContext } from '../base';
 import { travelTree } from '../helper';
 import { ComponentDesc } from '../scheme';
@@ -19,7 +19,7 @@ export const vShowPlugin: PluginFunction<SceneContext, SceneConfig> = (api) => {
                 });
                 scheme.vShow = vShow;
             } else {
-                scheme.vShow = node.vShow as Ref<boolean>;
+                scheme.vShow = computed(() => unref(node.vShow)) as Ref<boolean>;
             }
         });
         api.emit('started');

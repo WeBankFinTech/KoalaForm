@@ -1,5 +1,5 @@
 import { isFunction, isUndefined } from 'lodash-es';
-import { ref } from 'vue';
+import { Ref, computed, ref, unref } from 'vue';
 import { SceneConfig, SceneContext } from '../base';
 import { mergeRefProps, travelTree } from '../helper';
 import { ComponentDesc } from '../scheme';
@@ -20,7 +20,7 @@ export const disabledPlugin: PluginFunction<SceneContext, SceneConfig> = (api) =
                 mergeRefProps(scheme, 'props', { disabled: _disabled });
             } else {
                 const props: any = scheme.props || {};
-                props.disabled = node.disabled;
+                props.disabled = computed(() => unref(node.disabled as Ref<boolean>));
                 scheme.props = props;
             }
         });
