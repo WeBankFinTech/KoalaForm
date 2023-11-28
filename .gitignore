@@ -6,3 +6,4 @@ packages/**/dist
 dist
 yarn-error.log
 packages/**/.fes
+ai-dist
