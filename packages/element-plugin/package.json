@@ -1,6 +1,6 @@
 {
   "name": "@koala-form/element-plugin",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "KoalaForm element plus ui插件",
   "main": "dist/index.js",
   "module": "dist/index.js",

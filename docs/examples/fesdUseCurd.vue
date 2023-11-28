@@ -98,17 +98,62 @@ const { render, editTypeRef, query, selectedRows, openModal } = useCurd({
     actions: {
         query: {
             api: '/user.json',
+            before(params) {
+                // 修改请求参数
+                params.myId = '111';
+                // return false; // 阻止请求
+                return params;
+            },
+            after(data) {
+                // return false; // 阻止默认数据绑定逻辑
+                // 修改请求接口，适配绑定数据
+                const { pager, list } = data;
+                return {
+                    list: list,
+                    pager: pager,
+                };
+            },
         },
         create: {
             api: '/success.json',
+            before(params) {
+                // 修改请求参数
+                params.myId = '111';
+                // return false; // 阻止请求
+                return params;
+            },
+            after(data) {
+                // return false; // 阻止关闭弹窗和刷新列表
+                return data;
+            },
         },
         reset: {},
         update: {
             hidden: true, // 更新按钮修改行数据判断时，可以隐藏默认更新按钮，在template实现
             api: '/error.json',
+            before(params) {
+                // 修改请求参数
+                params.myId = '111';
+                // return false; // 阻止请求
+                return params;
+            },
+            after(data) {
+                // return false; // 阻止关闭弹窗和刷新列表
+                return data;
+            },
         },
         delete: {
             api: '/success.json',
+            before(params) {
+                // 修改请求参数
+                params.myId = '111';
+                // return false; // 阻止请求
+                return params;
+            },
+            after(data) {
+                // return false; // 阻止默认提示和刷新列表
+                return data;
+            },
         },
         view: {},
     },

@@ -39,10 +39,10 @@ interface Action extends ComponentDesc {
     reqConfig?: any;
     /** 隐藏默认按钮 */
     hidden?: boolean;
-    /** 请求前执行，可修改参数 */
-    before?: (params: Record<string, any>, ...args: any[]) => Record<string, any>;
-    /** 请求后执行，可修改结果 */
-    after?: (params: Record<string, any>) => Record<string, any>;
+    /** 请求前执行，可修改请求参数，返回false可阻止请求发送 */
+    before?: (params: Record<string, any>, ...args: any[]) => Record<string, any> | boolean;
+    /** 请求后执行，可修改结果，返回false可阻止默认流程的执行 */
+    after?: (params: Record<string, any>) => Record<string, any> | boolean;
     /** 打开modal前执行，可修改modal里表单的值 */
     open?: (params: Record<string, any>) => Record<string, any>;
 }
@@ -93,7 +93,7 @@ export const mapTableFields = (fields: Field[], comm?: Field) => {
             field.format = formatByOptions;
             getGlobalConfig().debug && console.log(`字段${field.name}将默认加上formatByOptions`);
         }
-        if (components?.['name'] === ComponentType.DatePicker && !field.format) {
+        if ((components as ComponentDesc)?.['name'] === ComponentType.DatePicker && !field.format) {
             field.format = genFormatByDate();
             getGlobalConfig().debug && console.log(`字段${field.name}将默认加上genFormatByDate()`);
         }
@@ -123,13 +123,17 @@ export const useCurd = (config: CurdConfig) => {
             throw new Error(`action.query.api required!`);
         }
         const { api, after, before, reqConfig } = actions.query;
-        let params = doBeforeQuery(query, pager);
-        if (before) {
-            params = before(params);
+        let params: any = doBeforeQuery(query, pager);
+        params = before?.(params);
+        if (!params) {
+            getGlobalConfig().debug && console.warn('actions.query.before返回false阻止了请求执行，如果是自定义请求流程，可忽略');
+            return;
         }
         let data = await doRequest(api, params, reqConfig);
-        if (after) {
-            data = after(data);
+        data = after?.(data);
+        if (!data) {
+            getGlobalConfig().debug && console.warn('actions.query.after返回false阻止了默认逻辑数据绑定，请自行绑定数据！');
+            return;
         }
         table.modelRef.value = data.list;
         if (pagerCfg) {
@@ -164,7 +168,7 @@ export const useCurd = (config: CurdConfig) => {
         if (open) data = open(data);
         if (data) {
             editCfg?.fields.forEach((field) => {
-                const comp = field.components?.[0] || field.components;
+                const comp = (field.components as Array<ComponentDesc>)?.[0] || field.components;
                 if (!comp) return;
                 if (comp.name === ComponentType.CheckboxGroup || (comp.name === ComponentType.Select && unref(comp.props)?.multiple)) {
                     const text = data[field.name as string];
@@ -194,13 +198,14 @@ export const useCurd = (config: CurdConfig) => {
         }
         await doValidate(edit);
         let params = doGetFormData(edit);
-        if (before) {
-            params = before(params);
+        params = before?.(params);
+        if (!params) {
+            getGlobalConfig().debug && console.warn('actions.[create/update].before返回false阻止了请求执行，如果是自定义请求流程，可忽略');
+            return;
         }
-        const data = await doRequest(api, params, reqConfig);
-        if (after) {
-            after(data);
-        } else {
+        const data = (await doRequest(api, params, reqConfig)) || {};
+        const res = after?.(data);
+        if (!after || res) {
             FMessage.success(`${actionTypeMap[editTypeRef.value]}成功！`);
             doClose(modal);
             doQuery();
@@ -214,13 +219,14 @@ export const useCurd = (config: CurdConfig) => {
             throw new Error(`action.delete.api required!`);
         }
         let params: any = { id: record?.row[rowKey] };
-        if (before) {
-            params = before(params, record?.row);
+        params = before?.(params, record?.row);
+        if (!params) {
+            getGlobalConfig().debug && console.warn('actions.delete.before返回false阻止了请求执行，如果是自定义请求流程，可忽略');
+            return;
         }
-        const data = await doRequest(api, params, reqConfig);
-        if (after) {
-            after(data);
-        } else {
+        const data = (await doRequest(api, params, reqConfig)) || {};
+        const res = after?.(data);
+        if (!after || res) {
             FMessage.success('删除成功！');
             doQuery();
         }
@@ -260,7 +266,7 @@ export const useCurd = (config: CurdConfig) => {
         ctx: table,
         table: merge<ComponentDesc, ComponentDesc>(
             { name: ComponentType.Table, vModels: { checkedKeys: { name: '__value', ref: selectedRows } }, props: { rowKey } },
-            tableCfg.table,
+            tableCfg.table as ComponentDesc,
         ),
         fields: [
             tableCfg.selection && merge<Field, Field>({ props: { type: 'selection' } }, tableCfg.selection as Field),

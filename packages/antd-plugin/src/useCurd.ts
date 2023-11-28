@@ -41,10 +41,10 @@ interface Action extends ComponentDesc {
     reqConfig?: any;
     /** 隐藏默认按钮 */
     hidden?: boolean;
-    /** 请求前执行，可修改参数 */
-    before?: (params: Record<string, any>, ...args: any[]) => Record<string, any>;
-    /** 请求后执行，可修改结果 */
-    after?: (params: Record<string, any>) => Record<string, any>;
+    /** 请求前执行，可修改请求参数，返回false可阻止请求发送 */
+    before?: (params: Record<string, any>, ...args: any[]) => Record<string, any> | boolean;
+    /** 请求后执行，可修改结果，返回false可阻止默认流程的执行 */
+    after?: (params: Record<string, any>) => Record<string, any> | boolean;
     /** 打开modal前执行，可修改modal里表单的值 */
     open?: (params: Record<string, any>) => Record<string, any>;
 }
@@ -125,13 +125,17 @@ export const useCurd = (config: CurdConfig) => {
             throw new Error(`action.query.api required!`);
         }
         const { api, after, before, reqConfig } = actions.query;
-        let params = doBeforeQuery(query, pager);
-        if (before) {
-            params = before(params);
+        let params: any = doBeforeQuery(query, pager);
+        params = before?.(params);
+        if (!params) {
+            getGlobalConfig().debug && console.warn('actions.query.before返回false阻止了请求执行，如果是自定义请求流程，可忽略');
+            return;
         }
         let data = await doRequest(api, params, reqConfig);
-        if (after) {
-            data = after(data);
+        data = after?.(data);
+        if (!data) {
+            getGlobalConfig().debug && console.warn('actions.query.after返回false阻止了默认逻辑数据绑定，请自行绑定数据！');
+            return;
         }
         table.modelRef.value = data.list;
         if (pagerCfg) {
@@ -208,13 +212,14 @@ export const useCurd = (config: CurdConfig) => {
         }
         await doValidate(edit);
         let params = doGetFormData(edit);
-        if (before) {
-            params = before(params);
+        params = before?.(params);
+        if (!params) {
+            getGlobalConfig().debug && console.warn('actions.[create/update].before返回false阻止了请求执行，如果是自定义请求流程，可忽略');
+            return;
         }
-        const data = await doRequest(api, params, reqConfig);
-        if (after) {
-            after(data);
-        } else {
+        const data = (await doRequest(api, params, reqConfig)) || {};
+        const res = after?.(data);
+        if (!after || res) {
             message.success(`${actionTypeMap[editTypeRef.value]}成功！`);
             doClose(modal);
             doQuery();
@@ -223,19 +228,19 @@ export const useCurd = (config: CurdConfig) => {
 
     /** 删除记录 */
     const doDelete = async (record: any) => {
-        debugger;
         const { api, after, before, reqConfig } = (actions.delete || {}) as Action;
         if (!api) {
             throw new Error(`action.delete.api required!`);
         }
         let params: any = { id: record?.record[rowKey] };
-        if (before) {
-            params = before(params, record?.record);
+        params = before?.(params, record?.row);
+        if (!params) {
+            getGlobalConfig().debug && console.warn('actions.delete.before返回false阻止了请求执行，如果是自定义请求流程，可忽略');
+            return;
         }
-        const data = await doRequest(api, params, reqConfig);
-        if (after) {
-            after(data);
-        } else {
+        const data = (await doRequest(api, params, reqConfig)) || {};
+        const res = after?.(data);
+        if (!after || res) {
             message.success('删除成功！');
             doQuery();
         }
