@@ -126,13 +126,13 @@ export const useCurd = (config: CurdConfig) => {
         }
         const { api, after, before, reqConfig } = actions.query;
         let params: any = doBeforeQuery(query, pager);
-        params = before?.(params);
+        before && (params = before(params));
         if (!params) {
             getGlobalConfig().debug && console.warn('actions.query.before返回false阻止了请求执行，如果是自定义请求流程，可忽略');
             return;
         }
         let data = await doRequest(api, params, reqConfig);
-        data = after?.(data);
+        after && (data = after(data));
         if (!data) {
             getGlobalConfig().debug && console.warn('actions.query.after返回false阻止了默认逻辑数据绑定，请自行绑定数据！');
             return;
@@ -212,7 +212,7 @@ export const useCurd = (config: CurdConfig) => {
         }
         await doValidate(edit);
         let params = doGetFormData(edit);
-        params = before?.(params);
+        before && (params = before(params));
         if (!params) {
             getGlobalConfig().debug && console.warn('actions.[create/update].before返回false阻止了请求执行，如果是自定义请求流程，可忽略');
             return;
@@ -233,7 +233,7 @@ export const useCurd = (config: CurdConfig) => {
             throw new Error(`action.delete.api required!`);
         }
         let params: any = { id: record?.record[rowKey] };
-        params = before?.(params, record?.row);
+        before && (params = before(params, record?.row));
         if (!params) {
             getGlobalConfig().debug && console.warn('actions.delete.before返回false阻止了请求执行，如果是自定义请求流程，可忽略');
             return;
