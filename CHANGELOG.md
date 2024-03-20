@@ -1,3 +1,27 @@
+## [2.0.5](https://github.com/WeBankFinTech/KoalaForm/compare/v2.0.1...v2.0.5) (2024-03-20)
+
+
+### Bug Fixes
+
+* 插件merge无法覆盖问题 ([33e45a4](https://github.com/WeBankFinTech/KoalaForm/commit/33e45a468d5f665e0b95191875d92c2a93b629cc))
+* 分页样式问题&setFields问题 ([4d5d045](https://github.com/WeBankFinTech/KoalaForm/commit/4d5d045416bd4074e5240d464a865a603b69d68d))
+* 事件参数 ([2d2f24a](https://github.com/WeBankFinTech/KoalaForm/commit/2d2f24ab96c36f40f70360f1f6e0ca114809e138))
+* 组件匹配缺失问题 ([4810202](https://github.com/WeBankFinTech/KoalaForm/commit/481020267bcf244a147982620b4bbd80ea86eda7))
+* ant-design-vue4.0兼容 ([a62fbad](https://github.com/WeBankFinTech/KoalaForm/commit/a62fbade080a27cd7cb1169ae7f285ee874c3191))
+* curd的actions中before和after缺省问题 ([fec0157](https://github.com/WeBankFinTech/KoalaForm/commit/fec0157b92aaafa53049dfe97752df9a4997f2a8))
+* curd中before、after中控制后续逻辑 ([7ba64e1](https://github.com/WeBankFinTech/KoalaForm/commit/7ba64e1c86e4493ebfbeb618b534b901f3f209db))
+* jsx ([ea7d986](https://github.com/WeBankFinTech/KoalaForm/commit/ea7d986b4ff65d0b83bc93181acc07c9e721f4b9))
+* vIf、vShow、disabled && props优化 ([b0cb740](https://github.com/WeBankFinTech/KoalaForm/commit/b0cb74036077ffa7d02eb77c87dd172d17d027e5))
+* vIf、vShow、disabled && props优化 ([040dd78](https://github.com/WeBankFinTech/KoalaForm/commit/040dd788940271175d3c1295a96f01112dcf1adb))
+
+
+### Features
+
+* add and design vue plugn ([758ad02](https://github.com/WeBankFinTech/KoalaForm/commit/758ad02944731a0937674588ff531f8798ea3215))
+* disabled插件提前计算computed问题 ([e70b47b](https://github.com/WeBankFinTech/KoalaForm/commit/e70b47be38566e85eb29a58fda53510898c744d8))
+
+
+
 ## [2.0.2](https://github.com/WeBankFinTech/KoalaForm/compare/v2.0.1...v2.0.2) (2023-07-19)
 
 
