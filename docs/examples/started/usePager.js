@@ -6,6 +6,11 @@ export default defineComponent({
     setup() {
         const { render, modelRef } = usePager({
             pager: {
+                props: {
+                    style: {
+                        justifyContent: 'center',
+                    },
+                },
                 events: {
                     onChange: (value) => {
                         FMessage.info('onChange ' + value);

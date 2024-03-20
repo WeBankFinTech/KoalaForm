@@ -1,4 +1,4 @@
-import { computed, ref, Ref } from 'vue';
+import { computed, ref, Ref, unref } from 'vue';
 import { getGlobalConfig, SceneConfig, SceneContext, useScene, useSceneContext } from '../base';
 import { mergeRefProps } from '../helper';
 import { PluginFunction } from '../plugins';
@@ -79,7 +79,8 @@ export function usePager(config: PagerSceneConfig): PagerSceneContext {
         config.ctx = ctx as PagerSceneContext;
     }
     const pager = config?.pager || { name: ComponentType.Pagination };
-    mergeRefProps(pager, 'props', { style: { justifyContent: 'right', marginTop: '16px' } });
+    const style = unref(pager?.props)?.style || {};
+    mergeRefProps(pager, 'props', { style: { justifyContent: 'right', marginTop: '16px', ...style } });
     config.ctx.isPager = true;
     config.ctx.use(pagerPlugin as PluginFunction);
     return useScene({ ...(config || {}), pager });

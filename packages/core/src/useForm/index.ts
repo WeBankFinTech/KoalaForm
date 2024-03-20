@@ -73,8 +73,6 @@ const formPlugin: PluginFunction<FormSceneContext, FormSceneConfig> = (api) => {
         };
 
         ctx.setFields = (values, name) => {
-            ctx.resetFields();
-            formScheme.__ref?.value?.resetFields?.();
             if (name) {
                 modelRef.value[name] = values;
             } else {
