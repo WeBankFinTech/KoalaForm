@@ -8,7 +8,7 @@ export interface ComponentDesc {
     props?: Reactive;
     vIf?: Ref<boolean> | When | boolean;
     vShow?: Ref<boolean> | When | boolean;
-    vModels?: Record<string, ModelRef>;
+    vModels?: Record<string, ModelRef | Ref>;
     disabled?: Ref<boolean> | When | boolean;
     events?: Record<string, (value: any, ...args: any[]) => void>;
     slotName?: string;
@@ -36,7 +36,7 @@ export interface Field {
     name?: string;
     vIf?: Ref<boolean> | boolean | When;
     vShow?: Ref<boolean> | boolean | When;
-    vModels?: Record<string, ModelRef>;
+    vModels?: Record<string, ModelRef | Ref>;
     options?: Ref<EnumOption[]> | EnumOption[] | ((model: any) => Promise<EnumOption[]>);
     props?: Reactive;
     defaultValue?: any;
@@ -51,7 +51,7 @@ export interface Field {
 export interface Scheme {
     component: string | ComponentDesc;
     props?: Reactive;
-    vModels?: Record<string, ModelRef>;
+    vModels?: Record<string, ModelRef | Ref>;
     vShow?: Ref<boolean>;
     vIf?: Ref<boolean>;
     events?: Record<string, (...args: unknown[]) => void>;

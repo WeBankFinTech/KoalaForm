@@ -40,20 +40,26 @@ const renderNode = (ctx: SceneContext, scheme: Scheme | string | ModelRef | Slot
     // 绑定model
     if (!isUndefined(vModels)) {
         Object.keys(vModels).forEach((key) => {
-            const { ref, name } = (vModels as Record<string, ModelRef>)[key];
-            props[key] = name !== '__value' ? unref(ref)[name] : unref(ref);
+            const vModel = vModels[key];
+            if (isRef(vModel)) {
+                props[key] = unref(vModel);
+            } else {
+                props[key] = vModel.name !== '__value' ? unref(vModel.ref)[vModel.name] : unref(vModel.ref);
+            }
             props[`onUpdate:${key}`] = (value: any) => {
-                if (isRef(ref)) {
-                    if (name) {
-                        (ref.value as any)[name] = value;
+                if (isRef(vModel)) {
+                    vModel.value = value;
+                } else if (isRef(vModel.ref)) {
+                    if (vModel.name) {
+                        (vModel.ref.value as any)[vModel.name] = value;
                     } else {
-                        ref.value = value;
+                        vModel.ref.value = value;
                     }
                 } else {
-                    if (name) {
-                        ref[name] = value;
+                    if (vModel.name) {
+                        vModel.ref[vModel.name] = value;
                     } else {
-                        Object.assign(ref, value);
+                        Object.assign(vModel.ref, value);
                     }
                 }
             };
