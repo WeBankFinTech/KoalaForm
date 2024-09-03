@@ -1,7 +1,7 @@
-import { ComponentType, Field, isComponent, mergeRefProps, PluginFunction, SceneConfig, SceneContext, setupGlobalConfig, travelTree } from '@koala-form/core';
+import { ComponentType, Field, findScheme, FormSceneConfig, FormSceneContext, isComponent, mergeRefProps, PluginFunction, SceneConfig, SceneContext, Scheme, setupGlobalConfig, travelTree } from '@koala-form/core';
 import * as ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
-import { computed, Slot, unref, VNode } from 'vue';
+import { computed, DefineComponent, Slot, unref, VNode } from 'vue';
 import { genModalFooter, genOptions } from './slots';
 import { isUndefined } from 'lodash-es';
 export * from './preset';
@@ -21,7 +21,7 @@ export const componentPlugin: PluginFunction<SceneContext, SceneConfig> = (api) 
                 if (name === 'SelectCascader') return ElementPlus.ElCascader;
                 if (name === ComponentType.SelectTree) return ElementPlus.ElTreeSelect;
                 if (name === 'Modal') name = 'Dialog';
-                const comp = ElementPlus[`El${name}`];
+                const comp = ElementPlus[`El${name}` as keyof typeof ElementPlus] as DefineComponent;
                 if (isComponent(comp)) return comp;
                 else return name;
             } else {
@@ -57,6 +57,23 @@ export const componentPlugin: PluginFunction<SceneContext, SceneConfig> = (api) 
         });
         mergeRefProps(pagerScheme, 'props', defaultProps);
     });
+
+    api.on('formSchemeLoaded', (opt) => {
+        const ctx = opt.ctx as FormSceneContext;
+        const config = opt.config as FormSceneConfig;
+        const { inline, span } = unref(config.form?.props) || {};
+        if (!inline) return;
+        const form = findScheme(ctx.schemes, config.form);
+        if (!form) return;
+        mergeRefProps(form, 'props', { style: {display: 'grid', gridTemplateColumns: 'repeat(24,minmax(0,1fr))' }  })
+        config.fields?.forEach?.((filed) => {
+            const scheme = findScheme(form.children as Scheme[], filed);
+            if (!scheme) return;
+            const fieldSpan = unref(filed.props)?.span || span || 6;
+            mergeRefProps(scheme, 'props', { style: { gridColumn: `span ${fieldSpan}` } });
+        })
+        console.warn('formSchemeLoaded', ctx, config);
+    })
 
     api.on('started', ({ ctx, name }) => {
         if (['format-plugin', 'options-plugin'].includes(name)) {
