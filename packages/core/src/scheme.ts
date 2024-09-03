@@ -4,7 +4,7 @@ import { EnumOption, Reactive, SceneContext, When } from './base';
 import { travelTree, turnArray } from './helper';
 
 export interface ComponentDesc {
-    name: string;
+    name: string | DefineComponent;
     props?: Reactive;
     vIf?: Ref<boolean> | When | boolean;
     vShow?: Ref<boolean> | When | boolean;

@@ -44,7 +44,7 @@ export const genButton = (
  * @param props 组件属性
  * @returns
  */
-export const genForm = (inline = false, props?: { labelWidth?: number | string; labelPosition?: 'left' | 'top' | 'right' }): ComponentDesc => {
+export const genForm = (inline = false, props?: { labelWidth?: number | string; span?: number, labelPosition?: 'left' | 'top' | 'right' }): ComponentDesc => {
     return {
         name: ComponentType.Form,
         props: { inline, ...(props || {}) },

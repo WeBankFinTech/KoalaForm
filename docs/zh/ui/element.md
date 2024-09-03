@@ -24,6 +24,7 @@ sidebarDepth: 3
 - RadioGroup可根据options渲染Radio
 :::
 
+
 ## 使用插件
 
 安装到全局
@@ -42,6 +43,39 @@ const ctx = useSceneContext('name')
 ctx.use(componentPlugin);
 
 // const ctx = useSceneContext('name', componentPlugin)
+
+```
+
+## Form布局增强
+Form和FormItem属性新增span，用于增强Form布局能力。span属性值范围：1-24，默认为12。
+
+::: warning
+ version >= 2.0.8
+
+ span仅在inline模式下有效。
+:::
+
+
+
+```js
+import { useForm } from '@koala-form/core';
+
+useForm({
+    form: { props: { inline: true, span: 6 } } // 统一设置，每个field的span都为6
+    fields: [
+        { name: 'name', label: '姓名'}, // 未设置span，则继承From的span，6
+        { name: 'sex', label: '性别', span: 4 }, // 单独设置span为4
+    ]
+})
+
+// 非inline模式下，span无效
+useForm({
+    form: { props: { inline: false, span: 6 } }
+    fields: [
+        { name: 'name', label: '姓名'},
+        { name: 'sex', label: '性别', span: 4 },
+    ]
+})
 
 ```
 

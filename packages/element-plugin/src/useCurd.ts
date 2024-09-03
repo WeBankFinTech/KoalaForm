@@ -254,6 +254,7 @@ export const useCurd = (config: CurdConfig) => {
                                 actions.reset && !actions.reset.hidden && merge(genButton('重置', doReset, { type: 'default' }), actions.reset),
                             ].filter(Boolean) as ComponentDesc[],
                         },
+                        props: { span: 12 }
                     },
                     queryCfg.actionField,
                 ),
