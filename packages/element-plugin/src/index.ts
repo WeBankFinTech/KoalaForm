@@ -1,4 +1,18 @@
-import { ComponentType, Field, findScheme, FormSceneConfig, FormSceneContext, isComponent, mergeRefProps, PluginFunction, SceneConfig, SceneContext, Scheme, setupGlobalConfig, travelTree } from '@koala-form/core';
+import {
+    ComponentType,
+    Field,
+    findScheme,
+    FormSceneConfig,
+    FormSceneContext,
+    isComponent,
+    mergeRefProps,
+    PluginFunction,
+    SceneConfig,
+    SceneContext,
+    Scheme,
+    setupGlobalConfig,
+    travelTree,
+} from '@koala-form/core';
 import * as ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
 import { computed, DefineComponent, Slot, unref, VNode } from 'vue';
@@ -65,15 +79,15 @@ export const componentPlugin: PluginFunction<SceneContext, SceneConfig> = (api) 
         if (!inline) return;
         const form = findScheme(ctx.schemes, config.form);
         if (!form) return;
-        mergeRefProps(form, 'props', { style: {display: 'grid', gridTemplateColumns: 'repeat(24,minmax(0,1fr))' }  })
+        mergeRefProps(form, 'props', { style: { display: 'grid', gridTemplateColumns: 'repeat(24,minmax(0,1fr))' } });
         config.fields?.forEach?.((filed) => {
             const scheme = findScheme(form.children as Scheme[], filed);
             if (!scheme) return;
             const fieldSpan = unref(filed.props)?.span || span || 6;
             mergeRefProps(scheme, 'props', { style: { gridColumn: `span ${fieldSpan}` } });
-        })
+        });
         console.warn('formSchemeLoaded', ctx, config);
-    })
+    });
 
     api.on('started', ({ ctx, name }) => {
         if (['format-plugin', 'options-plugin'].includes(name)) {
