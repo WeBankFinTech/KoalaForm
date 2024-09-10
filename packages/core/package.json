@@ -19,7 +19,8 @@
     "mitt": "^3.0.0"
   },
   "devDependencies": {
-    "@types/lodash-es": "^4.17.5"
+    "@types/lodash-es": "^4.17.5",
+    "@types/node": "^22.5.1"
   },
   "keywords": [
     "koala-form"

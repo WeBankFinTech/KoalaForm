@@ -129,7 +129,7 @@ export const doGetFormData = (ctx: FormSceneContext, values?: Record<string, any
             } else if (!isNumber(value)) {
                 value = dayjs(value).valueOf();
             }
-        } else if ([ComponentType.Select, ComponentType.CheckboxGroup].includes(compName) && isArray(value)) {
+        } else if ([ComponentType.Select, ComponentType.CheckboxGroup].includes(compName as string) && isArray(value)) {
             value = value.join(',');
         }
         model[field.name || ''] = value;

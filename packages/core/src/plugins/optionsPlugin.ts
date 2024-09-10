@@ -3,7 +3,7 @@ import { computed, Ref, ref, unref } from 'vue';
 import { EnumOption, SceneContext, SceneConfig } from '../base';
 import { doRequest } from '../handles';
 import { mergeRefProps, travelTree, turnArray } from '../helper';
-import { Field, findScheme } from '../scheme';
+import { Field, findScheme, Scheme } from '../scheme';
 import { FormSceneConfig, FormSceneContext } from '../useForm';
 import { PluginFunction } from './define';
 
@@ -26,7 +26,8 @@ export const optionsPlugin: PluginFunction<SceneContext, SceneConfig> = (api) =>
                 options = _options;
             }
             mergeRefProps(scheme, 'props', { options: options });
-            scheme.children?.[0] && mergeRefProps(scheme.children[0], 'props', { options: options });
+            const schemeFiled = (scheme.children as Scheme[])?.[0];
+            schemeFiled && mergeRefProps(schemeFiled, 'props', { options: options });
         });
         api.emit('started');
     });

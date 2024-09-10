@@ -21,26 +21,26 @@ const renderNode = (ctx: SceneContext, scheme: Scheme | string | ModelRef | Slot
     if (isString(scheme)) return createTextVNode(scheme);
     if ((scheme as ModelRef).ref) {
         const { ref, name } = scheme as ModelRef;
-        return createTextVNode(ref[name]);
+        return createTextVNode((ref as any)[name]);
     }
     if (isFunction(scheme)) {
         return scheme(slotParam);
     }
     const { __ref, vIf, vModels, vShow: _vShow, component, events, props: _props, children: _children, slots: _slots } = scheme as Scheme;
     if (vIf?.value === false) return;
-    const Component = ctx.getComponent(component);
+    const Component = ctx.getComponent(component as string);
 
-    const props = { ...events, ref: __ref }; // 组件事件
+    const props: any = { ...events, ref: __ref }; // 组件事件
     if (_props) {
         // 组件属性
         Object.keys(unref(_props)).forEach((key) => {
-            props[key] = unref(_props?.[key]);
+            props[key] = unref((_props as any)?.[key]);
         });
     }
     // 绑定model
     if (!isUndefined(vModels)) {
         Object.keys(vModels).forEach((key) => {
-            const vModel = vModels[key];
+            const vModel = vModels[key] as any;
             if (isRef(vModel)) {
                 props[key] = unref(vModel);
             } else {

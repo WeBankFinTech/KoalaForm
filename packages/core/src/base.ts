@@ -135,7 +135,7 @@ export function useScene<T extends SceneContext, K extends SceneConfig>(config: 
         }
         plugins.length = 0;
         getGlobalConfig().debug && console.log(`【${ctx.name}】卸载场景及插件`);
-        Object.keys(ctx).forEach((key) => delete ctx[key]);
+        Object.keys(ctx).forEach((key) => delete ctx[key as keyof typeof ctx]);
     });
     return ctx as T;
 }

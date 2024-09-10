@@ -21,14 +21,12 @@ export const formRulePlugin: PluginFunction<FormSceneContext, FormSceneConfig> =
 
     api.on('formSchemeLoaded', ({ ctx, config: { fields } }) => {
         if (!fields) return;
-        const ruleMap = {};
         fields.forEach((field) => {
             if (!field.name) return;
             const scheme = findScheme(ctx.schemes, field);
             if (!scheme || !(field.required || field.rules)) return;
             const rules = computed(() => parseFieldRule(field));
             mergeRefProps(scheme, 'props', { rules, prop: field.name });
-            ruleMap[field.name];
         });
 
         ctx.validate = async (names) => {
