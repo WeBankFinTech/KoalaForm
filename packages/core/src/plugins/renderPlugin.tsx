@@ -106,7 +106,7 @@ const renderNode = (ctx: SceneContext, scheme: Scheme | string | ModelRef | Slot
     }
 };
 
-const renderSchemes = (ctx: SceneContext, schemes?: SchemeChildren, slotParam?: any): VNodeChild | undefined => {
+export const renderSchemes = (ctx: SceneContext, schemes?: SchemeChildren, slotParam?: any): VNodeChild | undefined => {
     if (!schemes) return;
     if (isArray(schemes)) {
         return schemes.map((scheme) => renderNode(ctx, scheme, slotParam));

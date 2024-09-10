@@ -63,7 +63,7 @@ export interface Scheme {
 
 // 上下文定义相关
 export type ModelRef = { ref: Reactive; name: string };
-export type SchemeChildren = Array<Scheme | string | ModelRef | Slot> | string | ModelRef | Slot;
+export type SchemeChildren = Array<Scheme | string | ModelRef | Slot> | string | ModelRef | Slot | ((slotParams: any) => Array<Scheme>);
 
 // 常用组件类型
 export const ComponentType = {

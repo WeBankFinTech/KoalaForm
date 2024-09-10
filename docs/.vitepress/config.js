@@ -99,6 +99,7 @@ export default {
 function getDemosSidebar() {
   return [
     { text: '登录', link: '/zh/demos/login' },
+    { text: '编辑表格', link: '/zh/demos/editTable' },
     { text: '如何贡献Demo', link: '/zh/demos/' },
   ]
 }
