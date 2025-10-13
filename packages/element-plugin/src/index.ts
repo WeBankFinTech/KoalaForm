@@ -66,7 +66,7 @@ export const componentPlugin: PluginFunction<SceneContext, SceneConfig> = (api) 
         };
         Object.keys(defaultProps).forEach((key) => {
             if (!isUndefined(unref(pagerScheme.props)?.[key])) {
-                delete defaultProps[key];
+                delete (defaultProps as any)[key];
             }
         });
         mergeRefProps(pagerScheme, 'props', defaultProps);
