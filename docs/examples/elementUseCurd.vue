@@ -131,6 +131,9 @@ const { render, editTypeRef, selectedRows, openModal } = useCurd({
                 // return false; // 阻止关闭弹窗和刷新列表
                 return data;
             },
+            error(err) {
+                console.log(err);
+            },
         },
         reset: {},
         update: {
@@ -159,6 +162,7 @@ const { render, editTypeRef, selectedRows, openModal } = useCurd({
                 // return false; // 阻止默认提示和刷新列表
                 return data;
             },
+            deleteTip: '是否删除？', // 自定义删除提示
         },
         view: {},
     },

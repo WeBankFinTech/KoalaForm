@@ -8,7 +8,7 @@
             </template>
             <template #tableActionsExtend="{ record }">
                 <Button type="link" @click="doPass(record)">审核</Button>
-                <Button type="link" :disabled="record.id === '2'" @click="openModal('update', { record })">更新</Button>
+                <Button type="link" :disabled="record?.id === '2'" @click="openModal('update', { record })">更新</Button>
             </template>
         </KoalaRender>
     </div>
@@ -134,6 +134,9 @@ const { render, editTypeRef, selectedRows, openModal } = useCurd({
                 // return false; // 阻止关闭弹窗和刷新列表
                 return data;
             },
+            error(e) {
+                console.log(e);
+            },
         },
         reset: {},
         update: {
@@ -162,6 +165,7 @@ const { render, editTypeRef, selectedRows, openModal } = useCurd({
                 // return false; // 阻止默认提示和刷新列表
                 return data;
             },
+            deleteTip: '是否删除？', // 自定义删除提示
         },
         view: {},
     },

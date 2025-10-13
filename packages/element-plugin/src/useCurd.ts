@@ -1,8 +1,7 @@
-import { ElButton, ElMessage, ElPopconfirm } from 'element-plus';
+import { ElButton, ElMessage, ElPopconfirm, vLoading } from 'element-plus';
 import {
     ComponentDesc,
     ComponentType,
-    composeRender,
     doBeforeQuery,
     doClose,
     doGetFormData,
@@ -21,7 +20,6 @@ import {
     ModalSceneContext,
     PagerSceneConfig,
     PagerSceneContext,
-    SceneContext,
     TableSceneConfig,
     TableSceneContext,
     useForm,
@@ -31,7 +29,7 @@ import {
     useTable,
 } from '@koala-form/core';
 import { cloneDeep, merge } from 'lodash-es';
-import { computed, h, onMounted, Ref, ref, Slots, unref, watch } from 'vue';
+import { computed, h, onMounted, Ref, ref, Slots, unref, VNode, watch, withDirectives } from 'vue';
 import { genButton, genForm } from './preset';
 
 interface Action extends ComponentDesc {
@@ -43,6 +41,8 @@ interface Action extends ComponentDesc {
     before?: (params: Record<string, any>, ...args: any[]) => Record<string, any> | boolean;
     /** 请求后执行，可修改结果，返回false可阻止默认流程的执行 */
     after?: (params: Record<string, any>) => Record<string, any> | boolean;
+    /** 请求执行出错 */
+    error?: (error: any) => void;
     /** 打开modal前执行，可修改modal里表单的值 */
     open?: (params: Record<string, any>) => Record<string, any>;
 }
@@ -67,7 +67,7 @@ interface CurdConfig {
         reset?: Action;
         create?: Action;
         update?: Action;
-        delete?: Action;
+        delete?: Action & { deleteTip?: string };
         view?: Action;
     };
 }
@@ -93,7 +93,7 @@ export const mapTableFields = (fields: Field[], comm?: Field) => {
             field.format = formatByOptions;
             getGlobalConfig().debug && console.log(`字段${field.name}将默认加上formatByOptions`);
         }
-        if (components?.['name'] === ComponentType.DatePicker && !field.format) {
+        if ((components as any)?.['name'] === ComponentType.DatePicker && !field.format) {
             field.format = genFormatByDate();
             getGlobalConfig().debug && console.log(`字段${field.name}将默认加上genFormatByDate()`);
         }
@@ -110,6 +110,7 @@ export const useCurd = (config: CurdConfig) => {
     const pager = pagerCfg?.ctx || (ctxs[2] as PagerSceneContext);
     const edit = editCfg?.ctx || (ctxs[3] as FormSceneContext);
     const modal = modalCfg?.ctx || (ctxs[4] as ModalSceneContext);
+    const tableLoading = ref(false);
 
     const showQueryActionsExtend = ref(true);
     const showTableActionsExtend = ref(true);
@@ -122,22 +123,29 @@ export const useCurd = (config: CurdConfig) => {
         if (!actions.query?.api) {
             throw new Error(`action.query.api required!`);
         }
-        const { api, after, before, reqConfig } = actions.query;
-        let params: any = doBeforeQuery(query, pager);
-        before && (params = before(params));
-        if (!params) {
-            getGlobalConfig().debug && console.warn('actions.query.before返回false阻止了请求执行，如果是自定义请求流程，可忽略');
-            return;
-        }
-        let data = await doRequest(api, params, reqConfig);
-        after && (data = after(data));
-        if (!data) {
-            getGlobalConfig().debug && console.warn('actions.query.after返回false阻止了默认逻辑数据绑定，请自行绑定数据！');
-            return;
-        }
-        table.modelRef.value = data.list;
-        if (pagerCfg) {
-            pager.modelRef.value.totalCount = data.page?.totalCount || 0;
+        tableLoading.value = true;
+        const { api, after, before, reqConfig, error } = actions.query;
+        try {
+            let params: any = doBeforeQuery(query, pager);
+            before && (params = before(params));
+            if (!params) {
+                getGlobalConfig().debug && console.warn('actions.query.before返回false阻止了请求执行，如果是自定义请求流程，可忽略');
+                return;
+            }
+            let data = await doRequest(api, params, reqConfig);
+            after && (data = after(data));
+            if (!data) {
+                getGlobalConfig().debug && console.warn('actions.query.after返回false阻止了默认逻辑数据绑定，请自行绑定数据！');
+                return;
+            }
+            table.modelRef.value = data.list;
+            if (pagerCfg) {
+                pager.modelRef.value.totalCount = data.page?.totalCount || 0;
+            }
+        } catch (e) {
+            error?.(e);
+        } finally {
+            tableLoading.value = false;
         }
     };
     /** 查询按钮调用，分页会重置 */
@@ -168,7 +176,7 @@ export const useCurd = (config: CurdConfig) => {
         if (open) data = open(data);
         if (data) {
             editCfg?.fields.forEach((field) => {
-                const comp = field.components?.[0] || field.components;
+                const comp = (field.components as any)?.[0] || field.components;
                 if (!comp) return;
                 if (comp.name === ComponentType.CheckboxGroup || (comp.name === ComponentType.Select && unref(comp.props)?.multiple)) {
                     const text = data[field.name as string];
@@ -192,43 +200,51 @@ export const useCurd = (config: CurdConfig) => {
             doClose(modal);
             return;
         }
-        const { api, after, before, reqConfig } = ((editTypeRef.value === 'create' ? actions.create : actions.update) || {}) as Action;
+        const { api, after, before, reqConfig, error } = ((editTypeRef.value === 'create' ? actions.create : actions.update) || {}) as Action;
         if (!api) {
             throw new Error(`action.create.api or action.update.api required!`);
         }
-        await doValidate(edit);
-        let params = doGetFormData(edit);
-        before && (params = before(params));
-        if (!params) {
-            getGlobalConfig().debug && console.warn('actions.[create/update].before返回false阻止了请求执行，如果是自定义请求流程，可忽略');
-            return;
-        }
-        const data = (await doRequest(api, params, reqConfig)) || {};
-        const res = after?.(data);
-        if (!after || res) {
-            ElMessage.success(`${actionTypeMap[editTypeRef.value]}成功！`);
-            doClose(modal);
-            doQuery();
+        try {
+            await doValidate(edit);
+            let params = doGetFormData(edit);
+            before && (params = before(params));
+            if (!params) {
+                getGlobalConfig().debug && console.warn('actions.[create/update].before返回false阻止了请求执行，如果是自定义请求流程，可忽略');
+                return;
+            }
+            const data = (await doRequest(api, params, reqConfig)) || {};
+            const res = after?.(data);
+            if (!after || res) {
+                ElMessage.success(`${actionTypeMap[editTypeRef.value]}成功！`);
+                doClose(modal);
+                doQuery();
+            }
+        } catch (e) {
+            error?.(e);
         }
     };
 
     /** 删除记录 */
     const doDelete = async (record: any) => {
-        const { api, after, before, reqConfig } = (actions.delete || {}) as Action;
+        const { api, after, before, reqConfig, error } = (actions.delete || {}) as Action;
         if (!api) {
             throw new Error(`action.delete.api required!`);
         }
-        let params: any = { id: record?.row[rowKey] };
-        before && (params = before(params, record?.row));
-        if (!params) {
-            getGlobalConfig().debug && console.warn('actions.delete.before返回false阻止了请求执行，如果是自定义请求流程，可忽略');
-            return;
-        }
-        const data = (await doRequest(api, params, reqConfig)) || {};
-        const res = after?.(data);
-        if (!after || res) {
-            ElMessage.success('删除成功！');
-            doQuery();
+        try {
+            let params: any = { id: record?.row[rowKey] };
+            before && (params = before(params, record?.row));
+            if (!params) {
+                getGlobalConfig().debug && console.warn('actions.delete.before返回false阻止了请求执行，如果是自定义请求流程，可忽略');
+                return;
+            }
+            const data = (await doRequest(api, params, reqConfig)) || {};
+            const res = after?.(data);
+            if (!after || res) {
+                ElMessage.success('删除成功！');
+                doQuery();
+            }
+        } catch (e) {
+            error?.(e);
         }
     };
 
@@ -254,7 +270,6 @@ export const useCurd = (config: CurdConfig) => {
                                 actions.reset && !actions.reset.hidden && merge(genButton('重置', doReset, { type: 'default' }), actions.reset),
                             ].filter(Boolean) as ComponentDesc[],
                         },
-                        props: { span: 12 }
                     },
                     queryCfg.actionField,
                 ),
@@ -316,7 +331,7 @@ export const useCurd = (config: CurdConfig) => {
                                     merge(
                                         {
                                             name: ElPopconfirm,
-                                            props: { title: '是否删除该记录？', width: 200 },
+                                            props: { title: actions.delete.deleteTip ?? '是否删除该记录？', width: 200 },
                                             events: {
                                                 onConfirm: doDelete,
                                             },
@@ -372,8 +387,13 @@ export const useCurd = (config: CurdConfig) => {
         });
 
     const render = (slots: Slots) => {
-        const cr = composeRender([query.render, table.render, pager.render, modalCfg && modal.render].filter(Boolean) as SceneContext['render'][]);
-        return cr(slots);
+        const nodes = [];
+        nodes.push(query.render(slots));
+        const tableNodes = table.render(slots) as VNode[];
+        nodes.push(withDirectives(tableNodes[0], [[vLoading, tableLoading.value]]));
+        nodes.push(pager.render(slots));
+        modalCfg && nodes.push(modal.render(slots));
+        return nodes;
     };
 
     if (!queryCfg.firstClosed) {
@@ -389,6 +409,7 @@ export const useCurd = (config: CurdConfig) => {
         edit,
         modal,
         editTypeRef,
+        tableLoading,
         /** 列表勾选，table.selection可开启 */
         selectedRows,
         showQueryActionsExtend,

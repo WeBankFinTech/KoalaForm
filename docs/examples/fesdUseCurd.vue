@@ -54,7 +54,7 @@ const { ctx: edit } = useSceneContext('edit');
 
 const showDegree = computed(() => ['2', '3', '4'].includes(edit.modelRef.value.education));
 
-const { render, editTypeRef, query, selectedRows, openModal } = useCurd({
+const { render, editTypeRef, query, selectedRows, openModal, tableLoading } = useCurd({
     name: '用户',
     query: {
         fields: [FIELDS.name, FIELDS.sex, FIELDS.birthday],
@@ -126,6 +126,9 @@ const { render, editTypeRef, query, selectedRows, openModal } = useCurd({
                 // return false; // 阻止关闭弹窗和刷新列表
                 return data;
             },
+            error: (err) => {
+                console.log(err);
+            },
         },
         reset: {},
         update: {
@@ -154,6 +157,7 @@ const { render, editTypeRef, query, selectedRows, openModal } = useCurd({
                 // return false; // 阻止默认提示和刷新列表
                 return data;
             },
+            deleteTip: '是否删除？', // 自定义删除提示
         },
         view: {},
     },
